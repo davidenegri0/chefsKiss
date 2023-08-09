@@ -13,4 +13,11 @@
 <body>
     You will be redirected to the homepage...
 </body>
+<script>
+    function onLoadHandler()
+    {
+        window.location.href = "localhost:8080/homepage"
+    }
+    window.addEventListener("load", onLoadHandler)
+</script>
 </html>
