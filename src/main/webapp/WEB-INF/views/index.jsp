@@ -12,11 +12,15 @@
 </head>
 <body>
     You will be redirected to the homepage...
+    <br>
+    <br>
+    If that doesn't happen, click <a href="http://localhost:8080/homepage">here</a>
 </body>
 <script>
     function onLoadHandler()
     {
-        window.location.href = "localhost:8080/homepage"
+        console.log("Working...")
+        window.location.replace("/homepage");
     }
     window.addEventListener("load", onLoadHandler)
 </script>

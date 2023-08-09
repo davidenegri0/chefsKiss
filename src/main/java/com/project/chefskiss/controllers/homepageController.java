@@ -6,7 +6,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class homepageController {
-    @RequestMapping(name = "/homepage")
+    @RequestMapping(value = "/homepage")
     public ModelAndView homepageLoader()
     {
         ModelAndView page = new ModelAndView("homepage");
