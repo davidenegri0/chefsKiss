@@ -7,6 +7,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class loginController {
+    private final String root_username = "root_Davide";
+    private final String root_password = "the_password_is_root";
     @RequestMapping(value = "/login")
     public ModelAndView showLogin(
             @RequestParam(name = "usr", defaultValue = "",required = false) String user,
@@ -15,7 +17,7 @@ public class loginController {
     {
         ModelAndView page = new ModelAndView("loginPage");
 
-        if (user.equals("Davide") && password.equals("Segretissima")){
+        if (user.equals(root_username) && password.equals(root_password)){
             System.out.println("Logged in");
             page.addObject("loginStatus", "true");
         }

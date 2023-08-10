@@ -12,5 +12,10 @@
 </head>
 <body>
     <h1>Welcome to Chef's Kiss!!</h1>
+    <nav>
+        <ul>
+            <li><a href="http://localhost:8080/login">Login</a></li>
+        </ul>
+    </nav>
 </body>
 </html>
