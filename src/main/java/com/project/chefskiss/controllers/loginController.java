@@ -8,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class loginController {
     private final String root_username = "root_Davide";
-    private final String root_password = "the_password_is_root";
+    private final String root_password = "root";
     @RequestMapping(value = "/login")
     public ModelAndView showLogin(
             @RequestParam(name = "usr", defaultValue = "",required = false) String user,
