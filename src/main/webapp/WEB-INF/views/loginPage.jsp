@@ -12,23 +12,27 @@
 </head>
 <body>
     <h2>Login Page</h2>
-    <form name="loginForm" method="post">
-        <label for="us">Username:</label>
-        <input id="us" name="usr" type="text">
-        <label for="ps">Password:</label>
-        <input id="ps" name="pssw" type="password">
-        <input type="submit" value="Login">
-    </form>
+    <div id="login-form">
+        <form name="loginForm" method="post">
+            <label for="us">Username:</label>
+            <input id="us" name="usr" type="text">
+            <label for="ps">Password:</label>
+            <input id="ps" name="pssw" type="password">
+            <input type="submit" value="Login">
+        </form>
+    </div>
 </body>
 <script>
     function onLoginRequest(){
-        var status = ${loginStatus};
-        console.log(status);
-        if(status){
-            console.log("Logged in");
-        }
-        else{
-            console.log("Not working");
+        var errorCode = 0;
+        <%if(request.getAttribute("errorCode")!=null){%>
+        errorCode = <%=request.getAttribute("errorCode")%>;
+        console.log(errorCode);
+        <%}%>
+        if(errorCode == 1) {
+            var errorMessage = document.createTextNode("Errore nei dati di login. Riprovare!");
+            var form = document.getElementById("login-form");
+            form.append(errorMessage);
         }
     }
     window.addEventListener("load", onLoginRequest);

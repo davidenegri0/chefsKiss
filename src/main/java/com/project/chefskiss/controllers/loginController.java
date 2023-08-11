@@ -16,14 +16,18 @@ public class loginController {
     )
     {
         ModelAndView page = new ModelAndView("loginPage");
-
-        if (user.equals(root_username) && password.equals(root_password)){
+        if(user.equals("") || password.equals("")){
+            System.out.println("Empty fields");
+            page.addObject("errorCode", 0);
+        }
+        else if (user.equals(root_username) && password.equals(root_password)){
             System.out.println("Logged in");
-            page.addObject("loginStatus", "true");
+            page.setViewName("homepage");
+            page.addObject("user", user);
         }
         else {
             System.out.println("Failed Logged in");
-            page.addObject("loginStatus", "false");
+            page.addObject("errorCode", 1);
         }
 
         return page;
