@@ -11,7 +11,7 @@
 
 
 %>
-<html>
+<html lang="it">
 <head>
     <title>Homepage</title>
 </head>
@@ -27,6 +27,9 @@
             <%}else{%>
             <li><a href="http://localhost:8080/homepage">Logout</a></li>
             <%}%>
+        </ul>
+        <ul>
+            <li><a href="http://localhost:8080/registration">Registrazione</a></li>
         </ul>
     </nav>
 </body>
