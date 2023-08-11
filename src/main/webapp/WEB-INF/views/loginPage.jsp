@@ -12,11 +12,11 @@
 </head>
 <body>
     <h2>Login Page</h2>
-    <form name="login">
-        <label for="usr">Username:</label>
-        <input id="usr" name="usr" type="text">
-        <label for="pssw">Password:</label>
-        <input id="pssw" name="pssw" type="text">
+    <form name="loginForm" method="post">
+        <label for="us">Username:</label>
+        <input id="us" name="usr" type="text">
+        <label for="ps">Password:</label>
+        <input id="ps" name="pssw" type="password">
         <input type="submit" value="Login">
     </form>
 </body>
