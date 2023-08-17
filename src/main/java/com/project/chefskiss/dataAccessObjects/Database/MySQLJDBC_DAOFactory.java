@@ -48,11 +48,11 @@ public class MySQLJDBC_DAOFactory extends DAOFactory {
         }
     }
 
-    /*
+
     @Override
-    public UserDAO getUserDAO()
+    public UserDAO_MySQL getUserDAO()
     {
         return new UserDAO_MySQL(conn);
     }
-    */
+
 }

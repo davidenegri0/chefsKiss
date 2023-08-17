@@ -14,8 +14,8 @@
     <h2>Login Page</h2>
     <div id="login-form">
         <form name="loginForm" method="post">
-            <label for="us">Username:</label>
-            <input id="us" name="usr" type="text">
+            <label for="em">Email:</label>
+            <input id="em" name="email" type="text">
             <label for="ps">Password:</label>
             <input id="ps" name="pssw" type="password">
             <input type="submit" value="Login">
