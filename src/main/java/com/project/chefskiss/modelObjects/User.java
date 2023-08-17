@@ -1,21 +1,25 @@
 package com.project.chefskiss.modelObjects;
 
 import java.sql.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class User {
+    private String CF;
     private String Nome;
-    private String Congnome;
+    private String Cognome;
     private String Email;
     private String N_Telefono;
     private Date D_Nascita;
     private Date D_Iscrizione;
+    private final Map<String, Boolean> Privileges = new HashMap<>();
 
     public void setNome(String nome) {
         Nome = nome;
     }
 
-    public void setCongnome(String congnome) {
-        Congnome = congnome;
+    public void setCognome(String cognome) {
+        Cognome = cognome;
     }
 
     public void setEmail(String email) {
@@ -34,12 +38,24 @@ public class User {
         D_Nascita = d_Nascita;
     }
 
+    public void setPrivileges(Boolean Se_Cliente, Boolean Verificato, Boolean Se_Privato, Boolean Se_Chef, Boolean Se_Ristoratore) {
+        Privileges.putIfAbsent("Cliente", Se_Cliente);
+        Privileges.putIfAbsent("Verificato", Verificato);
+        Privileges.putIfAbsent("Privato", Se_Privato);
+        Privileges.putIfAbsent("Chef", Se_Chef);
+        Privileges.putIfAbsent("Ristoratore", Se_Ristoratore);
+    }
+
+    public String getCF() {
+        return CF;
+    }
+
     public String getNome() {
         return Nome;
     }
 
-    public String getCongnome() {
-        return Congnome;
+    public String getCognome() {
+        return Cognome;
     }
 
     public String getEmail() {
@@ -56,5 +72,13 @@ public class User {
 
     public Date getD_Nascita() {
         return D_Nascita;
+    }
+
+    public String getPrivileges() {
+        return "Se_Cliente="+Privileges.get("Cliente")+";"+
+               "Verificato="+Privileges.get("Verificato")+";"+
+               "Se_Privato="+Privileges.get("Privato")+";"+
+               "Se_Chef="+Privileges.get("Chef")+";"+
+               "Se_Ristoratore="+Privileges.get("Ristoratore");
     }
 }
