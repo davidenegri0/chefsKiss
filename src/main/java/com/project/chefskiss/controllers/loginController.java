@@ -5,10 +5,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import static com.project.chefskiss.configurations.Config.root_password;
+import static com.project.chefskiss.configurations.Config.root_username;
+
 @Controller
 public class loginController {
-    private final String root_username = "root_Davide";
-    private final String root_password = "root";
+
     @RequestMapping(value = "/login")
     public ModelAndView showLogin(
             @RequestParam(name = "usr", defaultValue = "",required = false) String user,
