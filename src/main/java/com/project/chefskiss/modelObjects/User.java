@@ -12,7 +12,11 @@ public class User {
     private String N_Telefono;
     private Date D_Nascita;
     private Date D_Iscrizione;
-    private final Map<String, Boolean> Privileges = new HashMap<>();
+    private final Map<String, Boolean> Privileges = new HashMap<>(5);
+
+    public void setCF(String CF) {
+        this.CF = CF;
+    }
 
     public void setNome(String nome) {
         Nome = nome;
@@ -39,11 +43,11 @@ public class User {
     }
 
     public void setPrivileges(Boolean Se_Cliente, Boolean Verificato, Boolean Se_Privato, Boolean Se_Chef, Boolean Se_Ristoratore) {
-        Privileges.putIfAbsent("Cliente", Se_Cliente);
-        Privileges.putIfAbsent("Verificato", Verificato);
-        Privileges.putIfAbsent("Privato", Se_Privato);
-        Privileges.putIfAbsent("Chef", Se_Chef);
-        Privileges.putIfAbsent("Ristoratore", Se_Ristoratore);
+        Privileges.put("Cliente", Se_Cliente);
+        Privileges.put("Verificato", Verificato);
+        Privileges.put("Privato", Se_Privato);
+        Privileges.put("Chef", Se_Chef);
+        Privileges.put("Ristoratore", Se_Ristoratore);
     }
 
     public String getCF() {
@@ -80,5 +84,32 @@ public class User {
                "Se_Privato="+Privileges.get("Privato")+";"+
                "Se_Chef="+Privileges.get("Chef")+";"+
                "Se_Ristoratore="+Privileges.get("Ristoratore");
+    }
+
+    public Boolean isCliente(){
+        return Privileges.get("Cliente");
+    }
+
+    public Boolean isClienteVerificato(){
+        if (this.isCliente())
+        {
+            return Privileges.get("Verificato");
+        }
+        else{
+            Privileges.put("Verificato", false);
+            return false;
+        }
+    }
+
+    public Boolean isPrivato(){
+        return Privileges.get("Privato");
+    }
+
+    public Boolean isChef(){
+        return Privileges.get("Chef");
+    }
+
+    public Boolean isRistoratore(){
+        return Privileges.get("Ristoratore");
     }
 }
