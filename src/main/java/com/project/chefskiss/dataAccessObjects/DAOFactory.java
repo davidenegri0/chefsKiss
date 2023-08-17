@@ -1,5 +1,8 @@
 package com.project.chefskiss.dataAccessObjects;
 
+import com.project.chefskiss.dataAccessObjects.Database.MySQLJDBC_DAOFactory;
+
+import java.net.http.HttpResponse;
 import java.util.Map;
 
 public abstract class DAOFactory {
@@ -10,14 +13,13 @@ public abstract class DAOFactory {
 
     // public abstract UserDAO getUserDAO();
 
-    public static DAOFactory getDAOFactory(String whichFactory, Map factoryParameters) {
+    public static DAOFactory getDAOFactory(String whichFactory, HttpResponse response) {
 
         if (whichFactory.equals("MySQLJDBCImpl")) {
-            //return new MySQLJDBCDAOFactory(factoryParameters);
-            System.out.println("Hello database");
+            return new MySQLJDBC_DAOFactory();
         } else if (whichFactory.equals("CookieImpl")) {
-            System.out.println("Hello cookie");
-            //return new CookieDAOFactory(factoryParameters);
+            System.out.println("TODO: Cookie");
+            //return new CookieDAOFactory();
         } else {
             return null;
         }
