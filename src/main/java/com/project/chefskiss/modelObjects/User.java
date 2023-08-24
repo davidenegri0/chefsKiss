@@ -9,10 +9,13 @@ public class User {
     private String Nome;
     private String Cognome;
     private String Email;
+    private String Password;
     private String N_Telefono;
     private Date D_Nascita;
     private Date D_Iscrizione;
     private final Map<String, Boolean> Privileges = new HashMap<>(5);
+    private String Username;
+    private Boolean Deleted;
 
     public void setCF(String CF) {
         this.CF = CF;
@@ -28,6 +31,10 @@ public class User {
 
     public void setEmail(String email) {
         Email = email;
+    }
+
+    public void setPassword(String password) {
+        Password = password;
     }
 
     public void setN_Telefono(String n_Telefono) {
@@ -49,6 +56,17 @@ public class User {
         Privileges.put("Chef", Se_Chef);
         Privileges.put("Ristoratore", Se_Ristoratore);
     }
+    public void setUsername (String username) {
+        if (this.isPrivato()) {
+            Username = username;
+        }
+        // else { Username = null; }
+    }
+
+    //TODO: set foto per utente privato
+    //TODO: set di foto e CV per chef
+
+    public void setDeleted(boolean deleted) { Deleted = deleted; }
 
     public String getCF() {
         return CF;
@@ -65,6 +83,8 @@ public class User {
     public String getEmail() {
         return Email;
     }
+
+    public String getPassword() { return Password; }
 
     public String getN_Telefono() {
         return N_Telefono;
@@ -105,6 +125,13 @@ public class User {
         return Privileges.get("Privato");
     }
 
+    public String getUsername(){
+        if (this.isPrivato()){
+            return Username;
+        }
+        else { return null; }
+    }
+
     public Boolean isChef(){
         return Privileges.get("Chef");
     }
@@ -112,4 +139,5 @@ public class User {
     public Boolean isRistoratore(){
         return Privileges.get("Ristoratore");
     }
+    public Boolean isDeleted() { return Deleted; }
 }

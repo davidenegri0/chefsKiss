@@ -18,6 +18,7 @@ public interface UserDAO {
             String Username,
             Boolean Se_Chef,
             Boolean Se_Ristoratore,
+            Boolean Deleted,
             String Coordinate_Sede
     );
 

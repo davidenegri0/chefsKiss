@@ -15,7 +15,7 @@ public class UserDAO_MySQL implements UserDAO {
 
     //TODO: Tutte le funzioni seguenti
     @Override
-    public User create(String CF, String Nome, String Cognome, Date D_Nascita, String Email, String Password, String N_Telefono, Date D_Iscrizione, Boolean Se_Cliente, Boolean Verificato, Boolean Se_Privato, String Username, Boolean Se_Chef, Boolean Se_Ristoratore, String Coordinate_Sede) {
+    public User create(String CF, String Nome, String Cognome, Date D_Nascita, String Email, String Password, String N_Telefono, Date D_Iscrizione, Boolean Se_Cliente, Boolean Verificato, Boolean Se_Privato, String Username, Boolean Se_Chef, Boolean Se_Ristoratore, Boolean deleted, String Coordinate_Sede) {
         return null;
     }
 
@@ -61,12 +61,69 @@ public class UserDAO_MySQL implements UserDAO {
                 System.out.println(result.getString("Cognome"));
 
                 //TODO: Setting dei dati dell'utente nella classe
+                /*utente.setCF(result.getString("CF"));
+                utente.setNome(result.getString("Nome"));
+                utente.setCognome(result.getString("Cognome"));*/
+                utente = read(result);
             }
+            result.close();
+            query.close();
+
         }catch (SQLException e){
             throw new RuntimeException(e.getMessage());
         }
 
         //TODO: Return utente
         return utente;
+    }
+
+    User read(ResultSet rs) {
+        User user = new User();
+
+        try {
+            user.setCF(rs.getString("CF"));
+        } catch (SQLException sqle) { }
+        try {
+            user.setNome(rs.getString("Nome_Utente"));
+        } catch (SQLException sqle) { }
+        try {
+            user.setCognome(rs.getString("Cognome"));
+        } catch (SQLException sqle) { }
+        try {
+            user.setD_Nascita(rs.getDate("Data_Nascita"));
+        } catch (SQLException sqle) { }
+        try {
+            user.setEmail(rs.getString("Email"));
+        } catch (SQLException sqle) { }
+        try {
+            user.setPassword(rs.getString("Password"));
+        } catch (SQLException sqle) { }
+        try {
+            user.setN_Telefono(rs.getString("Telefono"));
+        } catch (SQLException sqle) { }
+        try {
+            user.setD_Iscrizione(rs.getDate("Data_Iscrizione"));
+        } catch (SQLException sqle) { }
+        try {
+            user.setDeleted(rs.getString("Deleted").equals("Y"));
+        } catch (SQLException sqle) { }
+
+        //TODO: Finire di inserire la lettura per tutti i campi Se_* e campi correlati
+        try {
+            user.setPrivileges(rs.getString("Se_Cliente").equals("1"), rs.getString("Verificato").equals("1"), rs.getString("Se_Privato").equals("1"), rs.getString("Se_Chef").equals("1"), rs.getString("Se_Ristorante").equals("1"));
+        } catch (SQLException sqle) { }
+        try {
+            if (rs.getString("Se_Privato").equals("Y")){
+                user.setUsername(rs.getString("Username"));
+                //TODO: Foto_Privato
+            }
+        } catch (SQLException sqle) { }
+        try {
+            if (rs.getString("Se_Chef").equals("Y")){
+                //TODO: Foto_chef e CV
+            }
+        } catch (SQLException sqle) { }
+
+        return user;
     }
 }
