@@ -3,6 +3,7 @@ package com.project.chefskiss.controllers;
 import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.dataAccessObjects.DAOFactory;
 import com.project.chefskiss.dataAccessObjects.UserDAO;
+import com.project.chefskiss.modelObjects.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,8 +25,11 @@ public class loginController {
             @RequestParam(name = "pssw", defaultValue = "", required = false) String password
             )
     {
+        // Variabili
         ModelAndView page = new ModelAndView("loginPage");
+        User utente;
 
+        // Controllo dati da login
         if(email.equals("") || password.equals("")){
             System.out.println("Empty fields");
             page.addObject("errorCode", 0);
@@ -35,12 +39,11 @@ public class loginController {
             DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
             DatabaseDAO.beginTransaction();
             UserDAO sessionUserDAO = DatabaseDAO.getUserDAO();
-            sessionUserDAO.findByEmail(email);
-            //TODO: Utilizzare i dati dell'utente
-            if (email.equals(root_username) && password.equals(root_password)){
+            utente = sessionUserDAO.findByEmail(email);
+            if (password.equals(utente.getPassword())){
                 System.out.println("Logged in");
                 page.setViewName("homepage");
-                page.addObject("user", email);
+                page.addObject("user", utente.getNome()+" "+utente.getCognome());
             }
             else {
                 System.out.println("Failed Logged in");

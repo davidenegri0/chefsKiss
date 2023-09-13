@@ -42,7 +42,7 @@ public class UserDAO_MySQL implements UserDAO {
     @Override
     public User findByEmail(String Email) {
         PreparedStatement query;
-        User utente = null;
+        User utente = new User();
 
         try {
             String SQLQuery = "SELECT * "
@@ -56,15 +56,8 @@ public class UserDAO_MySQL implements UserDAO {
 
             if(result.next())
             {
-                System.out.println(result.getString("CF"));
-                System.out.println(result.getString("Nome"));
-                System.out.println(result.getString("Cognome"));
-
-                //TODO: Setting dei dati dell'utente nella classe
-                /*utente.setCF(result.getString("CF"));
-                utente.setNome(result.getString("Nome"));
-                utente.setCognome(result.getString("Cognome"));*/
                 utente = read(result);
+                System.out.println("Lettura dati completata!");
             }
             result.close();
             query.close();
@@ -73,18 +66,17 @@ public class UserDAO_MySQL implements UserDAO {
             throw new RuntimeException(e.getMessage());
         }
 
-        //TODO: Return utente
         return utente;
     }
 
-    User read(ResultSet rs) {
+    private User read(ResultSet rs) {
         User user = new User();
 
         try {
             user.setCF(rs.getString("CF"));
         } catch (SQLException sqle) { }
         try {
-            user.setNome(rs.getString("Nome_Utente"));
+            user.setNome(rs.getString("Nome"));
         } catch (SQLException sqle) { }
         try {
             user.setCognome(rs.getString("Cognome"));
@@ -104,6 +96,7 @@ public class UserDAO_MySQL implements UserDAO {
         try {
             user.setD_Iscrizione(rs.getDate("Data_Iscrizione"));
         } catch (SQLException sqle) { }
+        /*      //TODO: Quando i dati sul db sono tutti completi, decommentare
         try {
             user.setDeleted(rs.getString("Deleted").equals("Y"));
         } catch (SQLException sqle) { }
@@ -123,6 +116,7 @@ public class UserDAO_MySQL implements UserDAO {
                 //TODO: Foto_chef e CV
             }
         } catch (SQLException sqle) { }
+         */
 
         return user;
     }
