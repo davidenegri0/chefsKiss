@@ -20,6 +20,8 @@
             <input id="cognome" name="cognome" type="text" required><br>
             <label for="cf">CF:</label>
             <input id="cf" name="cf" type="text" maxlength="16" required><br>
+            <label for="email">Email:</label>
+            <input id="email" name="email" type="email" required><br>
             <label for="telefono">Telefono:</label>
             <input id="telefono" name="telefono" type="number" maxlength="12" required><br>
             <label for="nascita">Data di nascita:</label>

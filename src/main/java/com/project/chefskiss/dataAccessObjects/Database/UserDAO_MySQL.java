@@ -16,7 +16,40 @@ public class UserDAO_MySQL implements UserDAO {
     //TODO: Tutte le funzioni seguenti
     @Override
     public User create(String CF, String Nome, String Cognome, Date D_Nascita, String Email, String Password, String N_Telefono, Date D_Iscrizione, Boolean Se_Cliente, Boolean Verificato, Boolean Se_Privato, String Username, Boolean Se_Chef, Boolean Se_Ristoratore, Boolean deleted, String Coordinate_Sede) {
-        return null;
+
+        PreparedStatement query;
+        User utente = new User();
+
+        //TODO: Controllare che i dati non siano già stati utilizzati
+
+        try {
+            String SQLQuery = "INSERT INTO chefskiss.utente(CF, Nome, Cognome, Data_Nascita, Email, Password, Telefono, Data_Iscrizione, Se_Cliente, Se_Privato, Se_Chef, Se_Ristoratore) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, CF);
+            query.setString(2, Nome);
+            query.setString(3, Cognome);
+            query.setDate(4, D_Nascita);
+            query.setString(5, Email);
+            query.setString(6, Password);
+            query.setString(7, N_Telefono);
+            query.setDate(8, D_Iscrizione);
+            if (Se_Cliente) query.setInt(9, 1);
+            else query.setInt(9, 0);
+            if (Se_Privato) query.setInt(10, 1);
+            else query.setInt(10, 0);
+            if (Se_Chef) query.setInt(11, 1);
+            else query.setInt(11, 0);
+            if (Se_Ristoratore) query.setInt(12, 1);
+            else query.setInt(12, 0);
+
+            query.executeUpdate();
+
+        }catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return utente.setTotalData(Nome, Cognome, CF, Email, N_Telefono, D_Nascita, Password);
     }
 
     @Override

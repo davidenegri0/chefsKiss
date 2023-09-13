@@ -140,4 +140,16 @@ public class User {
         return Privileges.get("Ristoratore");
     }
     public Boolean isDeleted() { return Deleted; }
+
+    public User setTotalData(String Nome, String Cognome, String CF, String Email, String Telefono, Date Data, String Password){
+        this.setNome(Nome);
+        this.setCognome(Cognome);
+        this.setCF(CF);
+        this.setEmail(Email);
+        this.setN_Telefono(Telefono);
+        this.setD_Nascita(Data);
+        this.setPassword(Password);
+
+        return this;
+    }
 }
