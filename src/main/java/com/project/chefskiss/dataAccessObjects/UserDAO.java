@@ -1,6 +1,8 @@
 package com.project.chefskiss.dataAccessObjects;
 
 import java.sql.Date;
+
+import com.project.chefskiss.Exceptions.UserAlreadyKnownException;
 import com.project.chefskiss.modelObjects.User;
 public interface UserDAO {
     public User create (
@@ -20,7 +22,7 @@ public interface UserDAO {
             Boolean Se_Ristoratore,
             Boolean Deleted,
             String Coordinate_Sede
-    );
+    ) throws UserAlreadyKnownException;
 
     public void update (User user);
 

@@ -34,4 +34,16 @@
         </form>
     </div>
 </body>
+<script>
+    function onLoadRequest(){
+        var errorCode = 0;
+        <%if(request.getAttribute("errorCode")!=null){%>
+        errorCode = <%=request.getAttribute("errorCode")%>;
+        <%}%>
+        if(errorCode == 1){
+            window.alert("Errore nell'inserimento dei dati! Email o CF già in uso");
+        }
+    }
+    window.addEventListener("load", onLoadRequest);
+</script>
 </html>

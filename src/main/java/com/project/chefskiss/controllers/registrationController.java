@@ -40,13 +40,23 @@ public class registrationController {
         //Controllo Data ---> debug
         System.out.println(Data);
 
-        DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
-        DatabaseDAO.beginTransaction();
-        UserDAO sessionUserDAO = DatabaseDAO.getUserDAO();
-        utente = sessionUserDAO.create(CF, Nome, Cognome, Date.valueOf(Data), Email, Password, Telefono, Date.valueOf(LocalDate.now()),
-        false, false, false, null, false, false, false, null);
-        DatabaseDAO.commitTransaction();
-        DatabaseDAO.closeTransaction();
+        // Si prova a fatchare i dati dal DB
+        try {
+            DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
+            DatabaseDAO.beginTransaction();
+            UserDAO sessionUserDAO = DatabaseDAO.getUserDAO();
+            utente = sessionUserDAO.create(CF, Nome, Cognome, Date.valueOf(Data), Email, Password, Telefono, Date.valueOf(LocalDate.now()),
+                    false, false, false, null, false, false, false, null);
+            DatabaseDAO.commitTransaction();
+            DatabaseDAO.closeTransaction();
+        } catch (Exception e){
+            //System.out.println(e.getMessage());
+            e.printStackTrace();
+            page.setViewName("registrationPage");
+            page.addObject("errorCode", 1);
+            return page;        //TODO: Handle dell'errore di registrazione
+        }
+
 
         page.addObject("user", utente.getNome()+" "+utente.getCognome());
         return page;

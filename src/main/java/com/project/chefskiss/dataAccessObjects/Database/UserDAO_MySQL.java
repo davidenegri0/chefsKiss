@@ -1,5 +1,6 @@
 package com.project.chefskiss.dataAccessObjects.Database;
 
+import com.project.chefskiss.Exceptions.UserAlreadyKnownException;
 import com.project.chefskiss.dataAccessObjects.UserDAO;
 import com.project.chefskiss.modelObjects.User;
 
@@ -15,17 +16,32 @@ public class UserDAO_MySQL implements UserDAO {
 
     //TODO: Tutte le funzioni seguenti
     @Override
-    public User create(String CF, String Nome, String Cognome, Date D_Nascita, String Email, String Password, String N_Telefono, Date D_Iscrizione, Boolean Se_Cliente, Boolean Verificato, Boolean Se_Privato, String Username, Boolean Se_Chef, Boolean Se_Ristoratore, Boolean deleted, String Coordinate_Sede) {
+    public User create(String CF, String Nome, String Cognome, Date D_Nascita, String Email, String Password, String N_Telefono, Date D_Iscrizione, Boolean Se_Cliente, Boolean Verificato, Boolean Se_Privato, String Username, Boolean Se_Chef, Boolean Se_Ristoratore, Boolean deleted, String Coordinate_Sede)
+    throws UserAlreadyKnownException
+    {
 
         PreparedStatement query;
         User utente = new User();
 
-        //TODO: Controllare che i dati non siano già stati utilizzati
-
         try {
-            String SQLQuery = "INSERT INTO chefskiss.utente(CF, Nome, Cognome, Data_Nascita, Email, Password, Telefono, Data_Iscrizione, Se_Cliente, Se_Privato, Se_Chef, Se_Ristoratore) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
-
+            String SQLQuery = "SELECT * FROM chefskiss.utente WHERE CF = ? OR Email = ? OR Telefono = ?";
             query = conn.prepareStatement(SQLQuery);
+            query.setString(1, CF);
+            query.setString(2, Email);
+            query.setString(3, N_Telefono);
+
+            ResultSet rs = query.executeQuery();
+
+            if (rs.next()){
+                throw new UserAlreadyKnownException(CF + " or " + Email + " or " + N_Telefono + " is already in the database");
+            }
+
+            rs.close();
+            query.close();
+
+            String SQLQuery2 = "INSERT INTO chefskiss.utente(CF, Nome, Cognome, Data_Nascita, Email, Password, Telefono, Data_Iscrizione, Se_Cliente, Se_Privato, Se_Chef, Se_Ristoratore) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+
+            query = conn.prepareStatement(SQLQuery2);
             query.setString(1, CF);
             query.setString(2, Nome);
             query.setString(3, Cognome);
