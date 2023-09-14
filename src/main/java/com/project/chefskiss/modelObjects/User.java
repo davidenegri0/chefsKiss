@@ -152,4 +152,9 @@ public class User {
 
         return this;
     }
+
+    public static String encodeUserData(User user){
+        return user.getCF()+"_"+user.getNome()+"_"+user.getCognome()+ "_"+
+               user.getEmail()+"_"+user.getD_Nascita()+"_"+user.getN_Telefono();
+    }
 }

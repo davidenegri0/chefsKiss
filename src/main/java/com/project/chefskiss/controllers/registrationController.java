@@ -44,7 +44,7 @@ public class registrationController {
         try {
             DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
             DatabaseDAO.beginTransaction();
-            UserDAO sessionUserDAO = DatabaseDAO.getUserDAO();
+            UserDAO sessionUserDAO = DatabaseDAO.getUserDAO(null);
             utente = sessionUserDAO.create(CF, Nome, Cognome, Date.valueOf(Data), Email, Password, Telefono, Date.valueOf(LocalDate.now()),
                     false, false, false, null, false, false, false, null);
             DatabaseDAO.commitTransaction();

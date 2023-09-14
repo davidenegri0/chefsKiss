@@ -2,6 +2,7 @@ package com.project.chefskiss.dataAccessObjects.Database;
 
 import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.dataAccessObjects.DAOFactory;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -50,7 +51,7 @@ public class MySQLJDBC_DAOFactory extends DAOFactory {
 
 
     @Override
-    public UserDAO_MySQL getUserDAO()
+    public UserDAO_MySQL getUserDAO(HttpServletResponse response)
     {
         return new UserDAO_MySQL(conn);
     }

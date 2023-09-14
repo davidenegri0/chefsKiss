@@ -18,7 +18,7 @@
 <body>
     <h1>Welcome to Chef's Kiss!!</h1>
     <%if(utente!=null){%>
-    <p>Bentornato <%=utente%>!</p>
+    <p>Bentornato/a <%=utente%>!</p>
     <%}%>
     <nav>
         <ul>
@@ -26,7 +26,7 @@
             <li><a href="http://localhost:8080/login">Login</a></li>
             <li><a href="http://localhost:8080/registration">Registrazione</a></li>
             <%}else{%>
-            <li><a href="http://localhost:8080/homepage">Logout</a></li>
+            <li><a href="http://localhost:8080/logout">Logout</a></li>
             <li><a href="http://localhost:8080/profile">Il Mio Profilo</a></li>
             <%}%>
         </ul>
