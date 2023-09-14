@@ -24,12 +24,11 @@
         <ul>
             <%if(utente==null){%>
             <li><a href="http://localhost:8080/login">Login</a></li>
+            <li><a href="http://localhost:8080/registration">Registrazione</a></li>
             <%}else{%>
             <li><a href="http://localhost:8080/homepage">Logout</a></li>
+            <li><a href="http://localhost:8080/profile">Il Mio Profilo</a></li>
             <%}%>
-        </ul>
-        <ul>
-            <li><a href="http://localhost:8080/registration">Registrazione</a></li>
         </ul>
     </nav>
 </body>

@@ -20,6 +20,8 @@
             <input id="cognome" name="cognome" type="text" required><br>
             <label for="cf">CF:</label>
             <input id="cf" name="cf" type="text" maxlength="16" required><br>
+            <label for="email">Email:</label>
+            <input id="email" name="email" type="email" required><br>
             <label for="telefono">Telefono:</label>
             <input id="telefono" name="telefono" type="number" maxlength="12" required><br>
             <label for="nascita">Data di nascita:</label>
@@ -32,4 +34,16 @@
         </form>
     </div>
 </body>
+<script>
+    function onLoadRequest(){
+        var errorCode = 0;
+        <%if(request.getAttribute("errorCode")!=null){%>
+        errorCode = <%=request.getAttribute("errorCode")%>;
+        <%}%>
+        if(errorCode == 1){
+            window.alert("Errore nell'inserimento dei dati! Email o CF già in uso");
+        }
+    }
+    window.addEventListener("load", onLoadRequest);
+</script>
 </html>

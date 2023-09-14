@@ -13,9 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.net.http.HttpResponse;
 
-import static com.project.chefskiss.configurations.Config.root_password;
-import static com.project.chefskiss.configurations.Config.root_username;
-
 @Controller
 public class loginController {
 
@@ -40,6 +37,7 @@ public class loginController {
             DatabaseDAO.beginTransaction();
             UserDAO sessionUserDAO = DatabaseDAO.getUserDAO();
             utente = sessionUserDAO.findByEmail(email);
+            DatabaseDAO.closeTransaction();
             if (password.equals(utente.getPassword())){
                 System.out.println("Logged in");
                 page.setViewName("homepage");

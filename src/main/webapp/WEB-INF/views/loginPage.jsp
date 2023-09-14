@@ -15,9 +15,9 @@
     <div id="login-form">
         <form name="loginForm" method="post">
             <label for="em">Email:</label>
-            <input id="em" name="email" type="text">
+            <input id="em" name="email" type="text" required>
             <label for="ps">Password:</label>
-            <input id="ps" name="pssw" type="password">
+            <input id="ps" name="pssw" type="password" required>
             <input type="submit" value="Login">
         </form>
     </div>
