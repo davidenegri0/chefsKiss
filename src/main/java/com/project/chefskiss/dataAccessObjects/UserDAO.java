@@ -18,7 +18,9 @@ public interface UserDAO {
             Boolean Verificato,
             Boolean Se_Privato,
             String Username,
+            // Foto_Privato
             Boolean Se_Chef,
+            // Foto_Chef
             Boolean Se_Ristoratore,
             Boolean Deleted,
             String Coordinate_Sede
