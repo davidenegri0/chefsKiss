@@ -90,7 +90,7 @@ public class loginController {
     public ModelAndView onLogoutRequest(HttpServletResponse response){
         DAOFactory CookieDAO = DAOFactory.getDAOFactory(Config.COOKIE_IMPL, response);
         UserDAO userCookie = CookieDAO.getUserDAO(response);
-        userCookie.delete(null);
+        userCookie.delete(null);   //---> L'eliminazione dei cookie non richiede nulla
         return new ModelAndView("homepage");
     }
 }

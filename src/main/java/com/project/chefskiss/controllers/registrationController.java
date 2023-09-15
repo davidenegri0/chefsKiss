@@ -1,9 +1,11 @@
 package com.project.chefskiss.controllers;
 
+import com.project.chefskiss.Exceptions.UserAlreadyKnownException;
 import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.dataAccessObjects.DAOFactory;
 import com.project.chefskiss.dataAccessObjects.UserDAO;
 import com.project.chefskiss.modelObjects.User;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +19,7 @@ import java.time.LocalDate;
 public class registrationController {
     @RequestMapping(value = "/registration")
     public ModelAndView showRegistrationComplete(
+            HttpServletResponse response,
             @RequestParam(name = "nome", defaultValue = "", required = false) String Nome,
             @RequestParam(name = "cognome", defaultValue = "", required = false) String Cognome,
             @RequestParam(name = "cf", defaultValue = "", required = false) String CF,
@@ -54,7 +57,33 @@ public class registrationController {
             e.printStackTrace();
             page.setViewName("registrationPage");
             page.addObject("errorCode", 1);
-            return page;        //TODO: Handle dell'errore di registrazione
+            return page;
+        }
+
+        //Creazione cookie utente
+        try {
+            DAOFactory CookieDAO = DAOFactory.getDAOFactory(Config.COOKIE_IMPL, response);
+            UserDAO userCookie = CookieDAO.getUserDAO(response);
+            userCookie.create(
+                    utente.getCF(),
+                    utente.getNome(),
+                    utente.getCognome(),
+                    utente.getD_Nascita(),
+                    utente.getEmail(),
+                    "redacted",
+                    utente.getN_Telefono(),
+                    utente.getD_Iscrizione(),
+                    true,
+                    false,
+                    false,
+                    "",
+                    false,
+                    false,
+                    false,
+                    ""
+            );
+        } catch (UserAlreadyKnownException e){
+            System.out.println("Come minchia è possibile?");
         }
 
 
