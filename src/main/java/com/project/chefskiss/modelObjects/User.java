@@ -157,4 +157,11 @@ public class User {
         return user.getCF()+"_"+user.getNome()+"_"+user.getCognome()+ "_"+
                user.getEmail()+"_"+user.getD_Nascita()+"_"+user.getN_Telefono();
     }
+
+    public static User decodeUserData(String userData){
+        User utente = new User();
+        String[] dataSet = userData.split("_");
+        utente.setTotalData(dataSet[1], dataSet[2], dataSet[0], dataSet[3], dataSet[5], Date.valueOf(dataSet[4]), "");
+        return utente;
+    }
 }

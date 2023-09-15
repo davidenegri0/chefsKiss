@@ -17,13 +17,19 @@ public class UserDAOCookie implements UserDAO {
         this.response = response;
     }
     @Override
-    public User create(String CF, String Nome, String Cognome, Date D_Nascita, String Email, String Password, String N_Telefono, Date D_Iscrizione, Boolean Se_Cliente, Boolean Verificato, Boolean Se_Privato, String Username, Boolean Se_Chef, Boolean Se_Ristoratore, Boolean Deleted, String Coordinate_Sede) throws UserAlreadyKnownException {
+    public User create(String CF, String Nome, String Cognome, Date D_Nascita, String Email,
+                       String Password, String N_Telefono, Date D_Iscrizione,
+                       Boolean Se_Cliente, Boolean Verificato, Boolean Se_Privato,
+                       String Username, Boolean Se_Chef, Boolean Se_Ristoratore,
+                       Boolean Deleted, String Coordinate_Sede)
+            throws UserAlreadyKnownException {
         User loggedUser = new User();
         loggedUser.setTotalData(Nome, Cognome, CF, Email, N_Telefono, D_Nascita, Password);
 
         Cookie cookie;
         cookie = new Cookie("loggedUser", User.encodeUserData(loggedUser));
         cookie.setPath("/");
+        cookie.setMaxAge(60*60);
         response.addCookie(cookie);
 
         return loggedUser;
