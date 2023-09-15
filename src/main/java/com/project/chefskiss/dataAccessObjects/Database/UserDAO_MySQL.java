@@ -149,7 +149,7 @@ public class UserDAO_MySQL implements UserDAO {
         try {
             user.setDeleted(rs.getString("Deleted").equals("Y"));
         } catch (SQLException sqle) { }
-
+/*
         //TODO: Finire di inserire la lettura per tutti i campi Se_* e campi correlati
         try {
             user.setPrivileges(rs.getString("Se_Cliente").equals("1"), rs.getString("Verificato").equals("1"), rs.getString("Se_Privato").equals("1"), rs.getString("Se_Chef").equals("1"), rs.getString("Se_Ristorante").equals("1"));
@@ -164,8 +164,7 @@ public class UserDAO_MySQL implements UserDAO {
             if (rs.getString("Se_Chef").equals("Y")){
                 //TODO: Foto_chef e CV
             }
-        } catch (SQLException sqle) { }
-         */
+        } catch (SQLException sqle) { }*/
 
         return user;
     }
