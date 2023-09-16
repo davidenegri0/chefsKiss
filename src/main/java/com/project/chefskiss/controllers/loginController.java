@@ -7,11 +7,12 @@ import com.project.chefskiss.dataAccessObjects.UserDAO;
 import com.project.chefskiss.modelObjects.User;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.net.http.HttpResponse;
-
+@SuppressWarnings("SpringMVCViewInspection")
 @Controller
 public class loginController {
 
@@ -34,7 +35,7 @@ public class loginController {
         } else if (!userData.isEmpty()) {
             System.out.println("Already logged user");
             utente = User.decodeUserData(userData);
-            page.setViewName("homepage");
+            page.setViewName("index");
             page.addObject("user", utente.getNome()+" "+utente.getCognome());
         } else
         {
@@ -48,11 +49,11 @@ public class loginController {
 
                 //Set del callback alla homepage
                 System.out.println("Logged in");
-                page.setViewName("homepage");
+                page.setViewName("index");
                 page.addObject("user", utente.getNome()+" "+utente.getCognome());
 
                 //Inserimento dati nei cookie TODO: Inserire la seconda parte dei dati
-                try {
+                try{
                     DAOFactory CookieDAO = DAOFactory.getDAOFactory(Config.COOKIE_IMPL, response);
                     UserDAO userCookie = CookieDAO.getUserDAO(response);
                     userCookie.create(
@@ -91,6 +92,6 @@ public class loginController {
         DAOFactory CookieDAO = DAOFactory.getDAOFactory(Config.COOKIE_IMPL, response);
         UserDAO userCookie = CookieDAO.getUserDAO(response);
         userCookie.delete(null);   //---> L'eliminazione dei cookie non richiede nulla
-        return new ModelAndView("homepage");
+        return new ModelAndView("index");
     }
 }

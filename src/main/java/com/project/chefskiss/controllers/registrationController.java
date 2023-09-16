@@ -39,7 +39,7 @@ public class registrationController {
             return page;
         }
 
-        page = new ModelAndView("homepage");
+        page = new ModelAndView("index");
         //Controllo Data ---> debug
         System.out.println(Data);
 
