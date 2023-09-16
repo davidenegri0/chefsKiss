@@ -1,6 +1,7 @@
 package com.project.chefskiss.dataAccessObjects.Cookie;
 
 import com.project.chefskiss.Exceptions.UserAlreadyKnownException;
+import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.dataAccessObjects.UserDAO;
 import com.project.chefskiss.modelObjects.User;
 import jakarta.servlet.http.Cookie;
@@ -25,11 +26,14 @@ public class UserDAOCookie implements UserDAO {
             throws UserAlreadyKnownException {
         User loggedUser = new User();
         loggedUser.setTotalData(Nome, Cognome, CF, Email, N_Telefono, D_Nascita, Password);
+        loggedUser.setD_Iscrizione(D_Iscrizione);
+        loggedUser.setPrivileges(Se_Cliente, Verificato, Se_Privato, Se_Chef, Se_Ristoratore);
+        loggedUser.setDeleted(Deleted);
 
         Cookie cookie;
         cookie = new Cookie("loggedUser", User.encodeUserData(loggedUser));
         cookie.setPath("/");
-        cookie.setMaxAge(60*60);
+        cookie.setMaxAge(Config.COOKIE_EXPIRATION_TIME);
         response.addCookie(cookie);
 
         return loggedUser;

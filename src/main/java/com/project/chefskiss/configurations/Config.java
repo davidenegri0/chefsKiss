@@ -11,4 +11,6 @@ public class Config {
 
     /* Cookie Configuration */
     public static final String COOKIE_IMPL = "CookieImpl";
+
+    public static final Integer COOKIE_EXPIRATION_TIME = 60*60;
 }

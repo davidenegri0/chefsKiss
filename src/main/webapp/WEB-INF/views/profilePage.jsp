@@ -17,7 +17,6 @@
         User utente = (User) request.getAttribute("utente");
     %>
     <h1><%=utente.getNome()%> <%=utente.getCognome()%>'s Profile</h1>
-    <h2>Questo è il tuo profilo!</h2>
     <h3>Dati anagrafici</h3>
     <p>
         Nome: <%=utente.getNome()%> <br>
@@ -36,5 +35,7 @@
         Iscritto alla piattaforma dal: <%=utente.getD_Iscrizione()%> <br>
         <a href="http://localhost:8080/changePassword"><button>Click here to change password</button></a>
     </p>
+
+    <img src="">
 </body>
 </html>

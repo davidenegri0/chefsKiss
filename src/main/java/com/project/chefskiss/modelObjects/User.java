@@ -99,11 +99,11 @@ public class User {
     }
 
     public String getPrivileges() {
-        return "Se_Cliente="+Privileges.get("Cliente")+";"+
-               "Verificato="+Privileges.get("Verificato")+";"+
-               "Se_Privato="+Privileges.get("Privato")+";"+
-               "Se_Chef="+Privileges.get("Chef")+";"+
-               "Se_Ristoratore="+Privileges.get("Ristoratore");
+        return Privileges.get("Cliente")+"_"+
+               Privileges.get("Verificato")+"_"+
+               Privileges.get("Privato")+"_"+
+               Privileges.get("Chef")+"_"+
+               Privileges.get("Ristoratore");
     }
 
     public Boolean isCliente(){
@@ -154,14 +154,38 @@ public class User {
     }
 
     public static String encodeUserData(User user){
-        return user.getCF()+"_"+user.getNome()+"_"+user.getCognome()+ "_"+
-               user.getEmail()+"_"+user.getD_Nascita()+"_"+user.getN_Telefono();
+        return user.getCF()+"_"+
+               user.getNome()+"_"+
+               user.getCognome()+"_"+
+               user.getEmail()+"_"+
+               user.getD_Nascita().toString()+"_"+
+               user.getN_Telefono()+"_"+
+               user.getD_Iscrizione().toString()+"_"+
+               user.getPrivileges()+"_"+
+               user.isDeleted();
     }
 
     public static User decodeUserData(String userData){
         User utente = new User();
         String[] dataSet = userData.split("_");
-        utente.setTotalData(dataSet[1], dataSet[2], dataSet[0], dataSet[3], dataSet[5], Date.valueOf(dataSet[4]), "");
+        utente.setTotalData(
+                dataSet[1],
+                dataSet[2],
+                dataSet[0],
+                dataSet[3],
+                dataSet[5],
+                Date.valueOf(dataSet[4]),
+                "redacted"
+        );
+        utente.setD_Iscrizione(Date.valueOf(dataSet[6]));
+        utente.setPrivileges(
+                Boolean.parseBoolean(dataSet[7]),
+                Boolean.parseBoolean(dataSet[8]),
+                Boolean.parseBoolean(dataSet[9]),
+                Boolean.parseBoolean(dataSet[10]),
+                Boolean.parseBoolean(dataSet[11])
+        );
+        utente.setDeleted(Boolean.parseBoolean(dataSet[12]));
         return utente;
     }
 }
