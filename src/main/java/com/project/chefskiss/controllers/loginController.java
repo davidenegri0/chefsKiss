@@ -65,13 +65,13 @@ public class loginController {
                             "redacted",
                             utente.getN_Telefono(),
                             utente.getD_Iscrizione(),
-                            true,
-                            false,
-                            false,
-                            "",
-                            false,
-                            false,
-                            false,
+                            utente.isCliente(),
+                            utente.isClienteVerificato(),
+                            utente.isPrivato(),
+                            utente.getUsername(),
+                            utente.isChef(),
+                            utente.isRistoratore(),
+                            utente.isDeleted(),
                             ""
                     );
                 } catch (UserAlreadyKnownException e){

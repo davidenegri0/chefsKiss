@@ -111,60 +111,58 @@ public class UserDAO_MySQL implements UserDAO {
             result.close();
             query.close();
 
-        }catch (SQLException e){
+        } catch (SQLException e){
             throw new RuntimeException(e.getMessage());
         }
 
         return utente;
     }
 
-    private User read(ResultSet rs) {
+    private User read(ResultSet rs)
+    throws SQLException
+    {
         User user = new User();
 
-        try {
-            user.setCF(rs.getString("CF"));
-        } catch (SQLException sqle) { }
-        try {
-            user.setNome(rs.getString("Nome"));
-        } catch (SQLException sqle) { }
-        try {
-            user.setCognome(rs.getString("Cognome"));
-        } catch (SQLException sqle) { }
-        try {
-            user.setD_Nascita(rs.getDate("Data_Nascita"));
-        } catch (SQLException sqle) { }
-        try {
-            user.setEmail(rs.getString("Email"));
-        } catch (SQLException sqle) { }
-        try {
-            user.setPassword(rs.getString("Password"));
-        } catch (SQLException sqle) { }
-        try {
-            user.setN_Telefono(rs.getString("Telefono"));
-        } catch (SQLException sqle) { }
-        try {
-            user.setD_Iscrizione(rs.getDate("Data_Iscrizione"));
-        } catch (SQLException sqle) { }
-        /*      //TODO: Quando i dati sul db sono tutti completi, decommentare
+        //Ho modificato la lettura, rimuovendo i blocchi try catch, non servono visto che l'eccezioni vengono gestite nel blocco superiore
+        //Ho inserito un paio di try catch per settare a false tutti i parametri che sono nulli nel db nel valore di ritorno
+
+        user.setCF(rs.getString("CF"));
+        user.setNome(rs.getString("Nome"));
+        user.setCognome(rs.getString("Cognome"));
+        user.setD_Nascita(rs.getDate("Data_Nascita"));
+        user.setEmail(rs.getString("Email"));
+        user.setPassword(rs.getString("Password"));
+        user.setN_Telefono(rs.getString("Telefono"));
+        user.setD_Iscrizione(rs.getDate("Data_Iscrizione"));
         try {
             user.setDeleted(rs.getString("Deleted").equals("Y"));
-        } catch (SQLException sqle) { }
-/*
-        //TODO: Finire di inserire la lettura per tutti i campi Se_* e campi correlati
+        } catch (NullPointerException e)
+        {
+            user.setDeleted(false);
+        }
         try {
-            user.setPrivileges(rs.getString("Se_Cliente").equals("1"), rs.getString("Verificato").equals("1"), rs.getString("Se_Privato").equals("1"), rs.getString("Se_Chef").equals("1"), rs.getString("Se_Ristorante").equals("1"));
-        } catch (SQLException sqle) { }
-        try {
-            if (rs.getString("Se_Privato").equals("Y")){
-                user.setUsername(rs.getString("Username"));
-                //TODO: Foto_Privato
-            }
-        } catch (SQLException sqle) { }
-        try {
-            if (rs.getString("Se_Chef").equals("Y")){
-                //TODO: Foto_chef e CV
-            }
-        } catch (SQLException sqle) { }*/
+            user.setPrivileges(
+                    rs.getString("Se_Cliente").equals("1"),
+                    rs.getString("Verificato").equals("1"),
+                    rs.getString("Se_Privato").equals("1"),
+                    rs.getString("Se_Chef").equals("1"),
+                    rs.getString("Se_Ristorante").equals("1")
+            );
+        } catch (NullPointerException e)
+        {
+            user.setPrivileges(false, false, false, false, false);
+        }
+
+        if (user.isPrivato()) {
+            user.setUsername(rs.getString("Username"));
+            //TODO: Foto_Privato
+        }
+        if (user.isChef()){
+            //TODO: Foto_chef e CV
+        }
+        if (user.isRistoratore()){
+            //TODO: Coordinate ristoranti
+        }
 
         return user;
     }
