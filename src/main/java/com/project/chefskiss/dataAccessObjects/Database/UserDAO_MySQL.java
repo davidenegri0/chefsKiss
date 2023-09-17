@@ -70,22 +70,133 @@ public class UserDAO_MySQL implements UserDAO {
 
     @Override
     public void update(User user) {
+        PreparedStatement query;
 
+        try {
+            String SQLQuery = "UPDATE chefskiss.utente " +
+                    "SET Nome = ?, " +
+                    "Cognome = ?, " +
+                    "Data_Nascita = ?, " +
+                    "Email = ?, " +
+                    "Password = ?, " +
+                    "Telefono = ?, " +
+                    "Se_Cliente = ?, " +
+                    "Se_Privato = ?, " +
+                    "Se_Chef = ?, " +
+                    "Se_Ristorante = ?, ";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, user.getNome());
+            query.setString(2, user.getCognome());
+            query.setDate(3, user.getD_Nascita());
+            query.setString(4, user.getEmail());
+            query.setString(5, user.getPassword());
+            query.setString(6, user.getN_Telefono());
+            if (user.isCliente()) query.setInt(7, 1);
+            else query.setInt(7, 0);
+            if (user.isPrivato()) query.setInt(8, 1);
+            else query.setInt(8, 0);
+            if (user.isChef()) query.setInt(9, 1);
+            else query.setInt(9, 0);
+            if (user.isRistoratore()) query.setInt(10, 1);
+            else query.setInt(10, 0);
+            // TODO: mancano coordinate e gli attributi se i se_* sono validi
+
+            query.executeUpdate();
+
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @Override
     public void delete(User user) {
+        PreparedStatement query;
+        String CF = user.getCF();
 
+        try{
+            String SQLQuery = "UPDATE chefskiss.utente SET Deleted = 'Y' WHERE CF = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, CF);
+
+            query.executeUpdate();
+
+            String Verifica = "SELECT Deleted FROM chefskiss.utente WHERE CF = ?";
+            query = conn.prepareStatement(Verifica);
+            query.setString(1, CF);
+            ResultSet result2 = query.executeQuery();
+
+            while (result2.next()){
+                String deleted = result2.getString("Deleted");
+                if (deleted.equals('Y')) System.out.println("Cancellazione effettuata con successo!");
+                else System.out.println("Errore durante la cancellazione dell'utente");
+            }
+            result2.close();
+
+            query.close();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @Override
     public User findByCF(String CF) {
-        return null;
+        PreparedStatement query;
+        User utente = new User();
+
+        try{
+            String SQLQuery = "SELECT * FROM chefskiss.utente WHERE CF = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, CF);
+
+            ResultSet result = query.executeQuery();
+
+            if(result.next())
+            {
+                utente = read(result);
+                System.out.println("Lettura dati completata!");
+            }
+            result.close();
+            query.close();
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return utente;
     }
 
     @Override
     public User findByNomeCognome(String Nome, String Cognome) {
-        return null;
+
+        PreparedStatement query;
+        User utente = new User();
+
+        try{
+            String SQLQuery = "SELECT * FROM Utente WHERE Nome = ? AND Cognome = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, Nome);
+            query.setString(2, Cognome);
+
+            ResultSet result = query.executeQuery();
+
+            if(result.next())
+            {
+                utente = read(result);
+                System.out.println("Lettura dati completata!");
+            }
+            result.close();
+            query.close();
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return utente;
     }
 
     @Override
