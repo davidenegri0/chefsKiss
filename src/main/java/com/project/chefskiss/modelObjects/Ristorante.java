@@ -6,6 +6,7 @@ public class Ristorante {
     private Boolean Deleted;
 
     // GETTER e SETTER
+    public void setID (Integer ID) { ID_Ristorante = ID; }
     public Integer getID_Ristorante () { return ID_Ristorante; }
     public void setNome (String nome) { Nome = nome; }
     public String getNome () { return Nome; }

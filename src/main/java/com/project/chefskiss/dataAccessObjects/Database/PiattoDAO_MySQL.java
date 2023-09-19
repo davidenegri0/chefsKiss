@@ -33,6 +33,8 @@ public class PiattoDAO_MySQL implements PiattoDAO {
 
             query.executeUpdate();
 
+            query.close();
+
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -55,6 +57,8 @@ public class PiattoDAO_MySQL implements PiattoDAO {
             query.setInt(4, id_piatto);
 
             query.executeUpdate();
+
+            query.close();
         } catch (SQLException e){
             throw new RuntimeException(e.getMessage());
         }
