@@ -78,7 +78,7 @@ public class loginController {
                             utente.isChef(),
                             utente.isRistoratore(),
                             utente.isDeleted(),
-                            ""
+                            null
                     );
 
                     //Inserimento immagine in un cookie separato --> NO

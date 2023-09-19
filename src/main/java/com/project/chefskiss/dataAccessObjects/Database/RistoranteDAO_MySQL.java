@@ -42,7 +42,7 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
 
         try{
             String SQLQuery = "UPDATE chefskiss.ristorante " +
-                    "SET Nome_Ristorante = ? " +
+                    "SET Nome_Ristorante = ?, " +
                     "CF = ? " +
                     "WHERE ID_Ristorante = ?";
 
@@ -130,6 +130,8 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
+
+        return ristorante;
     }
 
     private Ristorante read (ResultSet rs) throws SQLException {

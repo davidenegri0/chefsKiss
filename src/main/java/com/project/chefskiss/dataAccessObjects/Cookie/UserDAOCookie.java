@@ -4,13 +4,11 @@ import com.project.chefskiss.Exceptions.UserAlreadyKnownException;
 import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.dataAccessObjects.UserDAO;
 import com.project.chefskiss.modelObjects.User;
+import com.project.chefskiss.modelObjects.Sede;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.sql.Blob;
 import java.sql.Date;
-import java.sql.SQLException;
-import java.util.Base64;
 
 public class UserDAOCookie implements UserDAO {
     private HttpServletResponse response;
@@ -19,13 +17,25 @@ public class UserDAOCookie implements UserDAO {
     {
         this.response = response;
     }
+
     @Override
-    public User create(String CF, String Nome, String Cognome, Date D_Nascita, String Email,
-                       String Password, String N_Telefono, Date D_Iscrizione,
-                       Boolean Se_Cliente, Boolean Verificato, Boolean Se_Privato,
-                       String Username, Boolean Se_Chef, Boolean Se_Ristoratore,
-                       Boolean Deleted, String Coordinate_Sede)
-            throws UserAlreadyKnownException {
+    public User create(String CF,
+                       String Nome,
+                       String Cognome,
+                       Date D_Nascita,
+                       String Email,
+                       String Password,
+                       String N_Telefono,
+                       Date D_Iscrizione,
+                       Boolean Se_Cliente,
+                       Boolean Verificato,
+                       Boolean Se_Privato,
+                       String Username,
+                       Boolean Se_Chef,
+                       Boolean Se_Ristoratore,
+                       Boolean Deleted,
+                       Sede sede
+    )throws UserAlreadyKnownException {
         User loggedUser = new User();
         loggedUser.setTotalData(Nome, Cognome, CF, Email, N_Telefono, D_Nascita, Password);
         loggedUser.setD_Iscrizione(D_Iscrizione);

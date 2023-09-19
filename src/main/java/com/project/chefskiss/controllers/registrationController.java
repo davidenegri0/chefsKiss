@@ -80,7 +80,7 @@ public class registrationController {
                     false,
                     false,
                     false,
-                    ""
+                    null
             );
         } catch (UserAlreadyKnownException e){
             System.out.println("Come minchia è possibile?");
