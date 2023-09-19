@@ -20,6 +20,7 @@ public class UserDAO_MySQL implements UserDAO {
     public User create(String CF, String Nome, String Cognome, Date D_Nascita, String Email, String Password, String N_Telefono, Date D_Iscrizione, Boolean Se_Cliente, Boolean Verificato, Boolean Se_Privato, String Username, Boolean Se_Chef, Boolean Se_Ristoratore, Boolean deleted, Sede sede)
     throws UserAlreadyKnownException
     {
+        // togliere i se_*
 
         PreparedStatement query;
         User utente = new User();
@@ -50,17 +51,8 @@ public class UserDAO_MySQL implements UserDAO {
                     "Password, " + // 6
                     "Telefono, " + // 7
                     "Data_Iscrizione, " + // 8
-                    "Se_Cliente, " + // 9
-                    "Verificato, " + // 10
-                    "Se_Privato, " + // 11
-                    "Username, " + // 12
-                    "Foto_Privato, " + // 13
-                    "Se_Chef, " + // 14
-                    "Foto_Chef, " + // 15
-                    "CV, " + // 16
-                    "Se_Ristoratore, " + // 17
-                    "Coordinate) " + // 18
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,?) ";
+                    "Coordinate) " + // 9
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
             query = conn.prepareStatement(SQLQuery2);
             query.setString(1, CF);
@@ -71,29 +63,7 @@ public class UserDAO_MySQL implements UserDAO {
             query.setString(6, Password);
             query.setString(7, N_Telefono);
             query.setDate(8, D_Iscrizione);
-            if (Se_Cliente) {
-                query.setInt(9, 1);
-                if (Verificato) query.setInt(10, 1);
-                else query.setInt(10, 0);
-            }
-            else query.setInt(9, 0);
-            if (Se_Privato) {
-                query.setInt(11, 1);
-                query.setString(12, Username);
-                // todo: query.setBlob(13, Foto_Privato);
-            }
-            else query.setInt(11, 0);
-            if (Se_Chef) {
-                query.setInt(14, 1);
-                // todo: query.setBlob(15, Foto_Chef);
-                // todo: query.setClob(16, CV);
-            }
-            else query.setInt(14, 0);
-            if (Se_Ristoratore) {
-                query.setInt(17, 1);
-            }
-            else query.setInt(17, 0);
-            query.setString(18, utente.getSede().getCoordinate());
+            query.setString(9, utente.getSede().getCoordinate());
 
             query.executeUpdate();
 
@@ -109,6 +79,9 @@ public class UserDAO_MySQL implements UserDAO {
     @Override
     public void update(User user) {
         PreparedStatement query;
+        PreparedStatement query2;
+
+        // TODO: modificare funzione in modo che i parametri che esistono solo se relativo se_* è valido vengano insieriti solo dopo il controllo (fare mini query per ogni se_*)
 
         try {
             String SQLQuery = "UPDATE chefskiss.utente " +
@@ -119,15 +92,9 @@ public class UserDAO_MySQL implements UserDAO {
                     "Password = ?, " + // 5
                     "Telefono = ?, " + // 6
                     "Se_Cliente = ?, " + // 7
-                    "Verificato = ?" + // 8
-                    "Se_Privato = ?, " + // 9
-                    "Username = ? " + // 10
-                    "Foto_Privato = ? " + // 11
-                    "Se_Chef = ?, " + // 12
-                    "Foto_Chef = ? " + // 13
-                    "CV = ? " + // 14
-                    "Se_Ristoratore = ?, " + // 15
-                    "Coordinate = ?" + // 16
+                    "Se_Privato = ?, " + // 8
+                    "Se_Chef = ?, " + // 9
+                    "Se_Ristoratore = ? " + // 10
                     "WHERE CF = ?";
 
             query = conn.prepareStatement(SQLQuery);
@@ -139,25 +106,53 @@ public class UserDAO_MySQL implements UserDAO {
             query.setString(6, user.getN_Telefono());
             if (user.isCliente()) {
                 query.setInt(7, 1);
-                if (user.isClienteVerificato()) query.setInt(8, 1);
-                else query.setInt(8, 0);
+
+                if (user.isClienteVerificato()) {
+                    String SQLQuery2 = "UPDATE chefskiss.utente SET Verificato = ? WHERE CF = ?";
+
+                    query2 = conn.prepareStatement(SQLQuery2);
+                    query2.setInt(1, 1);
+                    query2.setString(2, user.getCF());
+
+                    query2.executeUpdate();
+                    query2.close();
+                }
             }
             else query.setInt(7, 0);
             if (user.isPrivato()) {
-                query.setInt(9, 1);
-                query.setString(10, user.getUsername());
-                // query.setBlob(11, user.getFoto_Privato()); TODO: da fare getter e setter di blob
+                query.setInt(8, 1);
+
+                String SQLQuery2 = "UPDATE chefskiss.utente SET Username = ?, Foto_Privato = ? WHERE CF = ?";
+
+                query2 = conn.prepareStatement(SQLQuery2);
+                query2.setString(1, user.getUsername());
+                query2.setBlob(2, user.getProfilePicture()); // ?????
+                query2.setString(3, user.getCF());
+
+                query2.executeUpdate();
+                query2.close();
             }
-            else query.setInt(9, 0);
+            else query.setInt(8, 0);
             if (user.isChef()) {
-                query.setInt(12, 1);
+                query.setInt(9, 1);
+
+                String SQLQuery2 = "UPDATE chefskiss.utente SET Foto_Chef = ?, CV = ?, Coordinate = ? WHERE CF = ?";
+
+                query2 = conn.prepareStatement(SQLQuery2);
+                query2.setBlob(1, user.getProfilePicture()); // ?????
+                query2.setBlob(2, user.getProfilePicture()); // ????? caricare il cv
+                query2.setString(3, user.getSede().getCoordinate()); // coordinate c'è solo se l'utente è chef
+                query2.setString(4, user.getCF());
+
+                query2.executeUpdate();
+                query2.close();
+
                 // query.setBlob(13, user.getFoto_Chef()); TODO: getter e setter
                 // query.setClob(14, user.getCV());
-                query.setString(16, user.getSede().getCoordinate());
             }
-            else query.setInt(12, 0);
-            if (user.isRistoratore()) query.setInt(15, 1);
-            else query.setInt(15, 0);
+            else query.setInt(9, 0);
+            if (user.isRistoratore()) query.setInt(10, 1);
+            else query.setInt(10, 0);
 
             query.executeUpdate();
 
