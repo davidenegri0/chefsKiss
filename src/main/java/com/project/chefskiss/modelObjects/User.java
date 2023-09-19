@@ -21,6 +21,8 @@ public class User {
     private String Username;
     private Blob profilePicture;
     private Boolean Deleted;
+    private String Coordiante;
+    private Sede sede;
 
     public void setCF(String CF) {
         this.CF = CF;
@@ -76,6 +78,9 @@ public class User {
     //TODO: set di foto e CV per chef
 
     public void setDeleted(boolean deleted) { Deleted = deleted; }
+    public void setCoordiante(String coordinate) { Coordiante = coordinate; }
+
+    public void setSede(Sede sede) { this.sede = sede; }
 
     public String getCF() {
         return CF;
@@ -116,6 +121,8 @@ public class User {
                Privileges.get("Ristoratore");
     }
 
+    public Sede getSede() { return sede; }
+
     public Boolean isCliente(){
         return Privileges.get("Cliente");
     }
@@ -154,6 +161,7 @@ public class User {
         return Privileges.get("Ristoratore");
     }
     public Boolean isDeleted() { return Deleted; }
+    public String getCoordiante() { return Coordiante; }
 
     public User setTotalData(String Nome, String Cognome, String CF, String Email, String Telefono, Date Data, String Password){
         this.setNome(Nome);

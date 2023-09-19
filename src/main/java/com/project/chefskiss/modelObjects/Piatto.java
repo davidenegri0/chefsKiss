@@ -10,11 +10,15 @@ public class Piatto {
     private Boolean Deleted;
 
     // GETTER - SETTER
+    public void setID(Integer id_piatto) { Id_Piatto = id_piatto; }
     public void setNome(String nome_piatto) {
         Nome_Piatto = nome_piatto;
     }
     public void setPreparazione(String preparazione) {
         Preparazione = preparazione;
+    }
+    public void setDeleted(Boolean deleted) {
+        Deleted = deleted;
     }
     public int getId (){
         return Id_Piatto;
@@ -24,6 +28,9 @@ public class Piatto {
     }
     public String getPreparazione() {
         return Preparazione;
+    }
+    public Boolean getDeleted() {
+        return Deleted;
     }
 
 
