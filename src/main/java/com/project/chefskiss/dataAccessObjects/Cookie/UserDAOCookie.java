@@ -7,8 +7,10 @@ import com.project.chefskiss.modelObjects.User;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.net.http.HttpResponse;
+import java.sql.Blob;
 import java.sql.Date;
+import java.sql.SQLException;
+import java.util.Base64;
 
 public class UserDAOCookie implements UserDAO {
     private HttpServletResponse response;
@@ -28,6 +30,7 @@ public class UserDAOCookie implements UserDAO {
         loggedUser.setTotalData(Nome, Cognome, CF, Email, N_Telefono, D_Nascita, Password);
         loggedUser.setD_Iscrizione(D_Iscrizione);
         loggedUser.setPrivileges(Se_Cliente, Verificato, Se_Privato, Se_Chef, Se_Ristoratore);
+        loggedUser.setUsername(Username);
         loggedUser.setDeleted(Deleted);
 
         Cookie cookie;
@@ -70,4 +73,22 @@ public class UserDAOCookie implements UserDAO {
     public User findByEmail(String Email) {
         return null;
     }       //Unused operation
+
+    /*
+    public void createProfileImg(User user){
+        try{
+            Blob picture = user.getProfilePicture();
+            byte[] pictureBytes = picture.getBytes(1,(int)picture.length());
+            String encodedPicture = Base64.getEncoder().encodeToString(pictureBytes);
+            //System.out.println(encodedPicture);
+            Cookie cookie = new Cookie("userProfilePicture", encodedPicture);
+            cookie.setPath("/");
+            cookie.setMaxAge(Config.COOKIE_EXPIRATION_TIME);
+            response.addCookie(cookie);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+     */
+
 }

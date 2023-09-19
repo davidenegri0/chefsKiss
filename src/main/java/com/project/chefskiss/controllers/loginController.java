@@ -12,6 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
+
 @SuppressWarnings("SpringMVCViewInspection")
 @Controller
 public class loginController {
@@ -52,7 +58,7 @@ public class loginController {
                 page.setViewName("index");
                 page.addObject("user", utente.getNome()+" "+utente.getCognome());
 
-                //Inserimento dati nei cookie TODO: Inserire la seconda parte dei dati
+                //Inserimento dati nei cookie
                 try{
                     DAOFactory CookieDAO = DAOFactory.getDAOFactory(Config.COOKIE_IMPL, response);
                     UserDAO userCookie = CookieDAO.getUserDAO(response);
@@ -74,6 +80,25 @@ public class loginController {
                             utente.isDeleted(),
                             ""
                     );
+
+                    //Inserimento immagine in un cookie separato --> NO
+                    //userCookie.createProfileImg(utente);
+
+                    //Salvataggio immagine nella cartella delle risorse statiche del server
+                    /*
+                        try{
+
+                                File outputFile = new File(Config.PROFILE_IMG_PATH);
+                                FileOutputStream out = new FileOutputStream(outputFile);
+                                Blob profilePicture = utente.getProfilePicture();
+                                out.write(profilePicture.getBytes(1, (int) profilePicture.length()));
+                                //System.out.println(outputFile.getAbsolutePath());
+                                out.close();
+                        } catch (IOException | NullPointerException | SQLException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    */
                 } catch (UserAlreadyKnownException e){
                     System.out.println("Come minchia è possibile?");
                 }
@@ -83,7 +108,7 @@ public class loginController {
                 page.addObject("errorCode", 1);
             }
         }
-
+        //page.addObject("imgPath", "profile/profileImg.jpg");
         return page;
     }
 

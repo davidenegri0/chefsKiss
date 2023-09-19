@@ -142,11 +142,11 @@ public class UserDAO_MySQL implements UserDAO {
         }
         try {
             user.setPrivileges(
-                    rs.getString("Se_Cliente").equals("1"),
-                    rs.getString("Verificato").equals("1"),
-                    rs.getString("Se_Privato").equals("1"),
-                    rs.getString("Se_Chef").equals("1"),
-                    rs.getString("Se_Ristorante").equals("1")
+                    rs.getInt("Se_Cliente")==1,
+                    rs.getInt("Verificato")==1,
+                    rs.getInt("Se_Privato")==1,
+                    rs.getInt("Se_Chef")==1,
+                    rs.getInt("Se_Ristoratore")==1
             );
         } catch (NullPointerException e)
         {
@@ -155,7 +155,7 @@ public class UserDAO_MySQL implements UserDAO {
 
         if (user.isPrivato()) {
             user.setUsername(rs.getString("Username"));
-            //TODO: Foto_Privato
+            user.setProfilePicture(rs.getBlob("Foto_Privato"));
         }
         if (user.isChef()){
             //TODO: Foto_chef e CV

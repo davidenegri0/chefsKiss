@@ -12,9 +12,24 @@
 <head>
     <title>Il Tuo Profilo</title>
 </head>
+<script>
+    /*
+    //Quando ridirezionata, la pagina si ricarica con l'indirizzo corretto
+    function onLoadHandler()
+    {
+        //console.log(window.location.toString());
+        if(!window.location.toString().includes("/profile")){
+            window.location.replace("/profile");
+        }
+    }
+    window.addEventListener("load", onLoadHandler)
+     */
+</script>
 <body>
     <%
         User utente = (User) request.getAttribute("utente");
+        String imgPath = (String) request.getAttribute("imgPath");
+        //System.out.println("Da jsp: imgPath = "+imgPath);
     %>
     <h1><%=utente.getNome()%> <%=utente.getCognome()%>'s Profile</h1>
     <h3>Dati anagrafici</h3>
@@ -29,13 +44,27 @@
         Email: <%=utente.getEmail()%> <br>
         Recapito telefonico: <%=utente.getN_Telefono()%>
     </p>
-    <h3>Gestione dell'account</h3>
-    <!-- Potrebbe non funzionare -->
+    <h3>Dati dell'account</h3>
     <p>
         Iscritto alla piattaforma dal: <%=utente.getD_Iscrizione()%> <br>
+    </p>
+    <p>
+        <h3>Password</h3>
         <a href="http://localhost:8080/changePassword"><button>Click here to change password</button></a>
     </p>
 
-    <img src="">
+    <h3>Dati da utente pubblico</h3>
+    <p>
+        Username: <%=utente.getUsername()%> <br>
+    </p>
+    <img src="<%=imgPath%>" height="144px" width="144px"> <br>
+    <!--
+        TODO: Capire come cazzo funziona sta roba : Fatto (circa)
+        Ci sono due soluzioni: Condificare l'immagine in formato di testo e poi farla renderizzare direttamente
+        al browser attraverso <img src="data:image/jpg;base64, <- base64Data ->">
+        Oppure fare una response diretta con l'immagine >>> Metodo testato e funzionante
+    -->
+
+    <a href="http://localhost:8080/updateProfile"><button>Modifica i dati del tuo account</button></a>
 </body>
 </html>

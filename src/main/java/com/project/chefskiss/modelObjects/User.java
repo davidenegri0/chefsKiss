@@ -1,8 +1,12 @@
 package com.project.chefskiss.modelObjects;
 
+import com.project.chefskiss.configurations.Config;
+
+import java.sql.Blob;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class User {
     private String CF;
@@ -15,6 +19,7 @@ public class User {
     private Date D_Iscrizione;
     private final Map<String, Boolean> Privileges = new HashMap<>(5);
     private String Username;
+    private Blob profilePicture;
     private Boolean Deleted;
 
     public void setCF(String CF) {
@@ -63,6 +68,10 @@ public class User {
         // else { Username = null; }
     }
 
+    public void setProfilePicture(Blob profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
     //TODO: set foto per utente privato
     //TODO: set di foto e CV per chef
 
@@ -99,10 +108,11 @@ public class User {
     }
 
     public String getPrivileges() {
-        return Privileges.get("Cliente")+"_"+
-               Privileges.get("Verificato")+"_"+
-               Privileges.get("Privato")+"_"+
-               Privileges.get("Chef")+"_"+
+        String sep = Config.ENC_SEPARATOR;
+        return Privileges.get("Cliente")+ sep +
+               Privileges.get("Verificato")+ sep +
+               Privileges.get("Privato")+ sep +
+               Privileges.get("Chef")+ sep +
                Privileges.get("Ristoratore");
     }
 
@@ -132,6 +142,10 @@ public class User {
         else { return null; }
     }
 
+    public Blob getProfilePicture() {
+        return profilePicture;
+    }
+
     public Boolean isChef(){
         return Privileges.get("Chef");
     }
@@ -154,20 +168,22 @@ public class User {
     }
 
     public static String encodeUserData(User user){
-        return user.getCF()+"_"+
-               user.getNome()+"_"+
-               user.getCognome()+"_"+
-               user.getEmail()+"_"+
-               user.getD_Nascita().toString()+"_"+
-               user.getN_Telefono()+"_"+
-               user.getD_Iscrizione().toString()+"_"+
-               user.getPrivileges()+"_"+
-               user.isDeleted();
+        String sep = Config.ENC_SEPARATOR;
+        return user.getCF()+ sep +
+               user.getNome()+ sep +
+               user.getCognome()+ sep +
+               user.getEmail()+ sep +
+               user.getD_Nascita().toString()+ sep +
+               user.getN_Telefono()+ sep +
+               user.getD_Iscrizione().toString()+ sep +
+               user.getPrivileges()+ sep +
+               user.isDeleted()+ sep +
+               user.getUsername();
     }
 
     public static User decodeUserData(String userData){
         User utente = new User();
-        String[] dataSet = userData.split("_");
+        String[] dataSet = userData.split(Config.ENC_SEPARATOR);
         utente.setTotalData(
                 dataSet[1],
                 dataSet[2],
@@ -186,6 +202,7 @@ public class User {
                 Boolean.parseBoolean(dataSet[11])
         );
         utente.setDeleted(Boolean.parseBoolean(dataSet[12]));
+        utente.setUsername(dataSet[13]);
         return utente;
     }
 }
