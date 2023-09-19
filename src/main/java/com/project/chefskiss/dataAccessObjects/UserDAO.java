@@ -3,6 +3,7 @@ package com.project.chefskiss.dataAccessObjects;
 import java.sql.Date;
 
 import com.project.chefskiss.Exceptions.UserAlreadyKnownException;
+import com.project.chefskiss.modelObjects.Sede;
 import com.project.chefskiss.modelObjects.User;
 public interface UserDAO {
     public User create (
@@ -21,9 +22,10 @@ public interface UserDAO {
             // Foto_Privato
             Boolean Se_Chef,
             // Foto_Chef
+            // CV
             Boolean Se_Ristoratore,
             Boolean Deleted,
-            String Coordinate_Sede
+            Sede sede
     ) throws UserAlreadyKnownException;
 
     public void update (User user);
