@@ -21,8 +21,15 @@ public class User {
     private String Username;
     private Blob profilePicture;
     private Boolean Deleted;
+
+    // RELAZIONI
     private String Coordiante;
     private Sede sede;
+    private Ristorante ristorante;
+    private Recensione[] Recensioni;
+    private Valutazione[] Valutazioni;
+    private Prenotazione[] Prenotazioni;
+    private Piatto[] Piatti;
 
     public void setCF(String CF) {
         this.CF = CF;
@@ -80,7 +87,9 @@ public class User {
     public void setDeleted(boolean deleted) { Deleted = deleted; }
     public void setCoordiante(String coordinate) { Coordiante = coordinate; }
 
-    public void setSede(Sede sede) { this.sede = sede; }
+    public void setSedeU(Sede sede) { this.sede = sede; }
+
+    public void setRistorante (Ristorante ristorante) {this.ristorante = ristorante; }
 
     public String getCF() {
         return CF;
@@ -121,7 +130,9 @@ public class User {
                Privileges.get("Ristoratore");
     }
 
-    public Sede getSede() { return sede; }
+    public Sede getSedeU() { return sede; }
+
+    public Ristorante getRistorante() { return ristorante; }
 
     public Boolean isCliente(){
         return Privileges.get("Cliente");
@@ -212,5 +223,33 @@ public class User {
         utente.setDeleted(Boolean.parseBoolean(dataSet[12]));
         utente.setUsername(dataSet[13]);
         return utente;
+    }
+
+    public void setRecensioneU (Recensione[] recensioni) { this.Recensioni = recensioni; }
+    public Recensione[] getRecensioneU() { return Recensioni; }
+    public Recensione getRecensioneU(int index) {return this.Recensioni[index]; }
+    public void setRecensioneU (int index, Recensione recensione) {
+        this.Recensioni[index] = recensione;
+    }
+
+    public void setValutazioneU (Valutazione[] valutazioni) { this.Valutazioni = valutazioni; }
+    public Valutazione[] getValutazioneU() { return Valutazioni; }
+    public Valutazione getValutazioneU(int index) {return this.Valutazioni[index]; }
+    public void setValutazioneU (int index, Valutazione valutazione) {
+        this.Valutazioni[index] = valutazione;
+    }
+
+    public void setPrenotazioneU (Prenotazione[] prenotazioni) { this.Prenotazioni = prenotazioni; }
+    public Prenotazione[] getPrenotazioneU() { return Prenotazioni; }
+    public Prenotazione getPrenotazioneU(int index) {return this.Prenotazioni[index]; }
+    public void setPrenotazioneU (int index, Prenotazione prenotazione) {
+        this.Prenotazioni[index] = prenotazione;
+    }
+
+    public void setPiattoU (Piatto[] piatti) { this.Piatti = piatti; }
+    public Piatto[] getPiattoU() { return Piatti; }
+    public Piatto getPiattoU(int index) {return this.Piatti[index]; }
+    public void setPiattoU (int index, Piatto piatto) {
+        this.Piatti[index] = piatto;
     }
 }

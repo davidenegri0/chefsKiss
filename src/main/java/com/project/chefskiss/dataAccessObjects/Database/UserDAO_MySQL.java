@@ -24,7 +24,7 @@ public class UserDAO_MySQL implements UserDAO {
 
         PreparedStatement query;
         User utente = new User();
-        utente.setSede(sede);
+        utente.setSedeU(sede);
 
         try {
             String SQLQuery = "SELECT * FROM chefskiss.utente WHERE CF = ? OR Email = ? OR Telefono = ?";
@@ -63,7 +63,7 @@ public class UserDAO_MySQL implements UserDAO {
             query.setString(6, Password);
             query.setString(7, N_Telefono);
             query.setDate(8, D_Iscrizione);
-            query.setString(9, utente.getSede().getCoordinate());
+            query.setString(9, utente.getSedeU().getCoordinate());
 
             query.executeUpdate();
 
@@ -141,7 +141,7 @@ public class UserDAO_MySQL implements UserDAO {
                 query2 = conn.prepareStatement(SQLQuery2);
                 query2.setBlob(1, user.getProfilePicture()); // ?????
                 query2.setBlob(2, user.getProfilePicture()); // ????? caricare il cv
-                query2.setString(3, user.getSede().getCoordinate()); // coordinate c'è solo se l'utente è chef
+                query2.setString(3, user.getSedeU().getCoordinate()); // coordinate c'è solo se l'utente è chef
                 query2.setString(4, user.getCF());
 
                 query2.executeUpdate();
@@ -288,7 +288,7 @@ public class UserDAO_MySQL implements UserDAO {
     {
         User user = new User();
         Sede sede = new Sede();
-        user.setSede(sede);
+        user.setSedeU(sede);
 
         //Ho modificato la lettura, rimuovendo i blocchi try catch, non servono visto che l'eccezioni vengono gestite nel blocco superiore
         //Ho inserito un paio di try catch per settare a false tutti i parametri che sono nulli nel db nel valore di ritorno
@@ -326,7 +326,7 @@ public class UserDAO_MySQL implements UserDAO {
         }
         if (user.isChef()){
             //TODO: Foto_chef e CV
-            user.getSede().setCoordinate(rs.getString("Coordinate"));
+            user.getSedeU().setCoordinate(rs.getString("Coordinate"));
         }
 
         return user;

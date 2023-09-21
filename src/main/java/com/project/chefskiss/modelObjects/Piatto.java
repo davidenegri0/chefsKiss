@@ -36,25 +36,37 @@ public class Piatto {
 
     // RELAZIONI
 
-    // TODO: [ piatto - ingrediente (M:N) ]
+    /* [ piatto - ingrediente (M:N) ] --> contiene */
+    private Contiene[] Piatto_Ingrediente;
+    public void setContieneP (Contiene[] piatti_ingredienti) { Piatto_Ingrediente = piatti_ingredienti; }
+    public Contiene[] getContieneP() { return Piatto_Ingrediente; }
+    public Contiene getContieneP(int index) {return this.Piatto_Ingrediente[index]; }
+    public void setContieneP(int index, Contiene piatto_ingrediente) {
+        this.Piatto_Ingrediente[index] = piatto_ingrediente;
+    }
+
 
     /* [ piatto - sede (N:M) ] */
     private Sede[] Sedi;
-    public Sede[] getSedi() { return Sedi; } // metodo per leggere tutte le sedi in cui è servito il piatto
-    public void setSedi(Sede[] sedi) { this.Sedi = sedi; } // metodo per inserire tutte le sedi in cui è servito il piatto
-    // TODO: metodi per inserire e leggere una sede in un indice specifico --> da valutare se è utile
+    public Sede[] getSediP() { return Sedi; } // metodo per leggere tutte le sedi in cui è servito il piatto
+    public void setSediP(Sede[] sedi) { this.Sedi = sedi; } // metodo per inserire tutte le sedi in cui è servito il piatto
+    public Sede getSedeP(int index) {return this.Sedi[index]; }
+    public void setSedeP (int index, Sede sede) {
+        this.Sedi[index] = sede;
+    }
 
 
     /* [ piatto - chef (1:1) ] e [ piatto - privato (1:1) ] */
-    private String CF_Utente;
-    public void setCF_Utente( String cf ) { CF_Utente = cf; }
-    public String getCF_Utente() { return CF_Utente; }
+    private User utente;
+    public void setUtenteP( User utente ) { this.utente = utente; }
+    public User getUtenteP() { return utente; }
 
-    // TODO: [ piatto - utente ] come ingredienti
-
-
-    // TODO: piatto - ingrediente
-
-
-    // TODO: piatto - utente
+    /* [ piatto - utente ] */
+    private Recensione[] recensioni;
+    public void setRecensioneP (Recensione[] recensioni) { recensioni = recensioni; }
+    public Recensione[] getRecensioneP() { return recensioni; }
+    public Recensione getRecensioneP(int index) {return this.recensioni[index]; }
+    public void setRecensioneP(int index, Recensione recensione) {
+        this.recensioni[index] = recensione;
+    }
 }

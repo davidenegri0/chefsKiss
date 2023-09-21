@@ -16,9 +16,16 @@ public class Ristorante {
     // RELAZIONI
 
     /* [ Ristorante - Utente (1:1) ] */
-    private String CF_Ristoratore;
-    public void setCF_Ristoratore (String cf) { CF_Ristoratore = cf; }
-    public String getCF_Ristoratore () { return CF_Ristoratore; }
+    private User Utente;
+    public void setUtenteRi (User utente) { Utente = utente; }
+    public User getUtenteRi () { return Utente; }
 
     /* [ Ristorante - sede (1:N) ] --> inserita in sede (dalla parte N) */
+    private Sede[] Sedi;
+    public void setSedeRi (Sede[] sedi) { this.Sedi = sedi; }
+    public Sede[] getSedeRi() { return Sedi; }
+    public Sede getSedeRi(int index) {return this.Sedi[index]; }
+    public void setSedeRi(int index, Sede sede) {
+        this.Sedi[index] = sede;
+    }
 }
