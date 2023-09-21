@@ -53,7 +53,7 @@ public class PiattoDAO_MySQL implements PiattoDAO {
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, piatto.getNome());
             query.setString(2, piatto.getPreparazione());
-            query.setString(3, piatto.getCF_Utente());
+            query.setString(3, piatto.getUtenteP().getCF());
             query.setInt(4, id_piatto);
 
             query.executeUpdate();

@@ -89,7 +89,7 @@ public class User {
 
     public void setSedeU(Sede sede) { this.sede = sede; }
 
-    public void setRistorante (Ristorante ristorante) {this.ristorante = ristorante; }
+    public void setRistoranteU (Ristorante ristorante) {this.ristorante = ristorante; }
 
     public String getCF() {
         return CF;
@@ -132,7 +132,7 @@ public class User {
 
     public Sede getSedeU() { return sede; }
 
-    public Ristorante getRistorante() { return ristorante; }
+    public Ristorante getRistoranteU() { return ristorante; }
 
     public Boolean isCliente(){
         return Privileges.get("Cliente");
