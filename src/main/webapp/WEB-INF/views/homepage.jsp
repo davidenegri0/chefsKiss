@@ -1,4 +1,4 @@
-<%--
+<%@ page import="java.util.ArrayList" %><%--
   Created by IntelliJ IDEA.
   User: david
   Date: 09/08/2023
@@ -8,8 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String utente = (String)request.getAttribute("user");
-
-
+    String ricetta1 = (String)request.getAttribute("ricetta1");
+    String ricetta2 = (String)request.getAttribute("ricetta2");
+    String ricetta3 = (String)request.getAttribute("ricetta3");
+    String ricetta4 = (String)request.getAttribute("ricetta4");
 %>
 <html lang="it">
 <head>
@@ -31,5 +33,21 @@
             <%}%>
         </ul>
     </nav>
+    <h3>Le 4 Ricette più recenti della settimana!</h3>
+    <div id="recipeBlock">
+        <p><%=ricetta1%></p>
+    </div>
+    <br>
+    <div id="recipeBlock">
+        <p><%=ricetta2%></p>
+    </div>
+    <br>
+    <div id="recipeBlock">
+        <p><%=ricetta3%></p>
+    </div>
+    <br>
+    <div id="recipeBlock">
+        <p><%=ricetta4%></p>
+    </div>
 </body>
 </html>

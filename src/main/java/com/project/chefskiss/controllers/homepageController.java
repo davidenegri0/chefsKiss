@@ -1,5 +1,9 @@
 package com.project.chefskiss.controllers;
 
+import com.project.chefskiss.configurations.Config;
+import com.project.chefskiss.dataAccessObjects.DAOFactory;
+import com.project.chefskiss.dataAccessObjects.PiattoDAO;
+import com.project.chefskiss.modelObjects.Piatto;
 import com.project.chefskiss.modelObjects.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -23,6 +27,18 @@ public class homepageController {
         {
             System.out.println("No cookies :C");
         }
+
+        DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
+        DatabaseDAO.beginTransaction();
+        PiattoDAO sessionPiattiDAO = DatabaseDAO.getPiattoDAO(null);
+        Piatto[] piatti = sessionPiattiDAO.find4MostRecent();
+        DatabaseDAO.closeTransaction();
+
+        if (piatti.length < 4) System.out.println("Strano");
+        page.addObject("ricetta1", piatti[0].getNome());
+        page.addObject("ricetta2", piatti[1].getNome());
+        page.addObject("ricetta3", piatti[2].getNome());
+        page.addObject("ricetta4", piatti[3].getNome());
 
         return page;
     }
