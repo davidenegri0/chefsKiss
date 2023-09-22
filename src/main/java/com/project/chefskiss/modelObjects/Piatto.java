@@ -1,6 +1,7 @@
 package com.project.chefskiss.modelObjects;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Piatto {
@@ -37,22 +38,22 @@ public class Piatto {
     // RELAZIONI
 
     /* [ piatto - ingrediente (M:N) ] --> contiene */
-    private Contiene[] Piatto_Ingrediente;
-    public void setContieneP (Contiene[] piatti_ingredienti) { Piatto_Ingrediente = piatti_ingredienti; }
-    public Contiene[] getContieneP() { return Piatto_Ingrediente; }
-    public Contiene getContieneP(int index) {return this.Piatto_Ingrediente[index]; }
+    private List<Contiene> Piatto_Ingrediente;
+    public void setContieneP (List<Contiene> piatti_ingredienti) { Piatto_Ingrediente = piatti_ingredienti; }
+    public List<Contiene> getContieneP() { return Piatto_Ingrediente; }
+    public Contiene getContieneP(int index) {return Piatto_Ingrediente.get(index); }
     public void setContieneP(int index, Contiene piatto_ingrediente) {
-        this.Piatto_Ingrediente[index] = piatto_ingrediente;
+        Piatto_Ingrediente.set(index, piatto_ingrediente);
     }
 
 
     /* [ piatto - sede (N:M) ] */
-    private Sede[] Sedi;
-    public Sede[] getSediP() { return Sedi; } // metodo per leggere tutte le sedi in cui è servito il piatto
-    public void setSediP(Sede[] sedi) { this.Sedi = sedi; } // metodo per inserire tutte le sedi in cui è servito il piatto
-    public Sede getSedeP(int index) {return this.Sedi[index]; }
+    private List<Sede> Sedi;
+    public List<Sede> getSediP() { return Sedi; } // metodo per leggere tutte le sedi in cui è servito il piatto
+    public void setSediP(List<Sede> sedi) { this.Sedi = sedi; } // metodo per inserire tutte le sedi in cui è servito il piatto
+    public Sede getSedeP(int index) {return Sedi.get(index); }
     public void setSedeP (int index, Sede sede) {
-        this.Sedi[index] = sede;
+        Sedi.set(index, sede);
     }
 
 
@@ -62,11 +63,11 @@ public class Piatto {
     public User getUtenteP() { return utente; }
 
     /* [ piatto - utente ] */
-    private Recensione[] recensioni;
-    public void setRecensioneP (Recensione[] recensioni) { recensioni = recensioni; }
-    public Recensione[] getRecensioneP() { return recensioni; }
-    public Recensione getRecensioneP(int index) {return this.recensioni[index]; }
+    private List<Recensione> recensioni;
+    public void setRecensioneP (List<Recensione> recensioni) { this.recensioni = recensioni; }
+    public List<Recensione> getRecensioneP() { return recensioni; }
+    public Recensione getRecensioneP(int index) {return recensioni.get(index); }
     public void setRecensioneP(int index, Recensione recensione) {
-        this.recensioni[index] = recensione;
+        recensioni.set(index, recensione);
     }
 }

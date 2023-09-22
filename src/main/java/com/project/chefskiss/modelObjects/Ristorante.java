@@ -1,5 +1,7 @@
 package com.project.chefskiss.modelObjects;
 
+import java.util.List;
+
 public class Ristorante {
     private Integer ID_Ristorante;
     private String Nome;
@@ -21,11 +23,11 @@ public class Ristorante {
     public User getUtenteRi () { return Utente; }
 
     /* [ Ristorante - sede (1:N) ] --> inserita in sede (dalla parte N) */
-    private Sede[] Sedi;
-    public void setSedeRi (Sede[] sedi) { this.Sedi = sedi; }
-    public Sede[] getSedeRi() { return Sedi; }
-    public Sede getSedeRi(int index) {return this.Sedi[index]; }
+    private List<Sede> Sedi;
+    public void setSedeRi (List<Sede> sedi) { this.Sedi = sedi; }
+    public List<Sede> getSedeRi() { return Sedi; }
+    public Sede getSedeRi(int index) {return Sedi.get(index); }
     public void setSedeRi(int index, Sede sede) {
-        this.Sedi[index] = sede;
+        Sedi.set(index, sede);
     }
 }

@@ -5,6 +5,7 @@ import com.project.chefskiss.configurations.Config;
 import java.sql.Blob;
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -26,10 +27,10 @@ public class User {
     private String Coordiante;
     private Sede sede;
     private Ristorante ristorante;
-    private Recensione[] Recensioni;
-    private Valutazione[] Valutazioni;
-    private Prenotazione[] Prenotazioni;
-    private Piatto[] Piatti;
+    private List<Recensione> Recensioni;
+    private List<Valutazione> Valutazioni;
+    private List<Prenotazione> Prenotazioni;
+    private List<Piatto> Piatti;
 
     public void setCF(String CF) {
         this.CF = CF;
@@ -225,31 +226,31 @@ public class User {
         return utente;
     }
 
-    public void setRecensioneU (Recensione[] recensioni) { this.Recensioni = recensioni; }
-    public Recensione[] getRecensioneU() { return Recensioni; }
-    public Recensione getRecensioneU(int index) {return this.Recensioni[index]; }
+    public void setRecensioneU (List<Recensione> recensioni) { this.Recensioni = recensioni; }
+    public List<Recensione> getRecensioneU() { return Recensioni; }
+    public Recensione getRecensioneU(int index) {return Recensioni.get(index); }
     public void setRecensioneU (int index, Recensione recensione) {
-        this.Recensioni[index] = recensione;
+        Recensioni.set(index, recensione);
     }
 
-    public void setValutazioneU (Valutazione[] valutazioni) { this.Valutazioni = valutazioni; }
-    public Valutazione[] getValutazioneU() { return Valutazioni; }
-    public Valutazione getValutazioneU(int index) {return this.Valutazioni[index]; }
+    public void setValutazioneU (List<Valutazione> valutazioni) { this.Valutazioni = valutazioni; }
+    public List<Valutazione> getValutazioneU() { return Valutazioni; }
+    public Valutazione getValutazioneU(int index) {return Valutazioni.get(index); }
     public void setValutazioneU (int index, Valutazione valutazione) {
-        this.Valutazioni[index] = valutazione;
+        Valutazioni.set(index, valutazione);
     }
 
-    public void setPrenotazioneU (Prenotazione[] prenotazioni) { this.Prenotazioni = prenotazioni; }
-    public Prenotazione[] getPrenotazioneU() { return Prenotazioni; }
-    public Prenotazione getPrenotazioneU(int index) {return this.Prenotazioni[index]; }
+    public void setPrenotazioneU (List<Prenotazione> prenotazioni) { this.Prenotazioni = prenotazioni; }
+    public List<Prenotazione> getPrenotazioneU() { return Prenotazioni; }
+    public Prenotazione getPrenotazioneU(int index) {return Prenotazioni.get(index); }
     public void setPrenotazioneU (int index, Prenotazione prenotazione) {
-        this.Prenotazioni[index] = prenotazione;
+        Prenotazioni.set(index, prenotazione);
     }
 
-    public void setPiattoU (Piatto[] piatti) { this.Piatti = piatti; }
-    public Piatto[] getPiattoU() { return Piatti; }
-    public Piatto getPiattoU(int index) {return this.Piatti[index]; }
+    public void setPiattoU (List<Piatto> piatti) { this.Piatti = piatti; }
+    public List<Piatto> getPiattoU() { return Piatti; }
+    public Piatto getPiattoU(int index) {return Piatti.get(index); }
     public void setPiattoU (int index, Piatto piatto) {
-        this.Piatti[index] = piatto;
+        Piatti.set(index, piatto);
     }
 }
