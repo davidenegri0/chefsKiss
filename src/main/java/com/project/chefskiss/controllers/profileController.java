@@ -2,6 +2,7 @@ package com.project.chefskiss.controllers;
 
 import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.dataAccessObjects.DAOFactory;
+import com.project.chefskiss.dataAccessObjects.Database.MySQLJDBC_DAOFactory;
 import com.project.chefskiss.dataAccessObjects.UserDAO;
 import com.project.chefskiss.modelObjects.User;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialException;
 import java.io.*;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -110,6 +113,13 @@ public class profileController {
         ModelAndView page = new ModelAndView("profilePage");
         User utente = User.decodeUserData(userData);
 
+        //Caricamento immagine dal db
+        DAOFactory DatabaseDAO2 = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
+        DatabaseDAO2.beginTransaction();
+        UserDAO sessionUserDAO2 = DatabaseDAO2.getUserDAO(null);
+        Blob sqlImage = sessionUserDAO2.findByEmail(utente.getEmail()).getProfilePicture();
+        DatabaseDAO2.closeTransaction();
+
         //Aggiornamento dati con modifiche inserite
         if (!email.isEmpty()){
             utente.setEmail(email);
@@ -121,33 +131,46 @@ public class profileController {
             utente.setUsername(username);
         }
 
-        //Aggiornamento cookie
-        DAOFactory CookieDAO = DAOFactory.getDAOFactory(Config.COOKIE_IMPL, response);
-        UserDAO userCookie = CookieDAO.getUserDAO(response);
-        userCookie.update(utente);
+        //Aggiornamento immagine di profilo
+        if (!file.isEmpty())
+        {
+            if (file.getSize()< 64000) {
+                try {
+                    sqlImage = new SerialBlob(file.getBytes());
+                } catch (IOException | SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
+                System.out.println("Il file ha dimensioni troppo grandi, no changes");
+                page.addObject("errorCode", 100);
+                page.setViewName("updatePage");
+            }
+        }
+        else
+        {
+            System.out.println("Il file è nullo, no changes");
 
-        //Aggiornamento nel DB
+
+        }
+        utente.setProfilePicture(sqlImage);
+
+        //Invio dati al db
+
         DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
         DatabaseDAO.beginTransaction();
         UserDAO sessionUserDAO = DatabaseDAO.getUserDAO(null);
 
-        //Aggiornamento immagine di profilo
-        if (file!=null)
-        {
-            try {
-                Blob sqlImage = sessionUserDAO.findByEmail(email).getProfilePicture();
-                sqlImage.setBytes(1, file.getBytes());
-                utente.setProfilePicture(sqlImage);
-            } catch (IOException | SQLException e)
-            {
-                e.printStackTrace();
-            }
-        }
-
-        sessionUserDAO.update(utente); //---> Per ora non fa niente //TODO: Caricare l'immagine sul db
+        sessionUserDAO.update(utente);
 
         DatabaseDAO.commitTransaction();
         DatabaseDAO.closeTransaction();
+
+        //Aggiornamento cookie
+        DAOFactory CookieDAO = DAOFactory.getDAOFactory(Config.COOKIE_IMPL, response);
+        UserDAO userCookie = CookieDAO.getUserDAO(response);
+        userCookie.update(utente);
 
         //Fine
         page.addObject("utente", utente);

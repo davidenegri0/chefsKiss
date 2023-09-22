@@ -8,17 +8,30 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    User utente = (User) request.getAttribute("utente");
+    String imgPath = (String) request.getAttribute("imgPath");
+    Integer errorCode = (Integer) request.getAttribute("errorCode");
+    //System.out.println("Da jsp: imgPath = "+imgPath);
+    //System.out.println(utente.getNome());
+%>
 <html>
 <head>
     <title>Modifica il Tuo Profilo</title>
 </head>
+<script>
+    <%    if (errorCode!=null){  %>
+    var errorCode = <%=errorCode%>;
+    <% } else { %>
+    var errorCode = 0;
+    <% } %>
+
+    if (errorCode==100)
+    {
+        window.alert("Immagine caricata troppo grande,\ninviare un immagine con dimensione inferiore a 64Kb")
+    }
+</script>
 <body>
-    <%
-        User utente = (User) request.getAttribute("utente");
-        String imgPath = (String) request.getAttribute("imgPath");
-        //System.out.println("Da jsp: imgPath = "+imgPath);
-        //System.out.println(utente.getNome());
-    %>
     <h1><%=utente.getNome()%> <%=utente.getCognome()%>'s Profile Edit Page</h1>
     <form method="post" enctype="multipart/form-data">
         <h3>Dati anagrafici</h3>
@@ -42,7 +55,7 @@
         <input id="username" name="username" type="text" value="<%=utente.getUsername()%>"> <br>
         <img src="<%=imgPath%>" height="144px" width="144px">
         <br>
-        <input type="file" accept=".jpg" name="file"> <br>
+        <input type="file" accept="image/jpeg" name="file"> <br>
         <input type="submit" value="Aggiorna profilo">
     </form>
     </body>
