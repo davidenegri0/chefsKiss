@@ -2,6 +2,9 @@ package com.project.chefskiss.dataAccessObjects.Database;
 
 import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.dataAccessObjects.DAOFactory;
+import com.project.chefskiss.dataAccessObjects.IngredienteDAO;
+import com.project.chefskiss.dataAccessObjects.PiattoDAO;
+import com.project.chefskiss.dataAccessObjects.SedeDAO;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.sql.Connection;
@@ -49,11 +52,31 @@ public class MySQLJDBC_DAOFactory extends DAOFactory {
         }
     }
 
+    @Override
+    public IngredienteDAO getIngredienteDAO(HttpServletResponse response) {
+        return new IngredienteDAO_MySQL(conn);
+    }
+
 
     @Override
     public UserDAO_MySQL getUserDAO(HttpServletResponse response)
     {
         return new UserDAO_MySQL(conn);
+    }
+
+    @Override
+    public PiattoDAO getPiattoDAO(HttpServletResponse response) {
+        return new PiattoDAO_MySQL(conn);
+    }
+
+    @Override
+    public RistoranteDAO_MySQL getRistoDAO(HttpServletResponse response) {
+        return new RistoranteDAO_MySQL(conn);
+    }
+
+    @Override
+    public SedeDAO getSedeDAO(HttpServletResponse response) {
+        return new SedeDAO_MySQL(conn);
     }
 
 }

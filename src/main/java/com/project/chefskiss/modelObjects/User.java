@@ -20,7 +20,7 @@ public class User {
     private Date D_Iscrizione;
     private final Map<String, Boolean> Privileges = new HashMap<>(5);
     private String Username;
-    private Blob profilePicture;
+    private Blob profilePicture = null;
     private Boolean Deleted;
 
     // RELAZIONI
@@ -82,7 +82,6 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
-    //TODO: set foto per utente privato
     //TODO: set di foto e CV per chef
 
     public void setDeleted(boolean deleted) { Deleted = deleted; }

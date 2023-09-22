@@ -1,7 +1,6 @@
 package com.project.chefskiss.dataAccessObjects.Cookie;
 
-import com.project.chefskiss.dataAccessObjects.DAOFactory;
-import com.project.chefskiss.dataAccessObjects.UserDAO;
+import com.project.chefskiss.dataAccessObjects.*;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -32,7 +31,31 @@ public class CookieDAOFactory extends DAOFactory {
     }
 
     @Override
+    public IngredienteDAO getIngredienteDAO(HttpServletResponse response) {
+        return null;
+    }
+    //UNUSED
+
+    @Override
     public UserDAO getUserDAO(HttpServletResponse response) {
         return new UserDAOCookie(response);
     }
+
+    @Override
+    public PiattoDAO getPiattoDAO(HttpServletResponse response) {
+        return null;
+    }
+    //UNUSED
+
+    @Override
+    public RistoranteDAO getRistoDAO(HttpServletResponse response) {
+        return null;
+    }
+    //UNUSED
+
+    @Override
+    public SedeDAO getSedeDAO(HttpServletResponse response) {
+        return null;
+    }
+    //UNUSED
 }

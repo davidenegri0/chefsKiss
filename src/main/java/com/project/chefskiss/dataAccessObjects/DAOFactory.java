@@ -13,7 +13,15 @@ public abstract class DAOFactory {
     public abstract void rollbackTransaction();
     public abstract void closeTransaction();
 
+    public abstract IngredienteDAO getIngredienteDAO(HttpServletResponse response);
+
     public abstract UserDAO getUserDAO(HttpServletResponse response);
+
+    public abstract PiattoDAO getPiattoDAO(HttpServletResponse response);
+
+    public abstract RistoranteDAO getRistoDAO(HttpServletResponse response);
+
+    public abstract SedeDAO getSedeDAO(HttpServletResponse response);
 
     public static DAOFactory getDAOFactory(String whichFactory, HttpServletResponse response) {
 

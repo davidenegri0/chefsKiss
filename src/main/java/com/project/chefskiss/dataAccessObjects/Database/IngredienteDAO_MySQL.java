@@ -43,6 +43,7 @@ public class IngredienteDAO_MySQL implements IngredienteDAO {
         return ingrediente;
     }
 
+    /* SE TUTTO VA BENE, QUESTO NON SERVE
     @Override
     public List<Ingrediente> findByGruppo(String Gruppo_Allergenico) {
         PreparedStatement query;
@@ -69,6 +70,7 @@ public class IngredienteDAO_MySQL implements IngredienteDAO {
 
         return ingredienti;
     }
+     */
 
     private Ingrediente read(ResultSet rs) throws SQLException {
         Ingrediente ingrediente = new Ingrediente();

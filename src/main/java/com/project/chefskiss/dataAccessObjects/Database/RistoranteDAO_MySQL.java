@@ -2,6 +2,7 @@ package com.project.chefskiss.dataAccessObjects.Database;
 
 import com.project.chefskiss.dataAccessObjects.RistoranteDAO;
 import com.project.chefskiss.modelObjects.Ristorante;
+import com.project.chefskiss.modelObjects.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,13 +17,18 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
     public Ristorante create(String Nome_Ristorante, String CF_Ristoratore) {
         PreparedStatement query;
         Ristorante risto = new Ristorante();
+        risto.setNome(Nome_Ristorante);
+        User utente = new User();
+        utente.setCF(CF_Ristoratore);
+        risto.setUtenteRi(utente);
 
         try {
-            String SQLQuery = "INSERT INTO chefskiss.ristorante(Nome_Ristorante, CF) VALUES (?, ?)";
+            String SQLQuery = "INSERT INTO chefskiss.ristorante(Nome_Ristorante, CF, Deleted) VALUES (?, ?, ?)";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, Nome_Ristorante);
             query.setString(2, CF_Ristoratore);
+            query.setString(3, "N");
 
             query.executeUpdate();
 
@@ -48,7 +54,7 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, ristorante.getNome());
-            query.setString(2, ristorante.getCF_Ristoratore());
+            query.setString(2, ristorante.getUtenteRi().getCF());
             query.setInt(3, ristorante.getID_Ristorante());
 
             query.executeUpdate();
@@ -79,7 +85,7 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
     }
 
     @Override
-    public Ristorante findByName(Ristorante risto) {
+    public Ristorante findByName(String risto) {
         PreparedStatement query;
         Ristorante ristorante = new Ristorante();
 
@@ -87,12 +93,12 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
             String SQLQuery = "SELECT * FROM chefskiss.ristorante WHERE Nome_Ristorante = ?";
 
             query = conn.prepareStatement(SQLQuery);
-            query.setString(1, risto.getNome());
+            query.setString(1, risto);
 
             ResultSet result = query.executeQuery();
 
             if (result.next()) {
-                ristorante = read (result);
+                ristorante = read(result);
                 System.out.println("Lettura dati completata!");
             }
 
@@ -107,7 +113,7 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
     }
 
     @Override
-    public Ristorante findByRistoratore(Ristorante risto) {
+    public Ristorante findByRistoratore(String CF_Risto) {
         PreparedStatement query;
         Ristorante ristorante = new Ristorante();
 
@@ -115,11 +121,11 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
             String SQLQuery = "SELECT * FROM chefskiss.ristorante WHERE CF = ?";
 
             query = conn.prepareStatement(SQLQuery);
-            query.setString(1, risto.getCF_Ristoratore());
+            query.setString(1, CF_Risto);
 
             ResultSet result = query.executeQuery();
 
-            if (result.next()) {
+            if(result.next()) {
                 ristorante = read (result);
                 System.out.println("Lettura dati completata!");
             }
@@ -139,7 +145,11 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
 
         ristorante.setID(rs.getInt("ID_Ristorante"));
         ristorante.setNome(rs.getString("Nome_Ristorante"));
-        ristorante.setCF_Ristoratore(rs.getString("CF"));
+
+        User utente = new User();
+        utente.setCF(rs.getString("CF"));
+
+        ristorante.setUtenteRi(utente);
         ristorante.setDeleted(rs.getBoolean("Deleted"));
 
         return ristorante;

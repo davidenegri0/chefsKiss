@@ -102,18 +102,18 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         List<Piatto> piatti = new ArrayList<>();
 
         try {
-            String SQLQuery = "SELECT * FROM piatto WHERE Nome_Piatto = ?";
+            String SQLQuery = "SELECT * FROM chefskiss.piatto WHERE Nome_Piatto = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, Nome_Piatto);
 
             ResultSet result = query.executeQuery();
 
-            if (result.next()) {
+            while (result.next()) {
                 piatti.add(read(result));
-                System.out.println("Lettura dati completata!");
             }
 
+            System.out.println("Lettura dati completata!");
             result.close();
             query.close();
 
@@ -131,17 +131,20 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         String ingrediente = Ingrediente.getNome();
 
         try {
-            String SQLQuery = "SELECT piatto.ID_Piatto, piatto.Nome_Piatto, piatto.Preparazione, piatto.CF, piatto.Deleted FROM chefskiss.piatto NATURAL JOIN chefskiss.contiene WHERE Ingrediente = ?";
+            String SQLQuery = 
+                    "SELECT piatto.ID_Piatto, piatto.Nome_Piatto, piatto.Preparazione, piatto.CF, piatto.Deleted " +
+                    "FROM chefskiss.piatto NATURAL JOIN chefskiss.contiene " +
+                    "WHERE contiene.Nome_Ingrediente = ?";
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, ingrediente);
 
             ResultSet result = query.executeQuery();
 
-            if (result.next()) {
+            while (result.next()) {
                 piatti.add(read(result));
-                System.out.println("Lettura dati completata!");
             }
 
+            System.out.println("Lettura dati completata!");
             result.close();
             query.close();
 
@@ -156,20 +159,23 @@ public class PiattoDAO_MySQL implements PiattoDAO {
     public List<Piatto> findBySede(Sede Sede) {
         PreparedStatement query;
         List<Piatto> piatti = new ArrayList<>();
-        String sede = Sede.getCoordinate();
+        String coordSede = Sede.getCoordinate();
 
         try {
-            String SQLQuery = "SELECT piatto.ID_Piatto, piatto.Nome_Piatto, piatto.Preparazione, piatto.CF, piatto.Deleted FROM chefskiss.piatto NATURAL JOIN chefskiss.servito_in WHERE Sede = ?";
+            String SQLQuery = 
+                    "SELECT piatto.ID_Piatto, piatto.Nome_Piatto, piatto.Preparazione, piatto.CF, piatto.Deleted " +
+                            "FROM chefskiss.piatto NATURAL JOIN chefskiss.servito_in " +
+                            "WHERE servito_in.Coordinate = ?";
             query = conn.prepareStatement(SQLQuery);
-            query.setString(1, sede);
+            query.setString(1, coordSede);
 
             ResultSet result = query.executeQuery();
 
-            if (result.next()) {
+            while (result.next()) {
                 piatti.add(read(result));
-                System.out.println("Lettura dati completata!");
             }
 
+            System.out.println("Lettura dati completata!");
             result.close();
             query.close();
 
@@ -193,11 +199,11 @@ public class PiattoDAO_MySQL implements PiattoDAO {
 
             ResultSet result = query.executeQuery();
 
-            if (result.next()) {
+            while (result.next()) {
                 piatti.add(read(result));
-                System.out.println("Lettura dati completata!");
             }
 
+            System.out.println("Lettura dati completata!");
             result.close();
             query.close();
 
@@ -208,16 +214,77 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         return piatti;
     }
 
+    @Override
+    public Piatto findByIDPiatto(String ID_Piatto) {
+        PreparedStatement query;
+        Piatto piatto = new Piatto();
+
+        try {
+            String SQLQuery = "SELECT * FROM chefskiss.piatto WHERE ID_Piatto = ?";
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, ID_Piatto);
+
+            ResultSet result = query.executeQuery();
+
+            if (result.next()) {
+                piatto = read(result);
+                System.out.println("Lettura dati completata!");
+            }
+
+            result.close();
+            query.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return piatto;
+    }
+
+    @Override
+    public Piatto[] find4MostRecent() {
+        PreparedStatement query;
+        Piatto[] piatti = new Piatto[4];
+
+        try {
+            String SQLQuery = "SELECT * " +
+                    "FROM chefskiss.piatto " +
+                    "ORDER BY Data_Upload";
+            query = conn.prepareStatement(SQLQuery);
+
+            ResultSet result = query.executeQuery();
+
+            for (int i = 0; result.next() && i<4; i++) {
+                piatti[i] = read(result);
+            }
+
+            System.out.println("Lettura dati piatti completata!");
+            result.close();
+            query.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return piatti;
+
+    }
+
     private Piatto read (ResultSet rs) throws SQLException
     {
         Piatto piatto = new Piatto();
 
         piatto.setID(rs.getInt("ID_Piatto"));
         piatto.setNome(rs.getString("Nome_Piatto"));
-        // TODO: preparazione
-        piatto.getUtenteP().setCF(rs.getString("CF"));
+        piatto.setPreparazione(rs.getString("Preparazione"));
+
+        User utente = new User();
+        utente.setCF(rs.getString("CF"));
+        piatto.setUtenteP(utente);
+
         piatto.setDeleted(rs.getBoolean("Deleted"));
 
+        System.out.println("Dati letti del piatto: "+piatto.getId());
         return piatto;
     }
 }

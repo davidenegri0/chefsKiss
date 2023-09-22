@@ -12,8 +12,8 @@ public interface RistoranteDAO {
     public void delete (Ristorante ristorante);
 
     // cerca un ristorante per nome
-    public Ristorante findByName (Ristorante ristorante);
+    public Ristorante findByName (String ristorante);
 
     // cerca un ristorante per Ristoratore
-    public Ristorante findByRistoratore (Ristorante ristorante);
+    public Ristorante findByRistoratore (String ristorante);
 }

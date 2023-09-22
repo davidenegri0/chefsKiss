@@ -10,5 +10,6 @@ public interface IngredienteDAO {
     public Ingrediente findByName (String Nome_Ingrediente);
 
     // cerca un ingrediente per gruppo allergenico
-    public List<Ingrediente> findByGruppo (String Gruppo_Allergenico);
+    //TODO: Valutare l'uso di questa
+    //public List<Ingrediente> findByGruppo (String Gruppo_Allergenico);
 }

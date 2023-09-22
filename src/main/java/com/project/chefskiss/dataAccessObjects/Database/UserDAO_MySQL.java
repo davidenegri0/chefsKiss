@@ -15,7 +15,6 @@ public class UserDAO_MySQL implements UserDAO {
         this.conn = conn;
     }
 
-    //TODO: Tutte le funzioni seguenti
     @Override
     public User create(String CF, String Nome, String Cognome, Date D_Nascita, String Email, String Password, String N_Telefono, Date D_Iscrizione, Boolean Se_Cliente, Boolean Verificato, Boolean Se_Privato, String Username, Boolean Se_Chef, Boolean Se_Ristoratore, Boolean deleted, Sede sede)
     throws UserAlreadyKnownException
@@ -95,7 +94,7 @@ public class UserDAO_MySQL implements UserDAO {
                     "Se_Privato = ?, " + // 8
                     "Se_Chef = ?, " + // 9
                     "Se_Ristoratore = ? " + // 10
-                    "WHERE CF = ?";
+                    "WHERE CF = ?"; //11
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, user.getNome());
@@ -122,12 +121,28 @@ public class UserDAO_MySQL implements UserDAO {
             if (user.isPrivato()) {
                 query.setInt(8, 1);
 
-                String SQLQuery2 = "UPDATE chefskiss.utente SET Username = ?, Foto_Privato = ? WHERE CF = ?";
-
-                query2 = conn.prepareStatement(SQLQuery2);
-                query2.setString(1, user.getUsername());
-                query2.setBlob(2, user.getProfilePicture()); // ?????
-                query2.setString(3, user.getCF());
+                if (user.getProfilePicture()!=null)
+                {
+                    String SQLQuery2 =
+                            "UPDATE chefskiss.utente " +
+                                    "SET Username = ?," +
+                                    "Foto_Privato = ? " +
+                                    "WHERE CF = ?";
+                    query2 = conn.prepareStatement(SQLQuery2);
+                    query2.setString(1, user.getUsername());
+                    query2.setBlob(2, user.getProfilePicture());
+                    query2.setString(3, user.getCF());
+                }
+                else
+                {
+                    String SQLQuery2 =
+                            "UPDATE chefskiss.utente " +
+                            "SET Username = ? " +
+                            "WHERE CF = ?";
+                    query2 = conn.prepareStatement(SQLQuery2);
+                    query2.setString(1, user.getUsername());
+                    query2.setString(2, user.getCF());
+                }
 
                 query2.executeUpdate();
                 query2.close();
@@ -140,7 +155,8 @@ public class UserDAO_MySQL implements UserDAO {
 
                 query2 = conn.prepareStatement(SQLQuery2);
                 query2.setBlob(1, user.getProfilePicture()); // ?????
-                query2.setBlob(2, user.getProfilePicture()); // ????? caricare il cv
+                //query2.setBlob(2, user.getCV()); // ????? caricare il cv
+                query2.setNull(2, Types.BLOB); //Per ora non imposta nulla ---> TODO: Rimuovere questa line dopo aver implementato
                 query2.setString(3, user.getSedeU().getCoordinate()); // coordinate c'è solo se l'utente è chef
                 query2.setString(4, user.getCF());
 
@@ -153,6 +169,8 @@ public class UserDAO_MySQL implements UserDAO {
             else query.setInt(9, 0);
             if (user.isRistoratore()) query.setInt(10, 1);
             else query.setInt(10, 0);
+
+            query.setString(11, user.getCF());
 
             query.executeUpdate();
 
