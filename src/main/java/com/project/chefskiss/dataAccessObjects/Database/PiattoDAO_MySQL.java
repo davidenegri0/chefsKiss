@@ -8,11 +8,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.List;
 
 public class PiattoDAO_MySQL implements PiattoDAO {
-    Connection conn;
+    private Connection conn;
+
+    private Integer RECENT_RECIPES_RETURNS = 4;
 
     public PiattoDAO_MySQL(Connection conn) { this.conn = conn; }
     @Override
@@ -111,14 +112,21 @@ public class PiattoDAO_MySQL implements PiattoDAO {
                 piatti.add(read(result));
             }
 
-            System.out.println("Lettura dati completata!");
             result.close();
             query.close();
+
+            //Setting dei voti medii
+            for (int i = 0; i < piatti.size(); i++) {
+                Piatto p = piatti.get(i);
+                p.setVotoMedio(getAVGVotoFromID(p.getId()));
+                piatti.set(i, p);
+            }
 
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
 
+        System.out.println("Lettura dati completata!");
         return piatti;
     }
 
@@ -142,10 +150,17 @@ public class PiattoDAO_MySQL implements PiattoDAO {
                 piatti.add(read(result));
             }
 
-            System.out.println("Lettura dati completata!");
             result.close();
             query.close();
 
+            //Setting dei voti medii
+            for (int i = 0; i < piatti.size(); i++) {
+                Piatto p = piatti.get(i);
+                p.setVotoMedio(getAVGVotoFromID(p.getId()));
+                piatti.set(i, p);
+            }
+
+            System.out.println("Lettura dati completata!");
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -173,10 +188,17 @@ public class PiattoDAO_MySQL implements PiattoDAO {
                 piatti.add(read(result));
             }
 
-            System.out.println("Lettura dati completata!");
             result.close();
             query.close();
 
+            //Setting dei voti medii
+            for (int i = 0; i < piatti.size(); i++) {
+                Piatto p = piatti.get(i);
+                p.setVotoMedio(getAVGVotoFromID(p.getId()));
+                piatti.set(i, p);
+            }
+
+            System.out.println("Lettura dati completata!");
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -205,6 +227,13 @@ public class PiattoDAO_MySQL implements PiattoDAO {
             result.close();
             query.close();
 
+            //Setting dei voti medii
+            for (int i = 0; i < piatti.size(); i++) {
+                Piatto p = piatti.get(i);
+                p.setVotoMedio(getAVGVotoFromID(p.getId()));
+                piatti.set(i, p);
+            }
+
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -213,14 +242,14 @@ public class PiattoDAO_MySQL implements PiattoDAO {
     }
 
     @Override
-    public Piatto findByIDPiatto(String ID_Piatto) {
+    public Piatto findByIDPiatto(Integer ID_Piatto) {
         PreparedStatement query;
         Piatto piatto = new Piatto();
 
         try {
             String SQLQuery = "SELECT * FROM chefskiss.piatto WHERE ID_Piatto = ?";
             query = conn.prepareStatement(SQLQuery);
-            query.setString(1, ID_Piatto);
+            query.setInt(1, ID_Piatto);
 
             ResultSet result = query.executeQuery();
 
@@ -232,6 +261,8 @@ public class PiattoDAO_MySQL implements PiattoDAO {
             result.close();
             query.close();
 
+            piatto.setVotoMedio(getAVGVotoFromID(piatto.getId()));
+
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -239,11 +270,10 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         return piatto;
     }
 
-    //TODO: Implementarlo sottoforma di arrayList
     @Override
-    public Piatto[] find4MostRecent() {
+    public List<Piatto> findMostRecent() {
         PreparedStatement query;
-        Piatto[] piatti = new Piatto[4];
+        List<Piatto> piatti = new ArrayList<>();
 
         try {
             String SQLQuery = "SELECT * " +
@@ -253,13 +283,20 @@ public class PiattoDAO_MySQL implements PiattoDAO {
 
             ResultSet result = query.executeQuery();
 
-            for (int i = 0; result.next() && i<4; i++) {
-                piatti[i] = read(result);
+            for (int i = 0; result.next() && i<RECENT_RECIPES_RETURNS; i++) {
+                piatti.add(read(result));
             }
 
             System.out.println("Lettura dati piatti completata!");
             result.close();
             query.close();
+
+            //Setting dei voti medii
+            for (int i = 0; i < piatti.size(); i++) {
+                Piatto p = piatti.get(i);
+                p.setVotoMedio(getAVGVotoFromID(p.getId()));
+                piatti.set(i, p);
+            }
 
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
@@ -285,5 +322,27 @@ public class PiattoDAO_MySQL implements PiattoDAO {
 
         System.out.println("Dati letti del piatto: "+piatto.getId());
         return piatto;
+    }
+
+    private int getAVGVotoFromID(Integer ID) throws SQLException{
+        try {
+            int votoMedio = 0;
+            String SQLQuery =
+                    "SELECT AVG(Voto) AS Media " +
+                            "FROM chefskiss.recensisce " +
+                            "WHERE ID_Piatto = ?";
+            PreparedStatement query = conn.prepareStatement(SQLQuery);
+            query.setInt(1, ID);
+            ResultSet result = query.executeQuery();
+            if (result.next()) {
+                votoMedio = result.getInt("Media");
+            }
+            result.close();
+            query.close();
+            return votoMedio;
+        } catch (SQLException e){
+            e.printStackTrace();
+            throw e;
+        }
     }
 }

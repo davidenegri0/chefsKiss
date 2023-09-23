@@ -33,6 +33,7 @@
             <input type="submit" value="Conferma">
         </form>
     </div>
+    <%@include file="repetedElements/homepageLink.html"%>
 </body>
 <script>
     function onLoadRequest(){

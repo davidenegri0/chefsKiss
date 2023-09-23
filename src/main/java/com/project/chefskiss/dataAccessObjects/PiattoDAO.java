@@ -30,7 +30,7 @@ public interface PiattoDAO {
     // cerca un piatto per CF privato/chef/recensori
     public List<Piatto> findByCF (User CF_Utente);
 
-    public Piatto findByIDPiatto(String ID_Piatto);
+    public Piatto findByIDPiatto(Integer ID_Piatto);
 
-    public Piatto[] find4MostRecent();
+    public List<Piatto> findMostRecent();
 }

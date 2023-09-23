@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 @Controller
 public class homepageController {
     @RequestMapping(value = "/homepage")
@@ -21,26 +23,20 @@ public class homepageController {
 
         if(!UserData.isEmpty()){
             User utente = User.decodeUserData(UserData);
-            page.addObject("user", utente.getNome()+" "+utente.getCognome());
+            page.addObject("user", utente);
         }
-        else
-        {
-            System.out.println("No cookies :C");
-        }
+        else System.out.println("No cookies :C");
 
         DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
         DatabaseDAO.beginTransaction();
         PiattoDAO sessionPiattiDAO = DatabaseDAO.getPiattoDAO(null);
-        Piatto[] piatti = sessionPiattiDAO.find4MostRecent();
+        List<Piatto> piatti = sessionPiattiDAO.findMostRecent();
         DatabaseDAO.closeTransaction();
 
         //TODO: Si può aggiornare questa feature gestendo le recensioni in base al voto medio
-        //e caricare le ricette sui cookie
-        if (piatti.length < 4) System.out.println("Strano");
-        page.addObject("ricetta1", piatti[0].getNome());
-        page.addObject("ricetta2", piatti[1].getNome());
-        page.addObject("ricetta3", piatti[2].getNome());
-        page.addObject("ricetta4", piatti[3].getNome());
+        //e caricare le ricette sui cookie, in modo da ridurre l'accesso al db
+        if (piatti.size() < 4) System.out.println("Strano");
+        page.addObject("listaPiatti", piatti);
 
         return page;
     }

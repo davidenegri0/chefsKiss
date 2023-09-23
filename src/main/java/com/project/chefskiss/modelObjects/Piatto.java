@@ -10,6 +10,8 @@ public class Piatto {
     private String Preparazione;
     private Boolean Deleted;
 
+    private Integer VotoMedio;
+
     // GETTER - SETTER
     public void setID(Integer id_piatto) { Id_Piatto = id_piatto; }
     public void setNome(String nome_piatto) {
@@ -20,6 +22,9 @@ public class Piatto {
     }
     public void setDeleted(Boolean deleted) {
         Deleted = deleted;
+    }
+    public void setVotoMedio(Integer votoMedio) {
+        VotoMedio = votoMedio;
     }
     public int getId (){
         return Id_Piatto;
@@ -33,6 +38,12 @@ public class Piatto {
     public Boolean getDeleted() {
         return Deleted;
     }
+
+    public Integer getVotoMedio() {
+        return VotoMedio;
+    }
+
+
 
 
     // RELAZIONI
@@ -70,4 +81,6 @@ public class Piatto {
     public void setRecensioneP(int index, Recensione recensione) {
         recensioni.set(index, recensione);
     }
+
+
 }

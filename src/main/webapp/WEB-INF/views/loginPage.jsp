@@ -21,6 +21,7 @@
             <input type="submit" value="Login">
         </form>
     </div>
+    <%@include file="repetedElements/homepageLink.html"%>
 </body>
 <script>
     function onLoginRequest(){

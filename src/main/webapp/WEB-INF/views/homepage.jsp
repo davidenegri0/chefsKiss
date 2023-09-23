@@ -1,4 +1,7 @@
-<%@ page import="java.util.ArrayList" %><%--
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="com.project.chefskiss.modelObjects.User" %>
+<%@ page import="com.project.chefskiss.modelObjects.Piatto" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: david
   Date: 09/08/2023
@@ -7,11 +10,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    String utente = (String)request.getAttribute("user");
-    String ricetta1 = (String)request.getAttribute("ricetta1");
-    String ricetta2 = (String)request.getAttribute("ricetta2");
-    String ricetta3 = (String)request.getAttribute("ricetta3");
-    String ricetta4 = (String)request.getAttribute("ricetta4");
+    User utente = (User)request.getAttribute("user");
+    List<Piatto> piatti = (List<Piatto>)request.getAttribute("listaPiatti");
 %>
 <html lang="it">
 <head>
@@ -20,7 +20,7 @@
 <body>
     <h1>Welcome to Chef's Kiss!!</h1>
     <%if(utente!=null){%>
-    <p>Bentornato/a <%=utente%>!</p>
+    <p>Bentornato/a <%=utente.getNome()+" "+utente.getCognome()%>!</p>
     <%}%>
     <nav>
         <ul>
@@ -35,19 +35,22 @@
     </nav>
     <h3>Le 4 Ricette più recenti della settimana!</h3>
     <div id="recipeBlock">
-        <p><%=ricetta1%></p>
+        <p><%=piatti.get(0).getNome()%></p>
+        <p>Voto: <%=piatti.get(0).getVotoMedio()%></p>
     </div>
     <br>
     <div id="recipeBlock">
-        <p><%=ricetta2%></p>
+        <p><%=piatti.get(1).getNome()%></p>
+        <p>Voto: <%=piatti.get(1).getVotoMedio()%></p>
     </div>
     <br>
     <div id="recipeBlock">
-        <p><%=ricetta3%></p>
+        <p><%=piatti.get(2).getNome()%></p>
+        <p>Voto: <%=piatti.get(2).getVotoMedio()%></p>
     </div>
-    <br>
     <div id="recipeBlock">
-        <p><%=ricetta4%></p>
+        <p><%=piatti.get(3).getNome()%></p>
+        <p>Voto: <%=piatti.get(3).getVotoMedio()%></p>
     </div>
 </body>
 </html>
