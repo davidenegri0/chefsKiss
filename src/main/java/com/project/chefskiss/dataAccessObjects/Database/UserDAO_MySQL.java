@@ -107,7 +107,7 @@ public class UserDAO_MySQL implements UserDAO {
             query.setDate(i++, user.getD_Nascita());
             query.setString(i++, user.getEmail());
 
-            //query.setString(5, user.getPassword());
+            //query.setString(i++, user.getPassword());
 
             query.setString(i++, user.getN_Telefono());
             if (user.isCliente()) {
