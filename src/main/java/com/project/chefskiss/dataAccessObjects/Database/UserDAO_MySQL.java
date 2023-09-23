@@ -53,16 +53,17 @@ public class UserDAO_MySQL implements UserDAO {
                     "Coordinate) " + // 9
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
+            int i = 1;
             query = conn.prepareStatement(SQLQuery2);
-            query.setString(1, CF);
-            query.setString(2, Nome);
-            query.setString(3, Cognome);
-            query.setDate(4, D_Nascita);
-            query.setString(5, Email);
-            query.setString(6, Password);
-            query.setString(7, N_Telefono);
-            query.setDate(8, D_Iscrizione);
-            query.setString(9, utente.getSedeU().getCoordinate());
+            query.setString(i++, CF);
+            query.setString(i++, Nome);
+            query.setString(i++, Cognome);
+            query.setDate(i++, D_Nascita);
+            query.setString(i++, Email);
+            query.setString(i++, Password);
+            query.setString(i++, N_Telefono);
+            query.setDate(i++, D_Iscrizione);
+            query.setString(i, utente.getSedeU().getCoordinate());
 
             query.executeUpdate();
 
@@ -80,7 +81,8 @@ public class UserDAO_MySQL implements UserDAO {
         PreparedStatement query;
         PreparedStatement query2;
 
-        // TODO: modificare funzione in modo che i parametri che esistono solo se relativo se_* è valido vengano insieriti solo dopo il controllo (fare mini query per ogni se_*)
+        // TODO: Attualmente, la update non è in grado di aggiornare la password. Da effettuare in un metodo specifico
+        // TODO: In realtà, converrebbe farlo per ogni sotto-query
 
         try {
             String SQLQuery = "UPDATE chefskiss.utente " +
@@ -88,23 +90,28 @@ public class UserDAO_MySQL implements UserDAO {
                     "Cognome = ?, " + // 2
                     "Data_Nascita = ?, " + // 3
                     "Email = ?, " + // 4
-                    "Password = ?, " + // 5
-                    "Telefono = ?, " + // 6
-                    "Se_Cliente = ?, " + // 7
-                    "Se_Privato = ?, " + // 8
-                    "Se_Chef = ?, " + // 9
-                    "Se_Ristoratore = ? " + // 10
-                    "WHERE CF = ?"; //11
 
+                    //"Password = ?, " + // 5
+
+                    "Telefono = ?, " + // 5
+                    "Se_Cliente = ?, " + // 6
+                    "Se_Privato = ?, " + // 7
+                    "Se_Chef = ?, " + // 8
+                    "Se_Ristoratore = ? " + // 9
+                    "WHERE CF = ?"; //10
+
+            int i = 1;
             query = conn.prepareStatement(SQLQuery);
-            query.setString(1, user.getNome());
-            query.setString(2, user.getCognome());
-            query.setDate(3, user.getD_Nascita());
-            query.setString(4, user.getEmail());
-            query.setString(5, user.getPassword());
-            query.setString(6, user.getN_Telefono());
+            query.setString(i++, user.getNome());
+            query.setString(i++, user.getCognome());
+            query.setDate(i++, user.getD_Nascita());
+            query.setString(i++, user.getEmail());
+
+            //query.setString(5, user.getPassword());
+
+            query.setString(i++, user.getN_Telefono());
             if (user.isCliente()) {
-                query.setInt(7, 1);
+                query.setInt(i++, 1);
 
                 if (user.isClienteVerificato()) {
                     String SQLQuery2 = "UPDATE chefskiss.utente SET Verificato = ? WHERE CF = ?";
@@ -117,9 +124,9 @@ public class UserDAO_MySQL implements UserDAO {
                     query2.close();
                 }
             }
-            else query.setInt(7, 0);
+            else query.setInt(i++, 0);
             if (user.isPrivato()) {
-                query.setInt(8, 1);
+                query.setInt(i++, 1);
 
                 if (user.getProfilePicture()!=null)
                 {
@@ -147,9 +154,9 @@ public class UserDAO_MySQL implements UserDAO {
                 query2.executeUpdate();
                 query2.close();
             }
-            else query.setInt(8, 0);
+            else query.setInt(i++, 0);
             if (user.isChef()) {
-                query.setInt(9, 1);
+                query.setInt(i++, 1);
 
                 String SQLQuery2 = "UPDATE chefskiss.utente SET Foto_Chef = ?, CV = ?, Coordinate = ? WHERE CF = ?";
 
@@ -166,11 +173,11 @@ public class UserDAO_MySQL implements UserDAO {
                 // query.setBlob(13, user.getFoto_Chef()); TODO: getter e setter
                 // query.setClob(14, user.getCV());
             }
-            else query.setInt(9, 0);
-            if (user.isRistoratore()) query.setInt(10, 1);
-            else query.setInt(10, 0);
+            else query.setInt(i++, 0);
+            if (user.isRistoratore()) query.setInt(i++, 1);
+            else query.setInt(i++, 0);
 
-            query.setString(11, user.getCF());
+            query.setString(i, user.getCF());
 
             query.executeUpdate();
 

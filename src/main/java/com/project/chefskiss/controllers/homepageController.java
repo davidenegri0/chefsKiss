@@ -34,6 +34,8 @@ public class homepageController {
         Piatto[] piatti = sessionPiattiDAO.find4MostRecent();
         DatabaseDAO.closeTransaction();
 
+        //TODO: Si può aggiornare questa feature gestendo le recensioni in base al voto medio
+        //e caricare le ricette sui cookie
         if (piatti.length < 4) System.out.println("Strano");
         page.addObject("ricetta1", piatti[0].getNome());
         page.addObject("ricetta2", piatti[1].getNome());

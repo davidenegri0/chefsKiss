@@ -112,6 +112,7 @@ public class profileController {
         //Caricamento dati dai cookie
         ModelAndView page = new ModelAndView("profilePage");
         User utente = User.decodeUserData(userData);
+        utente.setPassword(null);
 
         //Caricamento immagine dal db
         DAOFactory DatabaseDAO2 = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
