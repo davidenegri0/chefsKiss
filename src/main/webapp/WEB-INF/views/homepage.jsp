@@ -31,6 +31,7 @@
             <li><a href="http://localhost:8080/logout">Logout</a></li>
             <li><a href="http://localhost:8080/profile">Il Mio Profilo</a></li>
             <%}%>
+            <li><a href="http://localhost:8080/recipesView">Le ricette di Chef's Kiss</a></li>
         </ul>
     </nav>
     <h3>Le 4 Ricette più recenti della settimana!</h3>
