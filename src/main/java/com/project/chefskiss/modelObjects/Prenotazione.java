@@ -4,11 +4,15 @@ import java.sql.Time;
 import java.sql.Date;
 
 public class Prenotazione {
+
+    private Integer ID;
     private Date Data;
     private Time Orario;
     private Integer N_Posti;
     private User Utente;
     private Sede Sede;
+
+    public Integer getID() { return ID; }
 
     public Date getData() { return Data; }
     public void setData(Date data) { Data = data; }
