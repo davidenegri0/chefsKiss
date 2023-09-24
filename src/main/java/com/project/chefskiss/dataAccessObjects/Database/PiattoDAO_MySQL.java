@@ -272,6 +272,7 @@ public class PiattoDAO_MySQL implements PiattoDAO {
     public List<Piatto> findMostRecent(int num) {
         PreparedStatement query;
         List<Piatto> piatti = new ArrayList<>();
+        int i;
 
         try {
             String SQLQuery = "SELECT * " +
@@ -281,16 +282,18 @@ public class PiattoDAO_MySQL implements PiattoDAO {
 
             ResultSet result = query.executeQuery();
 
-            for (int i = 0; result.next() && i<num; i++) {
+            for (i = 0; result.next() && i<num; i++) {
                 piatti.add(read(result));
             }
+
+            if (i!=num) System.out.println("Piatti ricevuti inferiori al numero richiesto");
 
             System.out.println("Lettura dati piatti completata!");
             result.close();
             query.close();
 
             //Setting dei voti medii
-            for (int i = 0; i < piatti.size(); i++) {
+            for (i = 0; i < piatti.size(); i++) {
                 Piatto p = piatti.get(i);
                 p.setVotoMedio(getAVGVotoFromID(p.getId()));
                 piatti.set(i, p);
