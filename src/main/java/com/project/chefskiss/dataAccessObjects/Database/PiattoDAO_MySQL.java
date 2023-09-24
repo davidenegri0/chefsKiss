@@ -13,8 +13,6 @@ import java.util.List;
 public class PiattoDAO_MySQL implements PiattoDAO {
     private Connection conn;
 
-    private Integer RECENT_RECIPES_RETURNS = 4;
-
     public PiattoDAO_MySQL(Connection conn) { this.conn = conn; }
     @Override
     public Piatto create(String Nome_Piatto, String Preparazione, String CF_Utente)
@@ -271,7 +269,7 @@ public class PiattoDAO_MySQL implements PiattoDAO {
     }
 
     @Override
-    public List<Piatto> findMostRecent() {
+    public List<Piatto> findMostRecent(int num) {
         PreparedStatement query;
         List<Piatto> piatti = new ArrayList<>();
 
@@ -283,7 +281,7 @@ public class PiattoDAO_MySQL implements PiattoDAO {
 
             ResultSet result = query.executeQuery();
 
-            for (int i = 0; result.next() && i<RECENT_RECIPES_RETURNS; i++) {
+            for (int i = 0; result.next() && i<num; i++) {
                 piatti.add(read(result));
             }
 

@@ -66,6 +66,6 @@
 
     <a href="http://localhost:8080/updateProfile"><button>Modifica i dati del tuo account</button></a>
 
-    <%@ include file="repetedElements/homepageLink.html"%>>
+    <%@ include file="repetedElements/homepageLink.html"%>
 </body>
 </html>

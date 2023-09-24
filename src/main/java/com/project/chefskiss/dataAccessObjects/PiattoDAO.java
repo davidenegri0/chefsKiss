@@ -32,5 +32,5 @@ public interface PiattoDAO {
 
     public Piatto findByIDPiatto(Integer ID_Piatto);
 
-    public List<Piatto> findMostRecent();
+    public List<Piatto> findMostRecent(int num);
 }

@@ -30,17 +30,19 @@ public class homepageController {
         DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
         DatabaseDAO.beginTransaction();
         PiattoDAO sessionPiattiDAO = DatabaseDAO.getPiattoDAO(null);
-        List<Piatto> piatti = sessionPiattiDAO.findMostRecent();
+        List<Piatto> piatti = sessionPiattiDAO.findMostRecent(4);
         DatabaseDAO.closeTransaction();
 
         //TODO: Si può aggiornare questa feature gestendo le recensioni in base al voto medio
-        //e caricare le ricette sui cookie, in modo da ridurre l'accesso al db
+        //e caricare le ricette sui cookie, in modo da ridurre l'accesso al db (?)
         if (piatti.size() < 4) System.out.println("Strano");
 
         //Debug dei voti
+        /*
         for (int i = 0; i < piatti.size(); i++) {
             System.out.println(piatti.get(i).getNome()+" Voto: "+piatti.get(i).getVotoMedio());
         }
+         */
 
         page.addObject("listaPiatti", piatti);
 
