@@ -324,9 +324,9 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         return piatto;
     }
 
-    private int getAVGVotoFromID(Integer ID) throws SQLException{
+    private Float getAVGVotoFromID(Integer ID) throws SQLException{
         try {
-            int votoMedio = 0;
+            float votoMedio = 0;
             String SQLQuery =
                     "SELECT AVG(Voto) AS Media " +
                             "FROM chefskiss.recensisce " +
@@ -335,7 +335,7 @@ public class PiattoDAO_MySQL implements PiattoDAO {
             query.setInt(1, ID);
             ResultSet result = query.executeQuery();
             if (result.next()) {
-                votoMedio = result.getInt("Media");
+                votoMedio = result.getFloat("Media");
             }
             result.close();
             query.close();

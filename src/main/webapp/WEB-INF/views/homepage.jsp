@@ -36,21 +36,19 @@
     <h3>Le 4 Ricette più recenti della settimana!</h3>
     <div id="recipeBlock">
         <p><%=piatti.get(0).getNome()%></p>
-        <p>Voto: <%=piatti.get(0).getVotoMedio()%></p>
+        <img src="<%=piatti.get(0).getStarsRating()%>" width="20%" height="auto">
     </div>
-    <br>
     <div id="recipeBlock">
         <p><%=piatti.get(1).getNome()%></p>
-        <p>Voto: <%=piatti.get(1).getVotoMedio()%></p>
+        <img src="<%=piatti.get(1).getStarsRating()%>" width="20%" height="auto">
     </div>
-    <br>
     <div id="recipeBlock">
         <p><%=piatti.get(2).getNome()%></p>
-        <p>Voto: <%=piatti.get(2).getVotoMedio()%></p>
+        <img src="<%=piatti.get(2).getStarsRating()%>" width="20%" height="auto">
     </div>
     <div id="recipeBlock">
         <p><%=piatti.get(3).getNome()%></p>
-        <p>Voto: <%=piatti.get(3).getVotoMedio()%></p>
+        <img src="<%=piatti.get(3).getStarsRating()%>" width="20%" height="auto">
     </div>
 </body>
 </html>

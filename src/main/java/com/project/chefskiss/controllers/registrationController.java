@@ -30,7 +30,7 @@ public class registrationController {
             ){
         // Variabli
         ModelAndView page;
-        User utente = new User();
+        User utente;
 
         // Controllo parametri
 
@@ -41,9 +41,9 @@ public class registrationController {
 
         page = new ModelAndView("index");
         //Controllo Data ---> debug
-        System.out.println(Data);
+        //System.out.println(Data);
 
-        // Si prova a fatchare i dati dal DB
+        // Si prova a fetchare i dati dal DB
         try {
             DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
             DatabaseDAO.beginTransaction();
@@ -73,10 +73,10 @@ public class registrationController {
                     "redacted",
                     utente.getN_Telefono(),
                     utente.getD_Iscrizione(),
-                    true,
                     false,
                     false,
-                    "",
+                    false,
+                    "undefined",
                     false,
                     false,
                     false,
@@ -86,8 +86,7 @@ public class registrationController {
             System.out.println("Come minchia è possibile?");
         }
 
-
-        page.addObject("user", utente.getNome()+" "+utente.getCognome());
+        page.addObject("user", utente);
         return page;
     }
 }

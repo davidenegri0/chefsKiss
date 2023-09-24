@@ -36,6 +36,12 @@ public class homepageController {
         //TODO: Si può aggiornare questa feature gestendo le recensioni in base al voto medio
         //e caricare le ricette sui cookie, in modo da ridurre l'accesso al db
         if (piatti.size() < 4) System.out.println("Strano");
+
+        //Debug dei voti
+        for (int i = 0; i < piatti.size(); i++) {
+            System.out.println(piatti.get(i).getNome()+" Voto: "+piatti.get(i).getVotoMedio());
+        }
+
         page.addObject("listaPiatti", piatti);
 
         return page;

@@ -1,5 +1,7 @@
 package com.project.chefskiss.modelObjects;
 
+import com.project.chefskiss.configurations.Config;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,8 +11,7 @@ public class Piatto {
     private String Nome_Piatto;
     private String Preparazione;
     private Boolean Deleted;
-
-    private Integer VotoMedio;
+    private Float VotoMedio;
 
     // GETTER - SETTER
     public void setID(Integer id_piatto) { Id_Piatto = id_piatto; }
@@ -23,7 +24,7 @@ public class Piatto {
     public void setDeleted(Boolean deleted) {
         Deleted = deleted;
     }
-    public void setVotoMedio(Integer votoMedio) {
+    public void setVotoMedio(Float votoMedio) {
         VotoMedio = votoMedio;
     }
     public int getId (){
@@ -39,11 +40,38 @@ public class Piatto {
         return Deleted;
     }
 
-    public Integer getVotoMedio() {
+    public Float getVotoMedio() {
         return VotoMedio;
     }
 
-
+    //Funzione per ottenere l'immagine con le stelle dipendentemente della valutazione media
+    public String getStarsRating(){
+        int avgVoto = Math.round(getVotoMedio());
+        String relPath = "/img/rating_stars/rating-star-icon-";
+        String fileType = ".png";
+        switch (avgVoto) {
+            case 1 -> {
+                return relPath+"1-of-5"+fileType;
+            }
+            case 2 -> {
+                return relPath+"2-of-5"+fileType;
+            }
+            case 3 -> {
+                return relPath+"3-of-5"+fileType;
+            }
+            case 4 -> {
+                return relPath+"4-of-5"+fileType;
+            }
+            case 5 -> {
+                return relPath+"5-of-5"+fileType;
+            }
+            default -> {
+                System.out.println("Media recensioni non valida, " +
+                        "supposta mancanza di recensioni, invio rating medio");
+                return relPath+"3-of-5"+fileType;
+            }
+        }
+    }
 
 
     // RELAZIONI

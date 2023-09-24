@@ -16,7 +16,7 @@ public class Config {
 
     /* Server Location Configuration */
 
-    public static final String PROFILE_IMG_PATH = "C:\\Users\\david\\Documents\\UNIFE\\Sistemi Web\\chefsKiss\\src\\main\\resources\\static\\profileImg.jpg";
+    public static final String IMG_PATH = "C:\\Users\\david\\Documents\\UNIFE\\Sistemi Web\\chefsKiss\\src\\main\\resources\\static\\img\\";
 
     public static final String ENC_SEPARATOR = "&";
 
