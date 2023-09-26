@@ -36,21 +36,29 @@
         </ul>
     </nav>
     <h3>Le 4 Ricette più recenti della settimana!</h3>
-    <div id="recipeBlock">
-        <p><%=piatti.get(0).getNome()%></p>
-        <img src="<%=piatti.get(0).getStarsRating()%>" width="20%" height="auto">
-    </div>
-    <div id="recipeBlock">
-        <p><%=piatti.get(1).getNome()%></p>
-        <img src="<%=piatti.get(1).getStarsRating()%>" width="20%" height="auto">
-    </div>
-    <div id="recipeBlock">
-        <p><%=piatti.get(2).getNome()%></p>
-        <img src="<%=piatti.get(2).getStarsRating()%>" width="20%" height="auto">
-    </div>
-    <div id="recipeBlock">
-        <p><%=piatti.get(3).getNome()%></p>
-        <img src="<%=piatti.get(3).getStarsRating()%>" width="20%" height="auto">
-    </div>
+    <a href="http://localhost:8080/plate?id=<%=piatti.get(0).getId()%>">
+        <div id="recipeBlock1">
+            <p><%=piatti.get(0).getNome()%></p>
+            <img src="<%=piatti.get(0).getStarsRating()%>" width="20%" height="auto">
+        </div>
+    </a>
+    <a href="http://localhost:8080/plate?id=<%=piatti.get(1).getId()%>">
+        <div id="recipeBlock2">
+            <p><%=piatti.get(1).getNome()%></p>
+            <img src="<%=piatti.get(1).getStarsRating()%>" width="20%" height="auto">
+        </div>
+    </a>
+    <a href="http://localhost:8080/plate?id=<%=piatti.get(2).getId()%>">
+        <div id="recipeBlock3">
+            <p><%=piatti.get(2).getNome()%></p>
+            <img src="<%=piatti.get(2).getStarsRating()%>" width="20%" height="auto">
+        </div>
+    </a>
+    <a href="http://localhost:8080/plate?id=<%=piatti.get(3).getId()%>">
+        <div id="recipeBlock4">
+            <p><%=piatti.get(3).getNome()%></p>
+            <img src="<%=piatti.get(3).getStarsRating()%>" width="20%" height="auto">
+        </div>
+    </a>
 </body>
 </html>

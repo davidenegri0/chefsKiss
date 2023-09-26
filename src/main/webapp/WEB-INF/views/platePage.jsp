@@ -105,7 +105,7 @@
 <%
     if (utente != null) {
 %>
-    <a href="http://localhost:8080/addRecensionePage"><button>Aggiungi recesione</button></a>
+    <a href="http://localhost:8080/addRecensione?type=1&id=<%=piatto.getId()%>"><button>Aggiungi recesione</button></a>
 <%
     }
 %>

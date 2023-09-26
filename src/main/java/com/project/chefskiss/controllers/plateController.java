@@ -104,8 +104,6 @@ public class plateController {
             // System.out.println(utenti_recensori.get(i));
         }
 
-
-
         DatabaseDAO.closeTransaction();
 
         //page.addObject("id_piatto", id_piatto);

@@ -9,15 +9,16 @@ import com.project.chefskiss.modelObjects.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO: Andare a implementare il salvataggio di piatti sui cookie
+
 @Controller
-public class recipesMenuController {
+public class recipesListController {
     @GetMapping(path = "/recipesView")
     public ModelAndView viewRecipesMenu(
             @CookieValue(value = "loggedUser", defaultValue = "") String userData
