@@ -1,5 +1,6 @@
 package com.project.chefskiss.dataAccessObjects;
 
+import com.project.chefskiss.modelObjects.Piatto;
 import com.project.chefskiss.modelObjects.Ristorante;
 import com.project.chefskiss.modelObjects.Sede;
 
@@ -27,4 +28,5 @@ public interface SedeDAO {
 
     // cerca una sede per coordinate --> non so quanto possa servire però
     public Sede findByCoordinate (String Coordinate);
+    public List<Sede> findByPiatto (Piatto piatto);
 }

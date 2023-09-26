@@ -23,6 +23,10 @@ public abstract class DAOFactory {
 
     public abstract SedeDAO getSedeDAO(HttpServletResponse response);
 
+    public abstract ContieneDAO getContieneDAO(HttpServletResponse response);
+
+    public abstract RecensioneDAO getRecensioneDAO(HttpServletResponse response);
+
     public static DAOFactory getDAOFactory(String whichFactory, HttpServletResponse response) {
 
         if (whichFactory.equals("MySQLJDBCImpl")) {

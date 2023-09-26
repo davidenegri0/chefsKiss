@@ -316,8 +316,8 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         piatto.setPreparazione(rs.getString("Preparazione"));
 
         User utente = new User();
-        utente.setCF(rs.getString("CF"));
         piatto.setUtenteP(utente);
+        piatto.getUtenteP().setCF(rs.getString("CF"));
 
         piatto.setDeleted(rs.getBoolean("Deleted"));
 

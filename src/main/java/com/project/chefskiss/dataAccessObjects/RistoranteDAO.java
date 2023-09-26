@@ -11,6 +11,8 @@ public interface RistoranteDAO {
     public void update (Ristorante ristorante);
     public void delete (Ristorante ristorante);
 
+    public Ristorante findById(Integer id);
+
     // cerca un ristorante per nome
     public Ristorante findByName (String ristorante);
 

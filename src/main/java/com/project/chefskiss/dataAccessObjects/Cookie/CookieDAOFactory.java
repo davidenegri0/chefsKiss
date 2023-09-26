@@ -1,6 +1,7 @@
 package com.project.chefskiss.dataAccessObjects.Cookie;
 
 import com.project.chefskiss.dataAccessObjects.*;
+import com.project.chefskiss.dataAccessObjects.Database.ContieneDAO_MySQL;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -57,5 +58,13 @@ public class CookieDAOFactory extends DAOFactory {
     public SedeDAO getSedeDAO(HttpServletResponse response) {
         return null;
     }
+    //UNUSED
+
+    @Override
+    public ContieneDAO getContieneDAO(HttpServletResponse response) { return null; }
+    //UNUSED
+
+    @Override
+    public RecensioneDAO getRecensioneDAO(HttpServletResponse response) { return null; };
     //UNUSED
 }

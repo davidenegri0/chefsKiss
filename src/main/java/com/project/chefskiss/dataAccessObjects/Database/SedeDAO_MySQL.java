@@ -1,6 +1,7 @@
 package com.project.chefskiss.dataAccessObjects.Database;
 
 import com.project.chefskiss.dataAccessObjects.SedeDAO;
+import com.project.chefskiss.modelObjects.Piatto;
 import com.project.chefskiss.modelObjects.Ristorante;
 import com.project.chefskiss.modelObjects.Sede;
 
@@ -198,6 +199,33 @@ public class SedeDAO_MySQL implements SedeDAO {
         }
 
         return sede;
+    }
+    @Override
+    public List<Sede> findByPiatto (Piatto piatto){
+        PreparedStatement query;
+        List<Sede> sedi = new ArrayList<>();
+
+        try{
+            String SQLQuery = "SELECT Coordinate, Via, Citta, Posti_Disponibili, ID_Ristorante, Deleted FROM chefskiss.servito_in NATURAL JOIN chefskiss.sede WHERE ID_Piatto = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setInt(1, piatto.getId());
+
+            ResultSet result = query.executeQuery();
+
+            while(result.next()){
+                sedi.add(read(result));
+                System.out.println("Lettura dato completata!");
+            }
+
+            result.close();
+            query.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return sedi;
     }
 
     private Sede read(ResultSet rs) throws SQLException {

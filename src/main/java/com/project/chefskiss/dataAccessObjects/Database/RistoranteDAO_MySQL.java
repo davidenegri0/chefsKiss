@@ -85,6 +85,34 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
     }
 
     @Override
+    public Ristorante findById(Integer id) {
+        PreparedStatement query;
+        Ristorante ristorante = new Ristorante();
+
+        try {
+            String SQLQuery = "SELECT * FROM chefskiss.ristorante WHERE ID_Ristorante = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setInt(1, id);
+
+            ResultSet result = query.executeQuery();
+
+            if (result.next()) {
+                ristorante = read(result);
+                System.out.println("Lettura dati completata!");
+            }
+
+            result.close();
+            query.close();
+
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return ristorante;
+    }
+
+    @Override
     public Ristorante findByName(String risto) {
         PreparedStatement query;
         Ristorante ristorante = new Ristorante();
