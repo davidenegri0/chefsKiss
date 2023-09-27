@@ -42,16 +42,15 @@ public class addRecensioniController {
 
         //TODO: Testare e fixare il controllo della recensione
         RecensioneDAO sessionRecensioneDAO = DatabaseDAO.getRecensioneDAO(null);
-        //boolean isRecensioneUp = sessionRecensioneDAO.checkRecensione(CF, ID); //String CF, int ID
-        //TODO: Implementare questa funzione
-        /*
+        boolean isRecensioneUp = sessionRecensioneDAO.checkRecensione("CF12345678901234", 1); //String CF, int ID
+
         if (isRecensioneUp){
             page.setViewName("redirect_to");
             page.addObject("url", "/plate?id="+id);
             page.addObject("errorCode", 1);
             return page;
         }
-         */
+
 
         switch (typeCode){
             case 1: //typeCode = 1 --> recensione di un piatto

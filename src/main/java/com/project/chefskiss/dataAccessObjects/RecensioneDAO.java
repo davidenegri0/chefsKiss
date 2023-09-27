@@ -12,4 +12,5 @@ public interface RecensioneDAO {
     public void delete(Recensione recensione);
     public List<Recensione> miglioriPiatti (Integer numero);
     public List<Recensione> findByPiatto (Integer id_piatto);
+    public boolean checkRecensione(String CF_recensore, Integer id_piatto);
 }

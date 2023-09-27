@@ -136,6 +136,31 @@ public class RecensioneDAO_MySQL implements RecensioneDAO {
 
         return piatti;
     }
+    @Override
+    public boolean checkRecensione(String CF_recensore, Integer id_piatto){
+        boolean check = false;
+
+        PreparedStatement query;
+        try{
+            String SQLQuery = "SELECT * FROM chefskiss.recensisce WHERE CF = ? AND ID_Piatto = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, CF_recensore);
+            query.setInt(2, id_piatto);
+
+            ResultSet result;
+            result = query.executeQuery();
+
+            if (result.next()) check = true;
+
+            result.close();
+            query.close();
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return check;
+    }
 
     private Recensione read (ResultSet rs) throws SQLException{
         Recensione recensione = new Recensione();

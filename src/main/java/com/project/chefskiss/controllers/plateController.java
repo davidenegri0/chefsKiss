@@ -16,10 +16,10 @@ import java.util.List;
 
 @Controller
 public class plateController {
-    @RequestMapping(value = "/plate")
+    @RequestMapping(value = "/plate", params = "id")
     public ModelAndView onPlateViewRequest(
             HttpServletResponse response,
-            @RequestParam(name = "id", defaultValue = "", required = false) Integer id_piatto,
+            @RequestParam(name = "id", defaultValue = "", required = true) Integer id_piatto,
             @CookieValue(value = "loggedUser", defaultValue = "") String UserData
     ){
 
