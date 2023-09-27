@@ -11,12 +11,14 @@ public interface PiattoDAO {
     public Piatto create (
             String Nome_Piatto,
             String Preparazione,
-            String CF_Utente
+            User Utente
     );
 
     public void update (Piatto piatto);
 
     public void delete (Piatto piatto);
+
+    public void addPiattoinSede (Piatto piatto, Sede sede);
 
     // cerca un piatto per nome
     public List<Piatto> findByName (String Nome_Piatto);

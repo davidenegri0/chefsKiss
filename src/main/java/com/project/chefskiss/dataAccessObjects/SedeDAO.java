@@ -12,7 +12,8 @@ public interface SedeDAO {
             String Via,
             String Citta,
             Integer Posti_Disponibili,
-            Integer ID_Ristorante
+            Ristorante ID_Ristorante,
+            List<Piatto> Piatti
     );
 
     public void update (Sede sede);

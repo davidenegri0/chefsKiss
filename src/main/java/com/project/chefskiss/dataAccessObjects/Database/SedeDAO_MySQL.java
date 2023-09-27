@@ -15,6 +15,51 @@ import java.util.List;
 public class SedeDAO_MySQL implements SedeDAO {
     Connection conn;
     public SedeDAO_MySQL (Connection conn){ this.conn = conn; }
+
+    @Override
+    public Sede create(String Coordinate, String Via, String Citta, Integer Posti_Disponibili, Ristorante Ristorante, List<Piatto> Piatti) {
+        PreparedStatement query_sede;
+        PreparedStatement query_servito_in;
+
+        Sede sede = new Sede();
+
+        try{
+            String SQLQuery_sede = "INSERT INTO chefskiss.sede (Coordinate, Via, Citta, Posti_Disponibili, ID_Ristorante) VALUES (?,?,?,?,?)";
+            String SQLQuery_servito_in = "INSERT INTO chefskiss.servito_in (ID_Piatto, Coordinate) VALUES (?,?)";
+
+            query_sede = conn.prepareStatement(SQLQuery_sede);
+            query_sede.setString(1, Coordinate);
+            query_sede.setString(2, Via);
+            query_sede.setString(3, Citta);
+            query_sede.setInt(4, Posti_Disponibili);
+            query_sede.setInt(5, Ristorante.getID_Ristorante());
+
+            query_sede.executeUpdate();
+
+            query_servito_in = conn.prepareStatement(SQLQuery_servito_in);
+
+            for( int i = 0; i < Piatti.size(); i++ ){
+                query_servito_in.setInt(1, Piatti.get(i).getId());
+                query_servito_in.setString(2, Coordinate);
+
+                query_servito_in.executeUpdate();
+            }
+
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+
+        sede.setCoordinate(Coordinate);
+        sede.setVia(Via);
+        sede.setCitta(Citta);
+        sede.setPosti(Posti_Disponibili);
+        sede.setRistoranteS(Ristorante);
+        sede.setPiattoS(Piatti);
+
+        return sede;
+    }
+
+    /*
     @Override
     public Sede create(String Coordinate, String Via, String Citta, Integer Posti_Disponibili, Integer ID_Ristorante) {
         PreparedStatement query;
@@ -46,6 +91,7 @@ public class SedeDAO_MySQL implements SedeDAO {
 
         return sede;
     }
+    */
 
     @Override
     public void update(Sede sede) {

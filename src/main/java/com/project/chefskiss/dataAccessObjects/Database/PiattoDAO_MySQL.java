@@ -3,11 +3,9 @@ package com.project.chefskiss.dataAccessObjects.Database;
 import com.project.chefskiss.dataAccessObjects.PiattoDAO;
 import com.project.chefskiss.modelObjects.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PiattoDAO_MySQL implements PiattoDAO {
@@ -15,18 +13,21 @@ public class PiattoDAO_MySQL implements PiattoDAO {
 
     public PiattoDAO_MySQL(Connection conn) { this.conn = conn; }
     @Override
-    public Piatto create(String Nome_Piatto, String Preparazione, String CF_Utente)
+    public Piatto create(String Nome_Piatto, String Preparazione, User Utente)
     {
         PreparedStatement query;
         Piatto piatto = new Piatto();
+        Date data_ora = new Date();
+        Timestamp timestamp = new Timestamp(data_ora.getTime());
 
         try {
-            String SQLQuery = "INSERT INTO chefskiss.piatto(Nome_Piatto, Preparazione, CF) VALUES (?, ?, ?) ";
+            String SQLQuery = "INSERT INTO chefskiss.piatto(Nome_Piatto, Data_Upload, Preparazione, CF) VALUES (?, ?, ?, ?) ";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, Nome_Piatto);
-            query.setString(2, Preparazione);
-            query.setString(3, CF_Utente);
+            query.setTimestamp(2, timestamp);
+            query.setString(3, Preparazione);
+            query.setString(4, Utente.getCF());
 
             query.executeUpdate();
 
@@ -89,6 +90,25 @@ public class PiattoDAO_MySQL implements PiattoDAO {
             query.close();
 
         } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void addPiattoinSede (Piatto piatto, Sede sede){
+        PreparedStatement query;
+
+        try{
+            String SQLQuery = "INSERT INTO chefskiss.servito_in (ID_Piatto, Coordinate) VALUES (?,?)";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setInt(1, piatto.getId());
+            query.setString(2, sede.getCoordinate());
+
+            query.executeUpdate();
+            query.close();
+
+        } catch (SQLException e){
             throw new RuntimeException(e.getMessage());
         }
     }
