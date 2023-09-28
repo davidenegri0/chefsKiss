@@ -26,13 +26,25 @@ public class PiattoDAO_MySQL implements PiattoDAO {
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, Nome_Piatto);
             query.setTimestamp(2, timestamp);
-            query.setString(3, Preparazione);
+            if (Preparazione==null) query.setNull(3, Types.VARCHAR);
+            else query.setString(3, Preparazione);
             query.setString(4, Utente.getCF());
 
             query.executeUpdate();
 
             query.close();
 
+            SQLQuery = "SELECT * FROM chefskiss.piatto WHERE Nome_Piatto = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, Nome_Piatto);
+            ResultSet result = query.executeQuery();
+            if (result.next()){
+                piatto = read(result);
+            }
+
+            result.close();
+            query.close();
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }

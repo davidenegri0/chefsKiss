@@ -90,6 +90,8 @@ public class recipesListController {
             System.out.println("Allergene: "+allergeni.get(i));
         }
 
+        //TODO: Gestire gli allergeni
+
         //Se type == 1 --> Ricerca per nome, se type == 2 --> Ricerca per ingrediente
         if (type==1)
         {
