@@ -17,12 +17,12 @@
 You will be redirected...
 <br>
 <br>
-If that doesn't happen, click <a href="http://localhost:8080/<%=URL%>">here</a>
+If that doesn't happen, click <a href="<%=URL%>">here</a>
 </body>
 <script>
   function onLoadHandler()
   {
-    window.location.replace("http://localhost:8080<%=URL%>");
+    window.location.replace("<%=URL%>");
   }
   window.addEventListener("load", onLoadHandler)
 </script>

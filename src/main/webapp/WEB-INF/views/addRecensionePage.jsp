@@ -42,7 +42,7 @@
         </datalist>
         <% if(!isRistorante){ %>
         <p>Vuoi aggiungere un commento (opzionale)? Esprimi al meglio il tuo parere</p>
-        <textarea id="commento" name="commento" cols="100" rows="20">Commento</textarea>
+        <textarea id="commento" name="commento" cols="100" rows="20" maxlength="300"></textarea>
         <% } %>
         <input type="hidden" name="type" value="<%=type%>">
         <input type="hidden" name="ID" value="<%=ID%>">

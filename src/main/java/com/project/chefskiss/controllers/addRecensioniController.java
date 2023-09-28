@@ -1,5 +1,6 @@
 package com.project.chefskiss.controllers;
 
+import com.project.chefskiss.Utility;
 import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.dataAccessObjects.DAOFactory;
 import com.project.chefskiss.dataAccessObjects.PiattoDAO;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import com.project.chefskiss.Utility.*;
 
 @Controller
 public class addRecensioniController {
@@ -22,7 +24,10 @@ public class addRecensioniController {
             @RequestParam("type") int typeCode,
             @RequestParam("id") String id
     ){
+        //Variabili
         ModelAndView page = new ModelAndView("addRecensionePage");
+        User utente;
+        boolean isRecensioneUp;
 
         //Lettura dei cookie dell'utente
         if(userData.isEmpty()){
@@ -32,7 +37,7 @@ public class addRecensioniController {
         }
         else
         {
-            User utente = User.decodeUserData(userData);
+            utente = User.decodeUserData(userData);
             page.addObject("user", utente);
         }
 
@@ -40,13 +45,20 @@ public class addRecensioniController {
         DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
         DatabaseDAO.beginTransaction();
 
-        //TODO: Testare e fixare il controllo della recensione
         RecensioneDAO sessionRecensioneDAO = DatabaseDAO.getRecensioneDAO(null);
-        boolean isRecensioneUp = sessionRecensioneDAO.checkRecensione("CF12345678901234", 1); //String CF, int ID
+        if (typeCode==1) isRecensioneUp = sessionRecensioneDAO.checkRecensione(utente.getCF(), Integer.parseInt(id)); //String CF, int ID
+        else isRecensioneUp = true; //TODO: Implementare controllo recensione ristorante
 
         if (isRecensioneUp){
+            System.out.println(
+                    "Recensione dell'utente "+utente.getCF()+
+                    " per il piatto/ristorante "+id+" già presente"
+            );
+            page = Utility.redirect(page, "/plate?id="+id);
+            /*
             page.setViewName("redirect_to");
             page.addObject("url", "/plate?id="+id);
+            */
             page.addObject("errorCode", 1);
             return page;
         }
@@ -60,7 +72,7 @@ public class addRecensioniController {
                 PiattoDAO sessionPiattiDAO = DatabaseDAO.getPiattoDAO(null);
                 Piatto plate = sessionPiattiDAO.findByIDPiatto(plateID);
 
-                User utente = plate.getUtenteP();
+                utente = plate.getUtenteP();
 
                 UserDAO sessionUserDAO = DatabaseDAO.getUserDAO(null);
                 utente = sessionUserDAO.findByCF(utente.getCF());
@@ -104,7 +116,7 @@ public class addRecensioniController {
             @RequestParam(value = "commento", required = false, defaultValue = "")
             String commento
     ){
-        ModelAndView page = new ModelAndView("redirect_to");
+        ModelAndView page = new ModelAndView("index");
         User utente;
 
         //Lettura dei cookie dell'utente
@@ -137,7 +149,7 @@ public class addRecensioniController {
 
                 //System.out.println("Per piatto con ID: "+ID+" Votazione: "+voto+" e commento: "+commento);
 
-                page.addObject("url", "/plate?id="+plateID);
+                page = Utility.redirect(page, "/plate?id="+plateID);
 
                 break;
             }
