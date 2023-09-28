@@ -81,8 +81,7 @@ public class UserDAO_MySQL implements UserDAO {
         PreparedStatement query;
         PreparedStatement query2;
 
-        // TODO: Attualmente, la update non è in grado di aggiornare la password. Da effettuare in un metodo specifico
-        // TODO: In realtà, converrebbe farlo per ogni sotto-query
+        //Il metodo update non è impostato per aggiornare la password --> Funzionalità spostata su funzione apposita
 
         try {
             String SQLQuery = "UPDATE chefskiss.utente " +
@@ -217,6 +216,28 @@ public class UserDAO_MySQL implements UserDAO {
         }
         catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void updateUserPassword(User user, String newPassword) {
+        PreparedStatement query;
+
+        try {
+            String SQLQuery =
+                    "UPDATE chefskiss.utente " +
+                    "SET Password = ? " +
+                    "WHERE CF = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, newPassword);
+            query.setString(2, user.getCF());
+
+            query.executeUpdate();
+
+            query.close();
+        } catch (SQLException e){
+            throw  new RuntimeException(e.getMessage());
         }
     }
 

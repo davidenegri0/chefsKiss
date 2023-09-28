@@ -32,6 +32,8 @@ public interface UserDAO {
 
     public void delete (User user);
 
+    public void updateUserPassword(User user, String newPassword);
+
     public User findByCF (String CF);
 
     public User findByNomeCognome (String Nome, String Cognome);

@@ -70,6 +70,11 @@ public class UserDAOCookie implements UserDAO {
     }
 
     @Override
+    public void updateUserPassword(User user, String newPassword) {
+
+    }
+
+    @Override
     public User findByCF(String CF) {
         return null;
     }       //Unused operation

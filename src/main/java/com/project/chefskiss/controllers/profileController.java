@@ -1,5 +1,6 @@
 package com.project.chefskiss.controllers;
 
+import com.project.chefskiss.Utility;
 import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.dataAccessObjects.DAOFactory;
 import com.project.chefskiss.dataAccessObjects.Database.MySQLJDBC_DAOFactory;
@@ -27,7 +28,6 @@ public class profileController {
     //Handler della richiesta di visualizzazione del profilo
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public ModelAndView onProfileViewRequest(
-            HttpServletResponse response,
             @CookieValue("loggedUser") String userData
     ){
         ModelAndView page = new ModelAndView("profilePage");
@@ -177,6 +177,72 @@ public class profileController {
         page.addObject("utente", utente);
         page.addObject("imgPath", "profile/profileImg.jpg");
         return page;
+    }
+
+    @GetMapping(path = "/changePassword")
+    public ModelAndView viewChangePassword(
+            @CookieValue("loggedUser") String userData
+    )
+    {
+        //Variabili
+        ModelAndView page = new ModelAndView("updatePasswordPage");
+
+        //Lettura dei cookie dell'utente
+        if(userData.isEmpty()){
+            System.out.println("No cookies, unexpected behaviour, returning to homepage");
+            page.setViewName("index");
+            return page;
+        }
+
+        page.addObject("errorCode", 0);
+        return page;
+    }
+
+    @PostMapping(path = "/changePassword", params = {"oldPassword", "newPassword"})
+    public ModelAndView postChangePassword(
+            @CookieValue("loggedUser") String userData,
+            @RequestParam("oldPassword") String oldPassword,
+            @RequestParam("newPassword") String newPassword
+    ){
+        //Variabili
+        ModelAndView page = new ModelAndView();
+        User utente;
+
+        //Lettura dei cookie dell'utente
+        if(userData.isEmpty()){
+            System.out.println("No cookies, unexpected behaviour, returning to homepage");
+            page.setViewName("index");
+            return page;
+        }
+        else
+        {
+            utente = User.decodeUserData(userData);
+            page.addObject("user", utente);
+        }
+
+        //Accesso al database
+        DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
+        DatabaseDAO.beginTransaction();
+
+        //Cambiamento password sul database
+        UserDAO sessionUserDAO = DatabaseDAO.getUserDAO(null);
+
+        String password = sessionUserDAO.findByCF(utente.getCF()).getPassword();
+
+        if (!password.equals(oldPassword)){
+            System.out.println("La vecchia password ("+oldPassword+") non corrisponde con ("+password+")");
+            page.setViewName("updatePasswordPage");
+            page.addObject("errorCode", 1);
+            return page;
+        }
+
+        sessionUserDAO.updateUserPassword(utente, newPassword);
+
+        //Chiusura connessione database
+        DatabaseDAO.commitTransaction();
+        DatabaseDAO.closeTransaction();
+
+        return Utility.redirect(page, "/profile");
     }
 
     //Generazione dinamica dell'immagine del profilo
