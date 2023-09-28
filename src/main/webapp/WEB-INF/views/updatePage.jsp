@@ -59,5 +59,6 @@
         <input type="file" accept="image/jpeg" name="file"> <br>
         <input type="submit" value="Aggiorna profilo">
     </form>
-    </body>
+    <%@include file="repetedElements/homepageLink.html"%>
+</body>
 </html>

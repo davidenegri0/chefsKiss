@@ -97,5 +97,6 @@
         <input type="submit" value="Ok">
         <input type="reset" value="Annulla">
     </form>
+    <%@include file="repetedElements/homepageLink.html"%>
 </body>
 </html>

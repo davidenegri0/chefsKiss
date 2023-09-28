@@ -36,5 +36,6 @@
 
     <h4>Questo ristorante è gestito da <%= ristoratore.getNome() %> <%= ristoratore.getCognome() %></h4>
     <div>Per richiedere informazioni scrivere a <i><%= ristoratore.getEmail()%></i> o contattare il numero <i><%=ristoratore.getN_Telefono()%></i></div>
+    <%@include file="repetedElements/homepageLink.html"%>
 </body>
 </html>

@@ -33,5 +33,6 @@
       <input type="submit" value="Invia">
       <input type="reset" value="Annulla">
     </form>
+    <%@include file="repetedElements/homepageLink.html"%>
 </body>
 </html>

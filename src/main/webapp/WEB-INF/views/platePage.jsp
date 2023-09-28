@@ -110,6 +110,6 @@
     <%
         }
     %>
-
+    <%@include file="repetedElements/homepageLink.html"%>
 </body>
 </html>
