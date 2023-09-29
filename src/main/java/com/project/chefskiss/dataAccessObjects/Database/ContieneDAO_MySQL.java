@@ -109,11 +109,11 @@ public class ContieneDAO_MySQL implements ContieneDAO {
         Contiene quantita = new Contiene();
 
         try{
-            String SQLQuery = "SELECT * FROM chefskiss.contiene WHERE ID_Piatto = ? AND Nome_Ingrediente = ?";
+            String SQLQuery = "SELECT * FROM chefskiss.contiene WHERE ID_Piatto = ? AND Nome_Ingrediente LIKE ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, piatto.getId());
-            query.setString(2, ingrediente.getNome());
+            query.setString(2, "%"+ingrediente.getNome()+"%");
 
             ResultSet result = query.executeQuery();
 

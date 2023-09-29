@@ -2,6 +2,7 @@ package com.project.chefskiss.dataAccessObjects;
 
 import com.project.chefskiss.dataAccessObjects.Cookie.CookieDAOFactory;
 import com.project.chefskiss.dataAccessObjects.Database.MySQLJDBC_DAOFactory;
+import com.project.chefskiss.dataAccessObjects.Database.ValutazioneDAO_MySQL;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.net.http.HttpResponse;
@@ -26,6 +27,8 @@ public abstract class DAOFactory {
     public abstract ContieneDAO getContieneDAO(HttpServletResponse response);
 
     public abstract RecensioneDAO getRecensioneDAO(HttpServletResponse response);
+
+    public abstract ValutazioneDAO getValutazioneDAO(HttpServletResponse response);
 
     public static DAOFactory getDAOFactory(String whichFactory, HttpServletResponse response) {
 

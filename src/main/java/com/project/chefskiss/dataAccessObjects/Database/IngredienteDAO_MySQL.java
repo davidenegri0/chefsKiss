@@ -21,10 +21,10 @@ public class IngredienteDAO_MySQL implements IngredienteDAO {
         Ingrediente ingrediente = new Ingrediente();
 
         try {
-            String SQLQuery = "SELECT * FROM chefskiss.ingrediente WHERE Nome_Ingrediente = ?";
+            String SQLQuery = "SELECT * FROM chefskiss.ingrediente WHERE Nome_Ingrediente LIKE ?";
 
             query = conn.prepareStatement(SQLQuery);
-            query.setString(1, Nome_Ingrediente);
+            query.setString(1, "%"+Nome_Ingrediente+"%");
 
             ResultSet result = query.executeQuery();
 
@@ -75,10 +75,10 @@ public class IngredienteDAO_MySQL implements IngredienteDAO {
         List<Ingrediente> ingredienti = new ArrayList<>();
 
         try{
-            String SQLQuery = "SELECT * FROM chefskiss.ingrediente WHERE Gruppo_Allergenico = ?";
+            String SQLQuery = "SELECT * FROM chefskiss.ingrediente WHERE Gruppo_Allergenico LIKE ?";
 
             query = conn.prepareStatement(SQLQuery);
-            query.setString(1, Gruppo_Allergenico);
+            query.setString(1, "%"+Gruppo_Allergenico+"%");
 
             ResultSet result = query.executeQuery();
 

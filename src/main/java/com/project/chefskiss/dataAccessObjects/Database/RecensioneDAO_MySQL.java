@@ -106,6 +106,34 @@ public class RecensioneDAO_MySQL implements RecensioneDAO {
         return recensioni;
     }
 
+    @Override
+    public Recensione findByPiatto_Utente (Integer id_piatto, String CF_user){
+        Recensione recensioni = new Recensione();
+
+        PreparedStatement query;
+
+        try{
+            String SQLQuery = "SELECT * FROM chefskiss.recensisce WHERE ID_Piatto = ? AND CF = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setInt(1, id_piatto);
+            query.setString(2, CF_user);
+            ResultSet result = query.executeQuery();
+
+            if (result.next()){
+                recensioni = read(result);
+            }
+
+            result.close();
+            query.close();
+
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return recensioni;
+    }
+
     public List<Recensione> miglioriPiatti (Integer numero){
         List<Recensione> piatti = new ArrayList<>();
 

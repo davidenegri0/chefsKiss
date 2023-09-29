@@ -169,10 +169,10 @@ public class SedeDAO_MySQL implements SedeDAO {
         List<Sede> sedi = new ArrayList<>();
 
         try{
-            String SQLQuery = "SELECT Coordinate, Via, Citta, Posti_Disponibili, ID_Ristorante, Deleted FROM chefskiss.sede NATURAL JOIN chefskiss.ristorante WHERE ristorante.Nome_Ristorante = ?";
+            String SQLQuery = "SELECT Coordinate, Via, Citta, Posti_Disponibili, ID_Ristorante, Deleted FROM chefskiss.sede NATURAL JOIN chefskiss.ristorante WHERE ristorante.Nome_Ristorante LIKE ?";
 
             query = conn.prepareStatement(SQLQuery);
-            query.setString(1, nomeRistorante);
+            query.setString(1, "%"+nomeRistorante+"%");
 
             ResultSet result = query.executeQuery();
 

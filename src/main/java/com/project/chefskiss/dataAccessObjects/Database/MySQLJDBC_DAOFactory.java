@@ -4,6 +4,7 @@ import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.dataAccessObjects.*;
 import jakarta.servlet.http.HttpServletResponse;
 
+import javax.xml.validation.Validator;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -81,6 +82,11 @@ public class MySQLJDBC_DAOFactory extends DAOFactory {
     @Override
     public ContieneDAO getContieneDAO(HttpServletResponse response) {
         return new ContieneDAO_MySQL(conn);
+    }
+
+    @Override
+    public ValutazioneDAO getValutazioneDAO(HttpServletResponse response) {
+        return new ValutazioneDAO_MySQL(conn);
     }
 
 }

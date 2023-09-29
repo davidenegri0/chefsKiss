@@ -278,11 +278,11 @@ public class UserDAO_MySQL implements UserDAO {
         User utente = new User();
 
         try{
-            String SQLQuery = "SELECT * FROM Utente WHERE Nome = ? AND Cognome = ? AND Deleted = 'N'";
+            String SQLQuery = "SELECT * FROM Utente WHERE Nome LIKE ? AND Cognome LIKE ? AND Deleted = 'N'";
 
             query = conn.prepareStatement(SQLQuery);
-            query.setString(1, Nome);
-            query.setString(2, Cognome);
+            query.setString(1, "%"+Nome+"%");
+            query.setString(2, "%"+Cognome+"%");
 
             ResultSet result = query.executeQuery();
 

@@ -118,10 +118,10 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
         Ristorante ristorante = new Ristorante();
 
         try {
-            String SQLQuery = "SELECT * FROM chefskiss.ristorante WHERE Nome_Ristorante = ?";
+            String SQLQuery = "SELECT * FROM chefskiss.ristorante WHERE Nome_Ristorante LIKE ?";
 
             query = conn.prepareStatement(SQLQuery);
-            query.setString(1, risto);
+            query.setString(1, "%"+risto+"%");
 
             ResultSet result = query.executeQuery();
 

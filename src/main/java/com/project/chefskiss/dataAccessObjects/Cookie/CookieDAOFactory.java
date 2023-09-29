@@ -67,4 +67,9 @@ public class CookieDAOFactory extends DAOFactory {
     @Override
     public RecensioneDAO getRecensioneDAO(HttpServletResponse response) { return null; };
     //UNUSED
+
+    @Override
+    public ValutazioneDAO getValutazioneDAO(HttpServletResponse response) { return null; };
+    //UNUSED
+
 }

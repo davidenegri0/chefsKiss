@@ -135,11 +135,11 @@ public class PiattoDAO_MySQL implements PiattoDAO {
                     "SELECT p.*, AVG(r.Voto) as Media " +
                     "FROM chefskiss.piatto p " +
                     "LEFT JOIN chefskiss.recensisce r on p.ID_Piatto = r.ID_Piatto " +
-                    "WHERE p.Nome_Piatto = ?" +
+                    "WHERE p.Nome_Piatto LIKE ?" +
                     "GROUP BY p.ID_Piatto";
 
             query = conn.prepareStatement(SQLQuery);
-            query.setString(1, Nome_Piatto);
+            query.setString(1, "%"+Nome_Piatto+"%");
 
             ResultSet result = query.executeQuery();
 
@@ -173,10 +173,10 @@ public class PiattoDAO_MySQL implements PiattoDAO {
                     "FROM chefskiss.piatto p " +
                     "LEFT JOIN recensisce r on p.ID_Piatto = r.ID_Piatto " +
                     "JOIN contiene c on p.ID_Piatto = c.ID_Piatto " +
-                    "WHERE c.Nome_Ingrediente = ? " +
+                    "WHERE c.Nome_Ingrediente LIKE ? " +
                     "GROUP BY p.ID_Piatto";
             query = conn.prepareStatement(SQLQuery);
-            query.setString(1, ingrediente);
+            query.setString(1, "%"+ingrediente+"%");
 
             ResultSet result = query.executeQuery();
 
