@@ -13,9 +13,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.project.chefskiss.Utility.*;
 
 @Controller
-public class addRecensioniController {
-    @GetMapping(path = "/addRecensione", params = {"type", "id"})
-    public ModelAndView viewAddRecensione(
+public class modifyRecensioniController {
+    @GetMapping(path = "/modifyRecensione", params = {"type", "id"})
+    public ModelAndView viewModifyRecensione(
             @CookieValue(value = "loggedUser", defaultValue = "") String userData,
             @RequestParam("type") int typeCode,
             @RequestParam("id") String id
@@ -45,33 +45,17 @@ public class addRecensioniController {
         RecensioneDAO sessionRecensioneDAO = DatabaseDAO.getRecensioneDAO(null);
         ValutazioneDAO sessioneValutazioneDAO = DatabaseDAO.getValutazioneDAO(null);
 
-        // typecode = 1 --> aggiunta recensione piatto
-        // typecode = 2 --> aggiunta recensione sede ristorante
         // typecode = 3 --> modifica recensione piatto
         // typecode = 4 --> modifica recensione sede ristorante
 
-        if (typeCode == 1 || typeCode == 3) isRecensioneUp = sessionRecensioneDAO.checkRecensione(utente.getCF(), Integer.parseInt(id)); //String CF, int ID
+        if (typeCode == 3) isRecensioneUp = sessionRecensioneDAO.checkRecensione(utente.getCF(), Integer.parseInt(id)); //String CF, int ID
         else isValutazioneUp = sessioneValutazioneDAO.checkValutazione(utente.getCF(), id); //TODO: Implementare controllo recensione ristorante
 
-
-        if (typeCode == 1 && isRecensioneUp){ // recensione già inserita --> impossibile aggiunta
-            System.out.println(
-                    "Recensione dell'utente "+utente.getCF()+
-                    " per il piatto/ristorante "+id+" già presente"
-            );
-            page = Utility.redirect(page, "/plate?id="+id);
-            /*
-            page.setViewName("redirect_to");
-            page.addObject("url", "/plate?id="+id);
-            */
-            page.addObject("errorCode", 1);
-            return page;
-        }
 
         if (typeCode == 3 && !isRecensioneUp){ // recensione non esistente --> impossibile modifica
             System.out.println(
                     "Non è stata ancora inserita alcuna recensione dall'utente " + utente.getCF() +
-                    " per il piatto/ristorante " + id
+                            " per il piatto/ristorante " + id
             );
             page = Utility.redirect(page, "/plate?id="+id);
             /*
@@ -84,45 +68,37 @@ public class addRecensioniController {
 
 
         switch (typeCode){
-            case 1: //typeCode = 1 --> recensione di un piatto
+            case 3: // modifica di una recensione di un piatto
             {
                 int plateID = Integer.parseInt(id);
 
                 PiattoDAO sessionPiattiDAO = DatabaseDAO.getPiattoDAO(null);
-                Piatto plate = sessionPiattiDAO.findByIDPiatto(plateID);
+                Piatto plate = sessionPiattiDAO.findByIDPiatto(plateID); // cerca il piatto in questione
 
-                User utente_p = plate.getUtenteP();
+                User utente_p = plate.getUtenteP(); // cerca il cf dell'utente associato al piatto
 
                 UserDAO sessionUserDAO = DatabaseDAO.getUserDAO(null);
-                utente_p = sessionUserDAO.findByCF(utente_p.getCF());
+                utente_p = sessionUserDAO.findByCF(utente_p.getCF()); // cerfca tutte le informazioni dell'utente associato al piatto
 
-                plate.setUtenteP(utente_p);
+                plate.setUtenteP(utente_p); // inserisce in piatto tutte le informazioni dell'utente associato
 
-                page.addObject("piatto", plate);
+
+                RecensioneDAO recensioneDAO = DatabaseDAO.getRecensioneDAO(null);
+                Recensione recensione = recensioneDAO.findByPiatto_Utente(plateID, utente.getCF()); // cerca la recensione da modificare in base a utente loggato e piatto
+                recensione.setPiattoR(plate); // inserisce in recensione il piatto completo anche con le informazioni di utente
+                //recensione.setUtenteR(utente);
+
+
+                page.addObject("piatto", plate); // contiene tutte informazioni del piatto comprese quelle dell'utente che l'ha caricato
+                page.addObject("recensione", recensione);
                 page.addObject("typecode", typeCode);
                 page.addObject("isRistorante", false);
 
                 break;
             }
-            case 2: //typeCode = 2 --> recensione di una sede di un ristorante
+            case 4: // modifica di una recensione di un ristorante
             {
-                //TODO: Implementare il setting per il la recensione del ristorante
-                //Cercare i dati del ristorante nel db/cookie, e inviarli alla page
 
-                SedeDAO sedeDAO = DatabaseDAO.getSedeDAO(null);
-                Sede sede = sedeDAO.findByCoordinate(id);
-
-                Ristorante ristorante = sede.getRistoranteS(); // prende oggetto ristorante di sede
-
-                RistoranteDAO ristoranteDAO = DatabaseDAO.getRistoDAO(null);
-                ristorante = ristoranteDAO.findById(ristorante.getID_Ristorante()); // cerca tutti i dati del ristorante della sede dall'id ristorante
-
-                sede.setRistoranteS(ristorante); // setta in sede tutti i dati del ristorante
-
-                page.addObject("sede", sede);
-                page.addObject("isRistorante", true);
-
-                break;
             }
             default:    //typeCode != 1 o 2 --> che minchia significa?
             {
@@ -137,17 +113,18 @@ public class addRecensioniController {
         return page;
     }
 
-    @PostMapping(path = "/addRecensione", params = {"type", "ID", "voto"})
-    public ModelAndView postRecensione(
+    @PostMapping(path = "/modifyRecensione", params = {"type", "ID", "voto"})
+    public ModelAndView postModifyRecensione(
             @CookieValue(value = "loggedUser", defaultValue = "") String userData,
             @RequestParam("type") int type,
-            @RequestParam("ID") String ID,
-            @RequestParam("voto") int voto,
-            @RequestParam(value = "commento", required = false, defaultValue = "")
-            String commento
+            @RequestParam("ID") String id,
+            @RequestParam("voto") Integer voto,
+            @RequestParam(value = "commento", defaultValue = "", required = false) String commento
     ){
         ModelAndView page = new ModelAndView("index");
         User utente;
+
+        System.out.println(id + " " + voto + " " + commento + " " + type);
 
         //Lettura dei cookie dell'utente
         if(userData.isEmpty()){
@@ -166,39 +143,33 @@ public class addRecensioniController {
         DatabaseDAO.beginTransaction();
 
         switch (type){
-            case 1: //typeCode = 1 --> recensione di un piatto
+            case 3: //typeCode = 1 --> recensione di un piatto
             {
-                int plateID = Integer.parseInt(ID);
+                PiattoDAO piattoDAO = DatabaseDAO.getPiattoDAO(null);
+                Piatto piatto = piattoDAO.findByIDPiatto(Integer.parseInt(id));
 
-                RecensioneDAO sessionRecensioneDAO = DatabaseDAO.getRecensioneDAO(null);
-                PiattoDAO sessionPiattoDAO = DatabaseDAO.getPiattoDAO(null);
-                Piatto piatto = sessionPiattoDAO.findByIDPiatto(plateID);
-                sessionRecensioneDAO.create(utente, piatto, voto, commento);
+                RecensioneDAO recensioneDAO = DatabaseDAO.getRecensioneDAO(null);
+                Recensione recensione = new Recensione();
+                recensione.setVoto(voto);
+                recensione.setCommento(commento);
+                recensione.setUtenteR(utente);
+                recensione.setPiattoR(piatto);
+                System.out.println(recensione.getPiattoR().getNome() + " " + recensione.getVoto() + " " + recensione.getCommento() + " " + recensione.getUtenteR().getNome());
+
+                recensioneDAO.update(recensione);
 
                 DatabaseDAO.commitTransaction();
 
-                //System.out.println("Per piatto con ID: "+ID+" Votazione: "+voto+" e commento: "+commento);
-
-                page = Utility.redirect(page, "/plate?id="+plateID);
+                page = Utility.redirect(page, "/plate?id="+Integer.parseInt(id));
 
                 break;
             }
-            case 2: //typeCode = 2 --> recensione di un ristorante
+            case 4: //typeCode = 2 --> recensione di un ristorante
             {
                 //TODO: Implementare il setting per la recensione del ristorante
                 //Cercare i dati del ristorante nel db/cookie, e inviarli alla pageù
 
-                ValutazioneDAO valutazioneDAO = DatabaseDAO.getValutazioneDAO(null);
-                SedeDAO sedeDAO = DatabaseDAO.getSedeDAO(null);
-                Sede sede = sedeDAO.findByCoordinate(ID);
-                valutazioneDAO.create(utente, sede, voto);
 
-                page.addObject("isRistorante", true);
-                DatabaseDAO.commitTransaction();
-
-                page.addObject("url", "/sede?id="+ID);
-
-                break;
             }
             default:    //typeCode != 1 o 2 --> che minchia significa?
             {

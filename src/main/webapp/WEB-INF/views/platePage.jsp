@@ -112,9 +112,12 @@
         if (utente != null) {
     %>
         <a href="http://localhost:8080/addRecensione?type=1&id=<%=piatto.getId()%>"><button>Aggiungi recesione</button></a>
+        <a href="http://localhost:8080/modifyRecensione?type=3&id=<%=piatto.getId()%>"><button>Modifica recesione</button></a>
+        <a href="http://localhost:8080/deleteRecensione?type=1&id=<%=piatto.getId()%>"><button>Cancella recesione</button></a>
     <%
         }
     %>
+
     <%@include file="repetedElements/homepageLink.html"%>
 </body>
 </html>
