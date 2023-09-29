@@ -15,6 +15,7 @@
 <html>
 <head>
     <title>Aggiungi la tua creazione</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <script>
         var i = 1;

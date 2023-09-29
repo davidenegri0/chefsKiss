@@ -23,11 +23,12 @@ public class Ristorante {
     public User getUtenteRi () { return Utente; }
 
     /* [ Ristorante - sede (1:N) ] --> inserita in sede (dalla parte N) */
-    private List<Sede> Sedi;
+/*    private List<Sede> Sedi;
     public void setSedeRi (List<Sede> sedi) { this.Sedi = sedi; }
     public List<Sede> getSedeRi() { return Sedi; }
     public Sede getSedeRi(int index) {return Sedi.get(index); }
     public void setSedeRi(int index, Sede sede) {
         Sedi.set(index, sede);
     }
+    */
 }

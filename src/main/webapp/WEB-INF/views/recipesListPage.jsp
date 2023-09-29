@@ -38,6 +38,10 @@
 </script>
 <body>
     <h1>LA NOSTRA LISTA DEI PIATTI</h1>
+    <% if(utente!= null && (utente.isPrivato() || utente.isChef())){ %>
+    <h3><%=utente.getNome()+" "+utente.getCognome()%> vuoi condividere una tua creazione?</h3>
+    <a href="http://localhost:8080/addPlate"><button>Clicca qui</button></a>
+    <% } %>
     <h3>Voglia di qualcosa in particolare? Cerca ciò che più ti fa gola!</h3>
     <div>
         <form id="searchForm">

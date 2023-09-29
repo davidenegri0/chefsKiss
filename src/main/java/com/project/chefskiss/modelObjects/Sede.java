@@ -7,13 +7,8 @@ public class Sede {
     private String Via;
     private String Citta;
     private Integer Posti;
-    private Integer ID_Ristorante;
+    private Integer ID_Ristorante; //TODO: (EVENTUALE) Rimuovere questo con l'implementazione di query complesse
     private Boolean Deleted;
-    private List<User> Utenti;
-    private List<Prenotazione> Prenotazioni;
-    private List<Valutazione> Valutazioni;
-    private List<Piatto> Piatti;
-    private Ristorante ristorante;
 
     // GETTER E SETTER
     public void setCoordinate (String coordinate) { Coordinate = coordinate;}
@@ -33,6 +28,8 @@ public class Sede {
     // RELAZIONI
 
     /* [sede - utente (N:M)] --> chef (lavora) */
+
+    private List<User> Utenti;
     public void setUtenteS (List<User> utenti) { this.Utenti = utenti; }
     public List<User> getUtenteS() { return Utenti; }
     public User getUtenteS(int index) {return this.Utenti.get(index); }
@@ -41,6 +38,7 @@ public class Sede {
     }
 
     /* [sede - cliente (N:M)] --> prenotazione */
+    private List<Prenotazione> Prenotazioni;
     public void setPrenotazioneS (List<Prenotazione> prenotazioni) { this.Prenotazioni = prenotazioni; }
     public List<Prenotazione> getPrenotazioneS() { return Prenotazioni; }
     public Prenotazione getPrenotazioneS(int index) {return this.Prenotazioni.get(index); }
@@ -49,6 +47,7 @@ public class Sede {
     }
 
     /* [sede - cliente (N:M)] --> valutazione  */
+    private List<Valutazione> Valutazioni;
     public void setValutazioneS (List<Valutazione> valutazioni) { this.Valutazioni = valutazioni; }
     public List<Valutazione> getValutazioneS() { return Valutazioni; }
     public Valutazione getValutazioneS(int index) {return this.Valutazioni.get(index); }
@@ -57,6 +56,7 @@ public class Sede {
     }
 
     /* [sede - piatto (N:M)] */
+    private List<Piatto> Piatti;
     public void setPiattoS (List<Piatto> piatti) { this.Piatti = piatti; }
     public List<Piatto> getPiattoS() { return Piatti; }
     public Piatto getPiattoS(int index) {return this.Piatti.get(index); }
@@ -65,6 +65,7 @@ public class Sede {
     }
 
     /* [sede - ristorante (N:1)] */
+    private Ristorante ristorante;
     public void setRistoranteS (Ristorante ristorante) {this.ristorante = ristorante; }
     public Ristorante getRistoranteS() { return ristorante; }
 }

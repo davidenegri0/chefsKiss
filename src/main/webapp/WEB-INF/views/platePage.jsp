@@ -12,6 +12,7 @@
 <html>
 <head>
     <title>Piatto</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <%
@@ -55,6 +56,10 @@
             }
         %>
     </table>
+
+    <!--
+        FC was here!
+    -->
 
     <h3>Preparazione</h3>
     <p>

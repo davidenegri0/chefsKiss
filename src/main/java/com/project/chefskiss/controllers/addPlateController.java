@@ -64,7 +64,6 @@ public class addPlateController {
         return page;
     }
 
-    //TODO: PostMapping della pagina con testing Ingredienti
     @PostMapping(path = "/addPlate", params = {"nomePiatto"})
     public ModelAndView postAddPlate(
             @CookieValue(value = "loggedUser", defaultValue = "") String userData,

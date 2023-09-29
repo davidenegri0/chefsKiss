@@ -24,7 +24,7 @@ public class User {
     private Boolean Deleted;
 
     // RELAZIONI
-    private String Coordiante;
+    private String Coordiante;  //TODO: (EVENTUALE) Rimuovere questo con l'implementazione di query complesse
     private Sede sede;
     private Ristorante ristorante;
     private List<Recensione> Recensioni;
