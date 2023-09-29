@@ -131,7 +131,12 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         List<Piatto> piatti = new ArrayList<>();
 
         try {
-            String SQLQuery = "SELECT * FROM chefskiss.piatto WHERE Nome_Piatto = ?";
+            String SQLQuery =
+                    "SELECT p.*, AVG(r.Voto) as Media " +
+                    "FROM chefskiss.piatto p " +
+                    "LEFT JOIN chefskiss.recensisce r on p.ID_Piatto = r.ID_Piatto " +
+                    "WHERE p.Nome_Piatto = ?" +
+                    "GROUP BY p.ID_Piatto";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, Nome_Piatto);
@@ -139,18 +144,14 @@ public class PiattoDAO_MySQL implements PiattoDAO {
             ResultSet result = query.executeQuery();
 
             while (result.next()) {
-                piatti.add(read(result));
+                Piatto p = read(result);
+                p.setVotoMedio(result.getFloat("Media"));
+                piatti.add(p);
+
             }
 
             result.close();
             query.close();
-
-            //Setting dei voti medii
-            for (int i = 0; i < piatti.size(); i++) {
-                Piatto p = piatti.get(i);
-                p.setVotoMedio(getAVGVotoFromID(p.getId()));
-                piatti.set(i, p);
-            }
 
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
@@ -167,28 +168,26 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         String ingrediente = Ingrediente.getNome();
 
         try {
-            String SQLQuery = 
-                    "SELECT piatto.ID_Piatto, piatto.Nome_Piatto, piatto.Preparazione, piatto.CF, piatto.Deleted " +
-                    "FROM chefskiss.piatto NATURAL JOIN chefskiss.contiene " +
-                    "WHERE contiene.Nome_Ingrediente = ?";
+            String SQLQuery =
+                    "SELECT p.*, AVG(r.Voto) as Media " +
+                    "FROM chefskiss.piatto p " +
+                    "LEFT JOIN recensisce r on p.ID_Piatto = r.ID_Piatto " +
+                    "JOIN contiene c on p.ID_Piatto = c.ID_Piatto " +
+                    "WHERE c.Nome_Ingrediente = ? " +
+                    "GROUP BY p.ID_Piatto";
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, ingrediente);
 
             ResultSet result = query.executeQuery();
 
             while (result.next()) {
-                piatti.add(read(result));
+                Piatto p = read(result);
+                p.setVotoMedio(result.getFloat("Media"));
+                piatti.add(p);
             }
 
             result.close();
             query.close();
-
-            //Setting dei voti medii
-            for (int i = 0; i < piatti.size(); i++) {
-                Piatto p = piatti.get(i);
-                p.setVotoMedio(getAVGVotoFromID(p.getId()));
-                piatti.set(i, p);
-            }
 
             System.out.println("Lettura dati completata!");
         } catch (SQLException e) {
@@ -205,28 +204,26 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         String coordSede = Sede.getCoordinate();
 
         try {
-            String SQLQuery = 
-                    "SELECT piatto.ID_Piatto, piatto.Nome_Piatto, piatto.Preparazione, piatto.CF, piatto.Deleted " +
-                            "FROM chefskiss.piatto NATURAL JOIN chefskiss.servito_in " +
-                            "WHERE servito_in.Coordinate = ?";
+            String SQLQuery =
+                    "SELECT p.*, AVG(r.Voto) as Media " +
+                    "FROM piatto p " +
+                    "LEFT JOIN recensisce r on p.ID_Piatto = r.ID_Piatto " +
+                    "JOIN servito_in si on p.ID_Piatto = si.ID_Piatto " +
+                    "WHERE si.Coordinate = ? " +
+                    "GROUP BY p.ID_Piatto";
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, coordSede);
 
             ResultSet result = query.executeQuery();
 
             while (result.next()) {
-                piatti.add(read(result));
+                Piatto p = read(result);
+                p.setVotoMedio(result.getFloat("Media"));
+                piatti.add(p);
             }
 
             result.close();
             query.close();
-
-            //Setting dei voti medii
-            for (int i = 0; i < piatti.size(); i++) {
-                Piatto p = piatti.get(i);
-                p.setVotoMedio(getAVGVotoFromID(p.getId()));
-                piatti.set(i, p);
-            }
 
             System.out.println("Lettura dati completata!");
         } catch (SQLException e) {
@@ -243,26 +240,26 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         String cf = CF_Utente.getCF();
 
         try {
-            String SQLQuery = "SELECT * FROM chefskiss.piatto WHERE CF = ?";
+            String SQLQuery =
+                    "SELECT p.*, AVG(r.Voto) as Media " +
+                    "FROM piatto p " +
+                    "LEFT JOIN recensisce r on p.ID_Piatto = r.ID_Piatto " +
+                    "WHERE p.CF = ? " +
+                    "GROUP BY p.ID_Piatto";
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, cf);
 
             ResultSet result = query.executeQuery();
 
             while (result.next()) {
-                piatti.add(read(result));
+                Piatto p = read(result);
+                p.setVotoMedio(result.getFloat("Media"));
+                piatti.add(p);
             }
 
             System.out.println("Lettura dati completata!");
             result.close();
             query.close();
-
-            //Setting dei voti medii
-            for (int i = 0; i < piatti.size(); i++) {
-                Piatto p = piatti.get(i);
-                p.setVotoMedio(getAVGVotoFromID(p.getId()));
-                piatti.set(i, p);
-            }
 
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
@@ -277,7 +274,12 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         Piatto piatto = new Piatto();
 
         try {
-            String SQLQuery = "SELECT * FROM chefskiss.piatto WHERE ID_Piatto = ?";
+            String SQLQuery =
+                    "SELECT p.*, AVG(r.Voto) as Media " +
+                    "FROM piatto p " +
+                    "LEFT JOIN recensisce r on p.ID_Piatto = r.ID_Piatto " +
+                    "WHERE p.ID_Piatto = ? " +
+                    "GROUP BY p.ID_Piatto";
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, ID_Piatto);
 
@@ -285,13 +287,12 @@ public class PiattoDAO_MySQL implements PiattoDAO {
 
             if (result.next()) {
                 piatto = read(result);
+                piatto.setVotoMedio(result.getFloat("Media"));
                 System.out.println("Lettura dati completata!");
             }
 
             result.close();
             query.close();
-
-            piatto.setVotoMedio(getAVGVotoFromID(piatto.getId()));
 
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
@@ -307,15 +308,20 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         int i;
 
         try {
-            String SQLQuery = "SELECT * " +
-                    "FROM chefskiss.piatto " +
-                    "ORDER BY Data_Upload";
+            String SQLQuery =
+                    "SELECT p.*, AVG(r.Voto) as Media " +
+                    "FROM piatto p " +
+                    "LEFT JOIN recensisce r on p.ID_Piatto = r.ID_Piatto " +
+                    "GROUP BY p.ID_Piatto, p.Data_Upload " +
+                    "ORDER BY p.Data_Upload;";
             query = conn.prepareStatement(SQLQuery);
 
             ResultSet result = query.executeQuery();
 
             for (i = 0; result.next() && i<num; i++) {
-                piatti.add(read(result));
+                Piatto p = read(result);
+                p.setVotoMedio(result.getFloat("Media"));
+                piatti.add(p);
             }
 
             if (i!=num) System.out.println("Piatti ricevuti inferiori al numero richiesto");
@@ -323,13 +329,6 @@ public class PiattoDAO_MySQL implements PiattoDAO {
             System.out.println("Lettura dati piatti completata!");
             result.close();
             query.close();
-
-            //Setting dei voti medii
-            for (i = 0; i < piatti.size(); i++) {
-                Piatto p = piatti.get(i);
-                p.setVotoMedio(getAVGVotoFromID(p.getId()));
-                piatti.set(i, p);
-            }
 
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
@@ -355,27 +354,5 @@ public class PiattoDAO_MySQL implements PiattoDAO {
 
         System.out.println("Dati letti del piatto: "+piatto.getId());
         return piatto;
-    }
-
-    private Float getAVGVotoFromID(Integer ID) throws SQLException{
-        try {
-            float votoMedio = 0;
-            String SQLQuery =
-                    "SELECT AVG(Voto) AS Media " +
-                            "FROM chefskiss.recensisce " +
-                            "WHERE ID_Piatto = ?";
-            PreparedStatement query = conn.prepareStatement(SQLQuery);
-            query.setInt(1, ID);
-            ResultSet result = query.executeQuery();
-            if (result.next()) {
-                votoMedio = result.getFloat("Media");
-            }
-            result.close();
-            query.close();
-            return votoMedio;
-        } catch (SQLException e){
-            e.printStackTrace();
-            throw e;
-        }
     }
 }
