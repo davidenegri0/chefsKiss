@@ -33,8 +33,7 @@ public class homepageController {
         List<Piatto> piatti = sessionPiattiDAO.findMostRecent(4);
         DatabaseDAO.closeTransaction();
 
-        //TODO: Si può aggiornare questa feature gestendo le recensioni in base al voto medio
-        //e caricare le ricette sui cookie, in modo da ridurre l'accesso al db (?)
+        //TODO: (EVENTUALE) Si può aggiornare questa feature gestendo le recensioni in base al voto medio
         if (piatti.size() < 4) System.out.println("Strano");
 
         //Debug dei voti

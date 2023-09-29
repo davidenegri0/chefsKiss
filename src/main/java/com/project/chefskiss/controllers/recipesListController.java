@@ -15,8 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: Andare a implementare il salvataggio di piatti sui cookie
-
 @Controller
 public class recipesListController {
     @GetMapping(path = "/recipesView")

@@ -162,14 +162,16 @@ public class UserDAO_MySQL implements UserDAO {
                 query2 = conn.prepareStatement(SQLQuery2);
                 query2.setBlob(1, user.getProfilePicture()); // ?????
                 //query2.setBlob(2, user.getCV()); // ????? caricare il cv
-                query2.setNull(2, Types.BLOB); //Per ora non imposta nulla ---> TODO: Rimuovere questa line dopo aver implementato
+                // TODO: Rimuovere questa line dopo aver implementato
+                query2.setNull(2, Types.BLOB); //Per ora non imposta nulla
                 query2.setString(3, user.getSedeU().getCoordinate()); // coordinate c'è solo se l'utente è chef
                 query2.setString(4, user.getCF());
 
                 query2.executeUpdate();
                 query2.close();
 
-                // query.setBlob(13, user.getFoto_Chef()); TODO: getter e setter
+                //TODO: getter e setter
+                // query.setBlob(13, user.getFoto_Chef());
                 // query.setClob(14, user.getCV());
             }
             else query.setInt(i++, 0);
