@@ -75,7 +75,7 @@
                 for (int i = 0; i < sedi.size(); i++){
             %>
             <li>
-                <a href = "http://localhost:8080/restaurant?id=<%= ristoranti.get(i).getID_Ristorante()%>"><%= ristoranti.get(i).getNome() %></a> -
+                <a href = "/restaurant?id=<%= ristoranti.get(i).getID_Ristorante()%>"><%= ristoranti.get(i).getNome() %></a> -
                 <%= sedi.get(i).getVia() %>, (<%= sedi.get(i).getCitta() %>)
             </li>
             <% } %>
@@ -111,9 +111,9 @@
     <%
         if (utente != null) {
     %>
-        <a href="http://localhost:8080/addRecensione?type=1&id=<%=piatto.getId()%>"><button>Aggiungi recesione</button></a>
-        <a href="http://localhost:8080/modifyRecensione?type=3&id=<%=piatto.getId()%>"><button>Modifica recesione</button></a>
-        <a href="http://localhost:8080/deleteRecensione?type=1&id=<%=piatto.getId()%>"><button>Cancella recesione</button></a>
+        <a href="/addRecensione?type=1&id=<%=piatto.getId()%>"><button>Aggiungi recesione</button></a>
+        <a href="/modifyRecensione?type=3&id=<%=piatto.getId()%>"><button>Modifica recesione</button></a>
+        <a href="/deleteRecensione?type=1&id=<%=piatto.getId()%>"><button>Cancella recesione</button></a>
     <%
         }
     %>

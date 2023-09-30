@@ -4,12 +4,14 @@ import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.dataAccessObjects.*;
 import com.project.chefskiss.modelObjects.*;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.List;
@@ -117,5 +119,24 @@ public class plateController {
         page.addObject("utenti_recensori", utenti_recensori);
 
         return page;
+    }
+
+    @GetMapping(path = "/plate/image/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @ResponseBody
+    public byte[] showPlateImage(
+            @PathVariable("id") int imgID
+    ){
+        String path = Config.IMG_PATH+"plates\\plate"+imgID+".jpg";
+        //System.out.println(path);
+        byte[] image = null;
+
+        try {
+            FileInputStream in = new FileInputStream(path);
+            image = in.readAllBytes();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return image;
     }
 }

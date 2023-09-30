@@ -40,46 +40,6 @@ public class profileController {
         return page;
     }
 
-    //Aggiornamento immagine del profilo (OUTDATED)
-/*    @RequestMapping(value = "/profile", method = RequestMethod.POST)
-    public ModelAndView profilePageEdit(
-            @CookieValue("loggedUser") String userData,
-            @RequestParam("file") MultipartFile file
-    ){
-        ModelAndView page = new ModelAndView("profilePage");
-        User utente = User.decodeUserData(userData);
-
-        try{
-                //QUESTO LAVORA SU FILE --> OUTDATED
-
-                File outputFile = new File(Config.PROFILE_IMG_PATH);
-                FileOutputStream out = new FileOutputStream(outputFile);
-                out.write(file.getBytes());
-                System.out.println(outputFile.getAbsolutePath());
-                out.close();
-
-            Blob sqlImage = null;
-            sqlImage.setBytes(1, file.getBytes());
-            utente.setProfilePicture(sqlImage);
-
-            DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
-            DatabaseDAO.beginTransaction();
-            UserDAO sessionUserDAO = DatabaseDAO.getUserDAO(null);
-
-            sessionUserDAO.update(utente);
-
-            DatabaseDAO.commitTransaction();
-            DatabaseDAO.closeTransaction();
-
-        } catch (IOException | NullPointerException | SQLException e)
-        {
-            e.printStackTrace();
-        }
-        page.addObject("imgPath", "profile/profileImg.jpg");
-        page.addObject("utente", utente);
-        return page;
-    }*/
-
     //Handler della richiesta di aggiornamento del profilo
     @RequestMapping(value = "updateProfile", method = RequestMethod.GET)
     public ModelAndView updateProfileRequest(

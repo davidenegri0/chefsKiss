@@ -18,7 +18,7 @@ import java.util.List;
 @Controller
 public class recipesListController {
     @GetMapping(path = "/recipesView")
-    public ModelAndView viewRecipesMenu(
+    public ModelAndView viewRecipesList(
             @CookieValue(value = "loggedUser", defaultValue = "") String userData
     ){
         ModelAndView page = new ModelAndView("recipesListPage");

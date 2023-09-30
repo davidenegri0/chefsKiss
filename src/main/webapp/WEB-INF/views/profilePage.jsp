@@ -51,7 +51,7 @@
     </p>
     <p>
         <h3>Password</h3>
-        <a href="http://localhost:8080/changePassword"><button>Click here to change password</button></a>
+        <a href="/changePassword"><button>Click here to change password</button></a>
     </p>
 
     <h3>Dati da utente pubblico</h3>
@@ -65,7 +65,7 @@
         Oppure fare una response diretta con l'immagine >>> Metodo testato e funzionante
     -->
 
-    <a href="http://localhost:8080/updateProfile"><button>Modifica i dati del tuo account</button></a>
+    <a href="/updateProfile"><button>Modifica i dati del tuo account</button></a>
 
     <%@ include file="repetedElements/homepageLink.html"%>
 </body>

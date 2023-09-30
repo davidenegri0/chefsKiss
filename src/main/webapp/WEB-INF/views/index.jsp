@@ -14,7 +14,7 @@
     You will be redirected to the homepage...
     <br>
     <br>
-    If that doesn't happen, click <a href="http://localhost:8080/homepage">here</a>
+    If that doesn't happen, click <a href="/homepage">here</a>
 </body>
 <script>
     function onLoadHandler()

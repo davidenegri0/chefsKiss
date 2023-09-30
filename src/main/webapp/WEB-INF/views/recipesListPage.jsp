@@ -40,7 +40,7 @@
     <h1>LA NOSTRA LISTA DEI PIATTI</h1>
     <% if(utente!= null && (utente.isPrivato() || utente.isChef())){ %>
     <h3><%=utente.getNome()+" "+utente.getCognome()%> vuoi condividere una tua creazione?</h3>
-    <a href="http://localhost:8080/addPlate"><button>Clicca qui</button></a>
+    <a href="/addPlate"><button>Clicca qui</button></a>
     <% } %>
     <h3>Voglia di qualcosa in particolare? Cerca ciò che più ti fa gola!</h3>
     <div>
@@ -65,10 +65,10 @@
         <h3>Oppure, se hai solo voglia di cucinare, lasciati ispirare da una di queste ricette...</h3>
     <%      }       %>
     <%for (int i = 0; i < piatti.size(); i++) {%>
-        <a href="http://localhost:8080/plate?id=<%=piatti.get(i).getId()%>">
+        <a href="/plate?id=<%=piatti.get(i).getId()%>">
                 <div id="recipeBlock">
                     <p><%=piatti.get(i).getNome()%></p>
-                    <img src="<%=piatti.get(i).getStarsRating()%>" width="20%" height="auto">
+                    <img src="<%=piatti.get(i).getStarsRating()%>" width="140px" height="auto">
                 </div>
         </a>
     <%}%>
