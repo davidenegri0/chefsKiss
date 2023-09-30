@@ -43,6 +43,8 @@ public class resturantsListController {
         ristoranti = sessionRistoDAO.getAll();
         page.addObject("ristoranti", ristoranti);
 
+        DatabaseDAO.closeTransaction();
+
         return page;
     }
 
@@ -72,6 +74,8 @@ public class resturantsListController {
             RistoranteDAO sessionRistoDAO = DatabaseDAO.getRistoDAO(null);
             ristoranti = sessionRistoDAO.findByName(search);
             page.addObject("ristoranti", ristoranti);
+
+            DatabaseDAO.closeTransaction();
         } else {
             System.out.println("Unexpected behaviour, returning to homepage");
             return Utility.redirect(page, "/resturantsList");
