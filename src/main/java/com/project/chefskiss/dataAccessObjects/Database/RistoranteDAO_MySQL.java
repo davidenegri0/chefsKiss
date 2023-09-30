@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RistoranteDAO_MySQL implements RistoranteDAO {
     Connection conn;
@@ -113,9 +115,9 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
     }
 
     @Override
-    public Ristorante findByName(String risto) {
+    public List<Ristorante> findByName(String risto) {
         PreparedStatement query;
-        Ristorante ristorante = new Ristorante();
+        List<Ristorante> ristoranti = new ArrayList<>();
 
         try {
             String SQLQuery = "SELECT * FROM chefskiss.ristorante WHERE Nome_Ristorante LIKE ?";
@@ -125,8 +127,8 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
 
             ResultSet result = query.executeQuery();
 
-            if (result.next()) {
-                ristorante = read(result);
+            while (result.next()) {
+                ristoranti.add(read(result));
                 System.out.println("Lettura dati completata!");
             }
 
@@ -137,7 +139,7 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
             throw new RuntimeException(e.getMessage());
         }
 
-        return ristorante;
+        return ristoranti;
     }
 
     @Override
@@ -166,6 +168,34 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
         }
 
         return ristorante;
+    }
+
+    @Override
+    public List<Ristorante> getAll() {
+        PreparedStatement quary;
+        List<Ristorante> ristoranti = new ArrayList<>();
+
+        try {
+            String SQLQuary = "SELECT * FROM chefskiss.ristorante";
+
+            quary = conn.prepareStatement(SQLQuary);
+
+            ResultSet result = quary.executeQuery();
+
+            while (result.next()){
+                ristoranti.add(read(result));
+            }
+
+            System.out.println("Lettura dati completata!");
+
+            quary.close();
+            result.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return ristoranti;
     }
 
     private Ristorante read (ResultSet rs) throws SQLException {

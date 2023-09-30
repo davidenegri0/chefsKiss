@@ -2,6 +2,8 @@ package com.project.chefskiss.dataAccessObjects;
 
 import com.project.chefskiss.modelObjects.Ristorante;
 
+import java.util.List;
+
 public interface RistoranteDAO {
     public Ristorante create (
             String Nome_Ristorante,
@@ -14,8 +16,11 @@ public interface RistoranteDAO {
     public Ristorante findById(Integer id);
 
     // cerca un ristorante per nome
-    public Ristorante findByName (String ristorante);
+    public List<Ristorante> findByName (String ristorante);
 
     // cerca un ristorante per Ristoratore
     public Ristorante findByRistoratore (String ristorante);
+
+    // ritorna tutti i ristoranti nel db
+    public List<Ristorante> getAll ();
 }
