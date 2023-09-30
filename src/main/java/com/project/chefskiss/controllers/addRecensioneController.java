@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import com.project.chefskiss.Utility.*;
 
 @Controller
-public class addRecensioniController {
+public class addRecensioneController {
     @GetMapping(path = "/addRecensione", params = {"type", "id"})
     public ModelAndView viewAddRecensione(
             @CookieValue(value = "loggedUser", defaultValue = "") String userData,

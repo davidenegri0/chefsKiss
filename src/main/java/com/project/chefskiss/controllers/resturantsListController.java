@@ -21,7 +21,7 @@ public class resturantsListController {
 
     @GetMapping(path = "/resturantsList")
     public ModelAndView viewResturantsList(
-            @CookieValue(value = "loggedUser", required = false) String userData
+            @CookieValue(value = "loggedUser", defaultValue = "") String userData
     ){
         //Variabili
         ModelAndView page = new ModelAndView("resturantsListPage");
@@ -48,7 +48,7 @@ public class resturantsListController {
 
     @GetMapping(path = "/resturantsList", params = {"searchType", "search"})
     public ModelAndView getSearchedResturants(
-            @CookieValue(value = "loggedUser", required = false) String userData,
+            @CookieValue(value = "loggedUser", defaultValue = "") String userData,
             @RequestParam("searchType") int type,
             @RequestParam("search") String search
     ){
