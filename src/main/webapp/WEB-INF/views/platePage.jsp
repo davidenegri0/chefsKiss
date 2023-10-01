@@ -1,6 +1,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.project.chefskiss.dataAccessObjects.ContieneDAO" %>
 <%@ page import="com.project.chefskiss.modelObjects.*" %>
+<%@ page import="org.springframework.web.servlet.ModelAndView" %>
+<%@ page import="com.project.chefskiss.Utility" %>
 <%--
   Created by IntelliJ IDEA.
   User: spipp
@@ -116,11 +118,24 @@
     %>
         <a href="/addRecensione?type=1&id=<%=piatto.getId()%>"><button>Aggiungi recesione</button></a>
         <a href="/modifyRecensione?type=3&id=<%=piatto.getId()%>"><button>Modifica recesione</button></a>
-        <a href="/deleteRecensione?type=1&id=<%=piatto.getId()%>"><button>Cancella recesione</button></a>
+
+            <button onclick="confermaCancellazione()">Cancella recesione</button>
+    <form>
+        <input type="hidden" value="cancella!">
+    </form>
     <%
         }
     %>
 
     <%@include file="repetedElements/homepageLink.html"%>
 </body>
+<script>
+    function confermaCancellazione() {
+        var richiesta = window.confirm("Sei sicuro di voler cancellare la tua recensione?")
+        if (richiesta) {
+            window.location.replace("/deleteRecensione?type=3&id=<%=piatto.getId()%>");
+        }
+        //else // visualizzare pagina del piatto
+    }
+</script>
 </html>
