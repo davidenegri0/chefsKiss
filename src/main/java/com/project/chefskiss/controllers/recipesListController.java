@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -38,6 +39,7 @@ public class recipesListController {
         DatabaseDAO.closeTransaction();
 
         //Invio lista dei piatti alla pagina
+        Collections.shuffle(piatti); //Perchè si
         page.addObject("listaPiatti", piatti);
 
         page.addObject("searched", false);

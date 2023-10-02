@@ -19,7 +19,7 @@ public interface RistoranteDAO {
     public List<Ristorante> findByName (String ristorante);
 
     // cerca un ristorante per Ristoratore
-    public Ristorante findByRistoratore (String ristorante);
+    public Ristorante findByRistoratore (String CF_Risto);
 
     // ritorna tutti i ristoranti nel db
     public List<Ristorante> getAll ();

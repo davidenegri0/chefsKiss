@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -20,9 +21,10 @@ public class homepageController {
     )
     {
         ModelAndView page = new ModelAndView("homepage");
+        User utente;
 
         if(!UserData.isEmpty()){
-            User utente = User.decodeUserData(UserData);
+            utente = User.decodeUserData(UserData);
             page.addObject("user", utente);
         }
         else System.out.println("No cookies :C");
@@ -43,6 +45,7 @@ public class homepageController {
         }
          */
 
+        Collections.shuffle(piatti); //Perchè si
         page.addObject("listaPiatti", piatti);
 
         return page;

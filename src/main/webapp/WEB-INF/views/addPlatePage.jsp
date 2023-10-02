@@ -61,32 +61,32 @@
     <h1>Aggiungi la tua creazione!</h1>
     <% if (utente.isPrivato()) { %>
     <h3><%=utente.getUsername()%>, che ricetta vuoi condividere oggi?</h3>
-    <% } else { %>
+    <% } else if(utente.isChef()) { %>
     <h3>Chef <%=utente.getNome()+" "+utente.getCognome()%>, che ricetta vuoi condividere oggi?</h3>
     <% } %>
     <form method="post">
         <label for="nome_piatto">Nome del piatto: </label>
         <input type="text" id="nome_piatto" name="nomePiatto" required>
         <br>
-        <% if (utente.isPrivato()) { %>
-        <label for="preparazione">Preparazione: </label>
+        <% if (utente.isChef()) { %>
+        <label for="preparazione">Preparazione (opzionale): </label>
         <br>
-        <textarea id="preparazione" name="preparazione" cols="100" rows="20" maxlength="3000" required></textarea>
+        <textarea id="preparazione" name="preparazione" cols="100" rows="20" maxlength="3000"></textarea>
         <br>
         <% } else { %>
-        <label for="preparazione">Preparazione (opzionale): </label>
-        <textarea id="preparazione" name="preparazione" cols="100" rows="20" maxlength="3000"></textarea>
+        <label for="preparazione">Preparazione : </label>
+        <textarea id="preparazione" name="preparazione" cols="100" rows="20" maxlength="3000" required></textarea>
         <br>
         <% } %>
         <label for="lista_ingredienti">Lista ingredienti (max 10) + Quantità (in grammi): </label>
         <br>
         <div id="lista_ingredienti">
-            <select id="ingrediente1" name="ingredienti">
+            <select id="ingrediente1" name="ingredienti" required>
                 <% for (int i = 0; i < listaIngredienti.size(); i++) { %>
                 <option value="<%=listaIngredienti.get(i).getNome()%>"><%=listaIngredienti.get(i).getNome()%></option>
                 <% } %>
             </select>
-            <input type="number" min="1" step="1" id="quantita1" name="quantita">
+            <input type="number" min="1" step="1" id="quantita1" name="quantita" required>
             <br>
         </div>
         <br>
@@ -94,7 +94,12 @@
         <input type="button" value="Rimuovi" onclick="removeIngrediente()">
         <br>
         <br>
+        <% if(utente.isChef()){ %>
+        <label for="sede">Aggiungere questo piatto al ristorante?</label>
+        <input type="checkbox" id="sede" name="sede" value="<%=utente.getSedeU().getCoordinate()%>">
         <br>
+        <br>
+        <% } %>
         <input type="submit" value="Ok">
         <input type="reset" value="Annulla">
     </form>

@@ -2,12 +2,10 @@ package com.project.chefskiss.controllers;
 
 import com.project.chefskiss.Utility;
 import com.project.chefskiss.configurations.Config;
-import com.project.chefskiss.dataAccessObjects.ContieneDAO;
-import com.project.chefskiss.dataAccessObjects.DAOFactory;
-import com.project.chefskiss.dataAccessObjects.IngredienteDAO;
-import com.project.chefskiss.dataAccessObjects.PiattoDAO;
+import com.project.chefskiss.dataAccessObjects.*;
 import com.project.chefskiss.modelObjects.Ingrediente;
 import com.project.chefskiss.modelObjects.Piatto;
+import com.project.chefskiss.modelObjects.Sede;
 import com.project.chefskiss.modelObjects.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -41,7 +39,7 @@ public class addPlateController {
         else
         {
             utente = User.decodeUserData(userData);
-            page.addObject("user", utente);
+            //page.addObject("user", utente);
         }
 
         //Controllo validità utente
@@ -55,8 +53,19 @@ public class addPlateController {
         //Aggiunta lista totale ingredienti da database
         DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
         DatabaseDAO.beginTransaction();
+
+        //Molto brutto, ma necessario, ricerca coordinate
+        if (utente.isChef()){
+            UserDAO sessionUserDAO = DatabaseDAO.getUserDAO(null);
+            utente.setSedeU(sessionUserDAO.findByCF(utente.getCF()).getSedeU());
+            System.out.println("Ricerca coordinate sul db completata: "+utente.getSedeU().getCoordinate());
+        }
+
+        page.addObject("user", utente);
+
         IngredienteDAO sessionIngrediente = DatabaseDAO.getIngredienteDAO(null);
         listaIngredienti = sessionIngrediente.getAllIngredients();
+
         DatabaseDAO.closeTransaction();
 
         page.addObject("listaIngredienti", listaIngredienti);
@@ -70,7 +79,8 @@ public class addPlateController {
             @RequestParam("nomePiatto") String nomePiatto,
             @RequestParam(value = "preparazione", required = false) String preparazione,
             @RequestParam("ingredienti") List<String> ingredienti,
-            @RequestParam("quantita") List<Integer> quantita
+            @RequestParam("quantita") List<Integer> quantita,
+            @RequestParam(value = "sede", required = false, defaultValue = "") String sedeCoord
     ){
         //Variabili
         ModelAndView page = new ModelAndView("index");
@@ -114,20 +124,34 @@ public class addPlateController {
         DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
         DatabaseDAO.beginTransaction();
 
-        //Caricamento del nuovo piatto sul database
-        PiattoDAO sessionPiattoDAO = DatabaseDAO.getPiattoDAO(null);
-        piatto = sessionPiattoDAO.create(nomePiatto, preparazione, utente);
-        DatabaseDAO.commitTransaction();
+        try {
+            //Caricamento del nuovo piatto sul database
+            PiattoDAO sessionPiattoDAO = DatabaseDAO.getPiattoDAO(null);
+            piatto = sessionPiattoDAO.create(nomePiatto, preparazione, utente);
 
-        //Caricamento nuova lista ingredienti sul database
-        ContieneDAO sessionContieneDAO = DatabaseDAO.getContieneDAO(null);
-        for (int i = 0; i < ingredienti.size(); i++) {
-            ingrediente.setNome(ingredienti.get(i));
-            sessionContieneDAO.create(piatto, ingrediente, quantita.get(i));
-            DatabaseDAO.commitTransaction();
+            //Caricamento nuova lista ingredienti sul database
+            ContieneDAO sessionContieneDAO = DatabaseDAO.getContieneDAO(null);
+            for (int i = 0; i < ingredienti.size(); i++) {
+                ingrediente.setNome(ingredienti.get(i));
+                sessionContieneDAO.create(piatto, ingrediente, quantita.get(i));
+            }
+
+            System.out.println(sedeCoord);
+
+            //Caricamento piatto servito in sede
+            if (!sedeCoord.isEmpty()) {
+                Sede sede1 = new Sede();
+                sede1.setCoordinate(sedeCoord);
+                sessionPiattoDAO.addPiattoinSede(piatto, sede1);
+            }
+        } catch (Exception e){
+            DatabaseDAO.rollbackTransaction();
+            DatabaseDAO.closeTransaction();
+            throw new RuntimeException(e.getMessage());
         }
 
-        //Non so se serva fare altro
+        DatabaseDAO.commitTransaction();
+        DatabaseDAO.closeTransaction();
 
         return Utility.redirect(page, "/recipesView");
     }

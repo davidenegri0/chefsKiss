@@ -35,6 +35,7 @@
     </p>
     <% if(utente!=null && utente_post.getCF().equals(utente.getCF())){ %>
     <a href="/editPlate?id=<%=piatto.getId()%>"><button>Modifica la tua ricetta</button></a>
+    <button onclick="confermaCancellazionePiatto()">Cancella la tua ricetta</button>
     <% } %>
     <div>Qui ci andrebbe l'immagine del piatto</div>
     <h3>Ingredienti</h3>
@@ -134,6 +135,14 @@
         var richiesta = window.confirm("Sei sicuro di voler cancellare la tua recensione?")
         if (richiesta) {
             window.location.replace("/deleteRecensione?type=3&id=<%=piatto.getId()%>");
+        }
+        //else // visualizzare pagina del piatto
+    }
+
+    function confermaCancellazionePiatto() {
+        var richiesta = window.confirm("Sei sicuro di voler cancellare la tua ricetta?")
+        if (richiesta) {
+            window.location.replace("/deletePlate?id=<%=piatto.getId()%>");
         }
         //else // visualizzare pagina del piatto
     }

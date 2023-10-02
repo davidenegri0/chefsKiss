@@ -26,10 +26,11 @@ public class resturantsListController {
         //Variabili
         ModelAndView page = new ModelAndView("resturantsListPage");
         List<Ristorante> ristoranti;
+        User utente = null;
 
         //Lettura dei cookie dell'utente
         if(!userData.isEmpty()){
-            User utente = User.decodeUserData(userData);
+            utente = User.decodeUserData(userData);
             page.addObject("user", utente);
         }
         else System.out.println("No cookies :C");
@@ -40,6 +41,7 @@ public class resturantsListController {
         DatabaseDAO.beginTransaction();
 
         RistoranteDAO sessionRistoDAO = DatabaseDAO.getRistoDAO(null);
+
         ristoranti = sessionRistoDAO.getAll();
         page.addObject("ristoranti", ristoranti);
 

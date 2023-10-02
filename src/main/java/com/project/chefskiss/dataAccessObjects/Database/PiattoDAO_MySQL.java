@@ -26,7 +26,7 @@ public class PiattoDAO_MySQL implements PiattoDAO {
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, Nome_Piatto);
             query.setTimestamp(2, timestamp);
-            if (Preparazione==null) query.setNull(3, Types.VARCHAR);
+            if (Preparazione==null || Preparazione.isBlank()) query.setNull(3, Types.VARCHAR);
             else query.setString(3, Preparazione);
             query.setString(4, Utente.getCF());
 
@@ -111,7 +111,9 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         PreparedStatement query;
 
         try{
-            String SQLQuery = "INSERT INTO chefskiss.servito_in (ID_Piatto, Coordinate) VALUES (?,?)";
+            String SQLQuery =
+                    "INSERT INTO chefskiss.servito_in (ID_Piatto, Coordinate) " +
+                    "VALUES (?,?)";
 
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, piatto.getId());
@@ -135,7 +137,8 @@ public class PiattoDAO_MySQL implements PiattoDAO {
                     "SELECT p.*, AVG(r.Voto) as Media " +
                     "FROM chefskiss.piatto p " +
                     "LEFT JOIN chefskiss.recensisce r on p.ID_Piatto = r.ID_Piatto " +
-                    "WHERE p.Nome_Piatto LIKE ?" +
+                    "WHERE p.Nome_Piatto LIKE ? " +
+                    "AND p.Deleted = 'N'" +
                     "GROUP BY p.ID_Piatto";
 
             query = conn.prepareStatement(SQLQuery);
@@ -174,6 +177,7 @@ public class PiattoDAO_MySQL implements PiattoDAO {
                     "LEFT JOIN recensisce r on p.ID_Piatto = r.ID_Piatto " +
                     "JOIN contiene c on p.ID_Piatto = c.ID_Piatto " +
                     "WHERE c.Nome_Ingrediente LIKE ? " +
+                    "AND p.Deleted = 'N'" +
                     "GROUP BY p.ID_Piatto";
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, "%"+ingrediente+"%");
@@ -210,6 +214,7 @@ public class PiattoDAO_MySQL implements PiattoDAO {
                     "LEFT JOIN recensisce r on p.ID_Piatto = r.ID_Piatto " +
                     "JOIN servito_in si on p.ID_Piatto = si.ID_Piatto " +
                     "WHERE si.Coordinate = ? " +
+                    "AND p.Deleted = 'N'" +
                     "GROUP BY p.ID_Piatto";
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, coordSede);
@@ -245,6 +250,7 @@ public class PiattoDAO_MySQL implements PiattoDAO {
                     "FROM piatto p " +
                     "LEFT JOIN recensisce r on p.ID_Piatto = r.ID_Piatto " +
                     "WHERE p.CF = ? " +
+                    "AND p.Deleted = 'N'" +
                     "GROUP BY p.ID_Piatto";
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, cf);
@@ -279,6 +285,7 @@ public class PiattoDAO_MySQL implements PiattoDAO {
                     "FROM piatto p " +
                     "LEFT JOIN recensisce r on p.ID_Piatto = r.ID_Piatto " +
                     "WHERE p.ID_Piatto = ? " +
+                    "AND p.Deleted = 'N'" +
                     "GROUP BY p.ID_Piatto";
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, ID_Piatto);
@@ -312,8 +319,9 @@ public class PiattoDAO_MySQL implements PiattoDAO {
                     "SELECT p.*, AVG(r.Voto) as Media " +
                     "FROM piatto p " +
                     "LEFT JOIN recensisce r on p.ID_Piatto = r.ID_Piatto " +
+                    "WHERE p.Deleted = 'N'" +
                     "GROUP BY p.ID_Piatto, p.Data_Upload " +
-                    "ORDER BY p.Data_Upload;";
+                    "ORDER BY p.Data_Upload DESC";
             query = conn.prepareStatement(SQLQuery);
 
             ResultSet result = query.executeQuery();
