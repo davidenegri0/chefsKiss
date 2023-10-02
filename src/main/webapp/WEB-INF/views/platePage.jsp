@@ -33,7 +33,7 @@
     <p>
         Caricato da: <%= utente_post.getNome() %> <%= utente_post.getCognome() %>
     </p>
-    <% if(utente_post.getCF().equals(utente.getCF())){ %>
+    <% if(utente!=null && utente_post.getCF().equals(utente.getCF())){ %>
     <a href="/editPlate?id=<%=piatto.getId()%>"><button>Modifica la tua ricetta</button></a>
     <% } %>
     <div>Qui ci andrebbe l'immagine del piatto</div>
