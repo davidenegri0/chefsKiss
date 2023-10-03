@@ -1,0 +1,86 @@
+<%@ page import="com.project.chefskiss.modelObjects.Valutazione" %>
+<%@ page import="com.project.chefskiss.modelObjects.Sede" %>
+<%@ page import="com.project.chefskiss.modelObjects.User" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.project.chefskiss.modelObjects.Piatto" %><%--
+  Created by IntelliJ IDEA.
+  User: spipp
+  Date: 02/10/2023
+  Time: 12:17
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Sede</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <%
+        User utente = (User)request.getAttribute("user");
+        Sede sede = (Sede) request.getAttribute("sede");
+        User chef = (User) request.getAttribute("chef");
+        List<Piatto> piatti = (List<Piatto>) request.getAttribute("piatti");
+        List<Valutazione> valutazioni = (List<Valutazione>) request.getAttribute("valutazioni");
+    %>
+    <h2><a href="/restaurant?id=<%= sede.getRistoranteS().getID_Ristorante() %>"><%=sede.getRistoranteS().getNome()%></a> vi da il benvenuto nella sede in <%= sede.getVia() %> a <%= sede.getCitta() %></h2>
+    <p>Da noi potrete trovare il seguente menù preparato con tanta cura e amore dallo chef <%= chef.getNome() %> <%= chef.getCognome() %></p>
+    <nav>
+        <ul>
+            <%
+                for (int i = 0; i < piatti.size(); i++){
+            %>
+            <li>
+                <a href="/plate?id=<%= piatti.get(i).getId()%>"><%= piatti.get(i).getNome()%></a> - <%= piatti.get(i).getVotoMedio() %>
+            </li>
+            <% } %>
+        </ul>
+    </nav>
+
+    <%
+        if (utente != null && utente.isCliente()){
+    %>
+    <h4>Vuoi venire ad assaggiare i nostri piatti?</h4>
+    <a href="/addPrenotazione?id=<%=sede.getCoordinate()%>"><button>Prenota qui!</button></a>
+    <p>Hai cambiato idea e vuoi modificare o cancellare la prenotazione?</p>
+    <a href="/prenotazioniListPage"><button>Le mie prenotazioni</button></a>
+
+    <% } %>
+
+    <h4>Cosa ne pensano i nostri clienti...</h4>
+    <%
+        for ( int i = 0; i < valutazioni.size(); i++){
+    %>
+        <p id="valutazioneBlock">
+            <div id="valutazioneBlock_utente">
+                <%= valutazioni.get(i).getUtenteV().getNome() %> <%= valutazioni.get(i).getUtenteV().getCognome() %>
+            </div>
+            <div id="valutazioneBlock_voto">
+                <img src="<%= valutazioni.get(i).getStarsRating() %>" width="8%" height="auto">
+            </div>
+        </p>
+    <%
+        }
+        if (utente != null && utente.isCliente()) {
+    %>
+        <a href="/addRecensione?type=2&id=<%=sede.getCoordinate()%>"><button>Aggiungi valutazione</button></a>
+        <a href="/modifyRecensione?type=4&id=<%=sede.getCoordinate()%>"><button>Modifica valutazione</button></a>
+
+        <button onclick="confermaCancellazione()">Cancella valutazione</button>
+    <%
+        }
+    %>
+
+    <%@include file="repetedElements/homepageLink.html"%>
+</body>
+<script>
+
+    function confermaCancellazione() {
+        var richiesta = window.confirm("Sei sicuro di voler cancellare la tua valutazione?");
+        if (richiesta) {
+            window.location.replace("/deleteRecensione?type=4&id=<%=sede.getCoordinate()%>");
+        }
+        //else // visualizzare pagina della sede
+    }
+</script>
+</html>

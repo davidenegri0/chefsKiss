@@ -39,4 +39,6 @@ public interface UserDAO {
     public User findByNomeCognome (String Nome, String Cognome);
 
     public User findByEmail (String Email);
+
+    public User findBySede(Sede sede);
 }

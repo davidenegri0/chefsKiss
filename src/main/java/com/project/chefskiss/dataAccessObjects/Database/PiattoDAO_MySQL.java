@@ -81,6 +81,7 @@ public class PiattoDAO_MySQL implements PiattoDAO {
 
         try{
             String SQLQuery = "UPDATE chefskiss.piatto SET Deleted = 'Y' WHERE ID_Piatto = ?";
+            String SQLQuery2 = "DELETE FROM chefskiss.servito_in WHERE ID_Piatto = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, ID_Piatto);
@@ -98,6 +99,10 @@ public class PiattoDAO_MySQL implements PiattoDAO {
                 else System.out.println("Errore durante la cancellazione dell'utente");
             }
             result2.close();
+
+            query = conn.prepareStatement(SQLQuery2);
+            query.setInt(1, piatto.getId());
+            query.executeUpdate();
 
             query.close();
 
@@ -216,6 +221,7 @@ public class PiattoDAO_MySQL implements PiattoDAO {
                     "WHERE si.Coordinate = ? " +
                     "AND p.Deleted = 'N'" +
                     "GROUP BY p.ID_Piatto";
+            String SQLQuery2 = "SELECT * FROM chefskiss.servito_in WHERE Coordinate = ?";
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, coordSede);
 

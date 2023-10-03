@@ -3,16 +3,14 @@ package com.project.chefskiss.controllers;
 import com.project.chefskiss.Utility;
 import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.dataAccessObjects.*;
-import com.project.chefskiss.modelObjects.Piatto;
-import com.project.chefskiss.modelObjects.Recensione;
-import com.project.chefskiss.modelObjects.User;
+import com.project.chefskiss.modelObjects.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class deleteRecensioneController {
-    @RequestMapping (path = "/deleteRecensione", method = RequestMethod.GET)
+    @GetMapping (path = "/deleteRecensione")
     public ModelAndView DeleteRecensione(
             @CookieValue(value = "loggedUser", defaultValue = "") String userData,
             @RequestParam("type") int type,
@@ -54,7 +52,7 @@ public class deleteRecensioneController {
         if (type == 3 && !isRecensioneUp){ // recensione non esistente --> impossibile cancellazione
             System.out.println(
                     "Non è stata ancora inserita alcuna recensione dall'utente " + utente.getCF() +
-                            " per il piatto/ristorante " + id
+                            " per il piatto " + id
             );
             page = Utility.redirect(page, "/plate?id="+id);
             /*
@@ -65,6 +63,19 @@ public class deleteRecensioneController {
             return page;
         }
 
+        if (type == 4 && !isValutazioneUp){ // valutazione non esistente --> impossibile cancellazione
+            System.out.println(
+                    "Non è stata ancora inserita alcuna valutazione dall'utente " + utente.getCF() +
+                            " per il ristorante " + id
+            );
+            page = Utility.redirect(page, "/sede?id="+id);
+            /*
+            page.setViewName("redirect_to");
+            page.addObject("url", "/plate?id="+id);
+            */
+            page.addObject("errorCode", 1);
+            return page;
+        }
 
         switch (type){
             case 3: //typeCode = 1 --> recensione di un piatto
@@ -73,8 +84,7 @@ public class deleteRecensioneController {
                 Piatto piatto = piattoDAO.findByIDPiatto(Integer.parseInt(id));
 
                 RecensioneDAO recensioneDAO = DatabaseDAO.getRecensioneDAO(null);
-                Recensione recensione = new Recensione();
-                recensione = recensioneDAO.findByPiatto_Utente(Integer.parseInt(id), utente.getCF());
+                Recensione recensione = recensioneDAO.findByPiatto_Utente(Integer.parseInt(id), utente.getCF());
 
                 recensioneDAO.delete(recensione);
 
@@ -84,12 +94,21 @@ public class deleteRecensioneController {
 
                 break;
             }
-            case 4: //typeCode = 2 --> recensione di un ristorante
+            case 4: //typeCode = 2 --> valutazione di una sede di un ristorante
             {
-                //TODO: Implementare il setting per la recensione del ristorante
-                //Cercare i dati del ristorante nel db/cookie, e inviarli alla pageù
+                SedeDAO sedeDAO = DatabaseDAO.getSedeDAO(null);
+                Sede sede = sedeDAO.findByCoordinate(id);
 
+                ValutazioneDAO valutazioneDAO = DatabaseDAO.getValutazioneDAO(null);
+                Valutazione valutazione = valutazioneDAO.findByCF_Coordinate(utente.getCF(), sede.getCoordinate());
 
+                valutazioneDAO.delete(valutazione);
+
+                DatabaseDAO.commitTransaction();
+
+                page = Utility.redirect(page, "/sede?id="+id);
+
+                break;
             }
             default:    //typeCode != 1 o 2 --> che minchia significa?
             {

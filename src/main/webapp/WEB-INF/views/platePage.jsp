@@ -103,7 +103,7 @@
         <p id="reviewBlock">
             <div id="reviewBlock_utente">
                 <%= utenti_recensori.get(i).getNome() %> <%= utenti_recensori.get(i).getCognome() %>
-    </div>
+            </div>
             <div id="reviewBlock_voto">
                 <img src="<%=recensioni.get(i).getStarsRating()%>" width="8%" height="auto">
             </div>
@@ -119,11 +119,8 @@
     %>
         <a href="/addRecensione?type=1&id=<%=piatto.getId()%>"><button>Aggiungi recesione</button></a>
         <a href="/modifyRecensione?type=3&id=<%=piatto.getId()%>"><button>Modifica recesione</button></a>
+        <button onclick="confermaCancellazione()">Cancella recesione</button>
 
-            <button onclick="confermaCancellazione()">Cancella recesione</button>
-    <form>
-        <input type="hidden" value="cancella!">
-    </form>
     <%
         }
     %>

@@ -340,6 +340,38 @@ public class UserDAO_MySQL implements UserDAO {
         return utente;
     }
 
+    @Override
+    public User findBySede(Sede sede) {
+        PreparedStatement query;
+        User utente = new User();
+
+        try {
+            String SQLQuery =
+                    "SELECT * " +
+                            "FROM Utente " +
+                            "WHERE Coordinate = ? " +
+                            "AND Deleted = 'N'";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, sede.getCoordinate());
+
+            ResultSet result = query.executeQuery();
+
+            if(result.next())
+            {
+                utente = read(result);
+                System.out.println("Lettura dati completata!");
+            }
+            result.close();
+            query.close();
+
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return utente;
+    }
+
     private User read(ResultSet rs)
     throws SQLException
     {

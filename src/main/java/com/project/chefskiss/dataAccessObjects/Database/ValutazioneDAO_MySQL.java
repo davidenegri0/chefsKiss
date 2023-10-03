@@ -134,6 +134,59 @@ public class ValutazioneDAO_MySQL implements ValutazioneDAO {
         return check;
     }
 
+    @Override
+    public Valutazione findByCF_Coordinate (String CF, String Coordinate){
+        PreparedStatement query;
+        Valutazione valutazione = new Valutazione();
+
+        try{
+            String SQLQuery = "SELECT * FROM chefskiss.valuta WHERE CF = ? AND Coordinate = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, CF);
+            query.setString(2, Coordinate);
+
+            ResultSet result = query.executeQuery();
+            if (result.next())
+                valutazione = read(result);
+
+            result.close();
+            query.close();
+
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return valutazione;
+    }
+
+    @Override
+    public List<Valutazione> findBySede (Sede sede){
+        PreparedStatement query;
+        List<Valutazione> valutazioni = new ArrayList<>();
+
+        try{
+            String SQLQuery = "SELECT * FROM chefskiss.valuta WHERE Coordinate = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, sede.getCoordinate());
+
+            ResultSet result = query.executeQuery();
+
+            while (result.next()){
+                valutazioni.add(read(result));
+            }
+
+            result.close();
+            query.close();
+
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return valutazioni;
+    }
+
     private Valutazione read (ResultSet rs) throws SQLException{
         Valutazione valutazione = new Valutazione();
         Sede sede = new Sede();

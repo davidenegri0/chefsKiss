@@ -29,7 +29,7 @@
         <%
             for ( int i = 0; i < sedi.size(); i++ ){
         %>
-            <li><%= sedi.get(i).getVia()%> (<%=sedi.get(i).getCitta()%>)</li>
+            <li><a href="/sede?id=<%= sedi.get(i).getCoordinate() %>"><%= sedi.get(i).getVia()%> (<%=sedi.get(i).getCitta()%>)</a></li>
         <%
             }
         %>

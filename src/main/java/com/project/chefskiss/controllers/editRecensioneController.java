@@ -48,15 +48,28 @@ public class editRecensioneController {
         // typecode = 4 --> modifica recensione sede ristorante
 
         if (typeCode == 3) isRecensioneUp = sessionRecensioneDAO.checkRecensione(utente.getCF(), Integer.parseInt(id)); //String CF, int ID
-        else isValutazioneUp = sessioneValutazioneDAO.checkValutazione(utente.getCF(), id); //TODO: Implementare controllo recensione ristorante
-
+        else isValutazioneUp = sessioneValutazioneDAO.checkValutazione(utente.getCF(), id);  //String CF, String ID
 
         if (typeCode == 3 && !isRecensioneUp){ // recensione non esistente --> impossibile modifica
             System.out.println(
                     "Non è stata ancora inserita alcuna recensione dall'utente " + utente.getCF() +
-                            " per il piatto/ristorante " + id
+                            " per il piatto " + id
             );
             page = Utility.redirect(page, "/plate?id="+id);
+            /*
+            page.setViewName("redirect_to");
+            page.addObject("url", "/plate?id="+id);
+            */
+            page.addObject("errorCode", 1);
+            return page;
+        }
+
+        if (typeCode == 4 && !isValutazioneUp){ // valutazione non esistente --> impossibile modifica
+            System.out.println(
+                    "Non è stata ancora inserita alcuna recensione dall'utente " + utente.getCF() +
+                            " per il ristorante " + id
+            );
+            page = Utility.redirect(page, "/sede?id="+id);
             /*
             page.setViewName("redirect_to");
             page.addObject("url", "/plate?id="+id);
@@ -95,9 +108,23 @@ public class editRecensioneController {
 
                 break;
             }
-            case 4: // modifica di una recensione di un ristorante
+            case 4: // modifica di una valutazione di un ristorante
             {
+                SedeDAO sessionSedeDAO = DatabaseDAO.getSedeDAO(null);
+                Sede sede = sessionSedeDAO.findByCoordinate(id); // cerca le informazioni per la sede
 
+                ValutazioneDAO valutazioneDAO = DatabaseDAO.getValutazioneDAO(null);
+                Valutazione valutazione = valutazioneDAO.findByCF_Coordinate(utente.getCF(), sede.getCoordinate());
+
+                valutazione.setSedeV(sede); // inserisce in valutazione la sede completa anche con le informazioni di utente
+                valutazione.setUtenteV(utente); // inserisce in valutazione l'utente loggato con tutte le sue informazioni
+
+                page.addObject("sede", sede); // contiene tutte informazioni della sede
+                page.addObject("valutazione", valutazione);
+                page.addObject("typecode", typeCode);
+                //page.addObject("isRistorante", false);
+
+                break;
             }
             default:    //typeCode != 1 o 2 --> che minchia significa?
             {
@@ -165,10 +192,22 @@ public class editRecensioneController {
             }
             case 4: //typeCode = 2 --> recensione di un ristorante
             {
-                //TODO: Implementare il setting per la recensione del ristorante
-                //Cercare i dati del ristorante nel db/cookie, e inviarli alla pageù
+                SedeDAO sedeDAO = DatabaseDAO.getSedeDAO(null);
+                Sede sede = sedeDAO.findByCoordinate(id);
 
+                ValutazioneDAO valutazioneDAO = DatabaseDAO.getValutazioneDAO(null);
+                Valutazione valutazione = new Valutazione();
+                valutazione.setUtenteV(utente);
+                valutazione.setSedeV(sede);
+                valutazione.setVoto(voto);
 
+                valutazioneDAO.update(valutazione);
+
+                DatabaseDAO.commitTransaction();
+
+                page = Utility.redirect(page, "/sede?id="+id);
+
+                break;
             }
             default:    //typeCode != 1 o 2 --> che minchia significa?
             {

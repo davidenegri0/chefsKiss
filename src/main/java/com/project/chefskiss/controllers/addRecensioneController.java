@@ -46,17 +46,15 @@ public class addRecensioneController {
 
         // typecode = 1 --> aggiunta recensione piatto
         // typecode = 2 --> aggiunta recensione sede ristorante
-        // typecode = 3 --> modifica recensione piatto
-        // typecode = 4 --> modifica recensione sede ristorante
 
-        if (typeCode == 1 || typeCode == 3) isRecensioneUp = sessionRecensioneDAO.checkRecensione(utente.getCF(), Integer.parseInt(id)); //String CF, int ID
+        if (typeCode == 1) isRecensioneUp = sessionRecensioneDAO.checkRecensione(utente.getCF(), Integer.parseInt(id)); //String CF, int ID
         else isValutazioneUp = sessioneValutazioneDAO.checkValutazione(utente.getCF(), id); //TODO: Implementare controllo recensione ristorante
 
 
         if (typeCode == 1 && isRecensioneUp){ // recensione già inserita --> impossibile aggiunta
             System.out.println(
                     "Recensione dell'utente "+utente.getCF()+
-                    " per il piatto/ristorante "+id+" già presente"
+                    " per il piatto "+id+" già presente"
             );
             page = Utility.redirect(page, "/plate?id="+id);
             /*
@@ -67,12 +65,12 @@ public class addRecensioneController {
             return page;
         }
 
-        if (typeCode == 3 && !isRecensioneUp){ // recensione non esistente --> impossibile modifica
+        if (typeCode == 2 && isValutazioneUp){ // recensione già inserita --> impossibile aggiunta
             System.out.println(
-                    "Non è stata ancora inserita alcuna recensione dall'utente " + utente.getCF() +
-                    " per il piatto/ristorante " + id
+                    "Recensione dell'utente "+utente.getCF()+
+                            " per il ristorante "+id+" già presente"
             );
-            page = Utility.redirect(page, "/plate?id="+id);
+            page = Utility.redirect(page, "/sede?id="+id);
             /*
             page.setViewName("redirect_to");
             page.addObject("url", "/plate?id="+id);
@@ -99,7 +97,7 @@ public class addRecensioneController {
 
                 page.addObject("piatto", plate);
                 page.addObject("typecode", typeCode);
-                page.addObject("isRistorante", false);
+                //page.addObject("isRistorante", false);
 
                 break;
             }
@@ -110,16 +108,18 @@ public class addRecensioneController {
 
                 SedeDAO sedeDAO = DatabaseDAO.getSedeDAO(null);
                 Sede sede = sedeDAO.findByCoordinate(id);
-
+                /*
                 Ristorante ristorante = sede.getRistoranteS(); // prende oggetto ristorante di sede
 
                 RistoranteDAO ristoranteDAO = DatabaseDAO.getRistoDAO(null);
                 ristorante = ristoranteDAO.findById(ristorante.getID_Ristorante()); // cerca tutti i dati del ristorante della sede dall'id ristorante
 
                 sede.setRistoranteS(ristorante); // setta in sede tutti i dati del ristorante
+                */
 
                 page.addObject("sede", sede);
-                page.addObject("isRistorante", true);
+                page.addObject("typecode", typeCode);
+                //page.addObject("isRistorante", true);
 
                 break;
             }
@@ -192,10 +192,10 @@ public class addRecensioneController {
                 Sede sede = sedeDAO.findByCoordinate(ID);
                 valutazioneDAO.create(utente, sede, voto);
 
-                page.addObject("isRistorante", true);
+                //page.addObject("isRistorante", true);
                 DatabaseDAO.commitTransaction();
 
-                page.addObject("url", "/sede?id="+ID);
+                page = Utility.redirect(page, "/sede?id="+ID);
 
                 break;
             }

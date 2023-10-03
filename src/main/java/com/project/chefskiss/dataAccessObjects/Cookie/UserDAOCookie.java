@@ -85,10 +85,10 @@ public class UserDAOCookie implements UserDAO {
     }       //Unused operation
 
     @Override
-    public User findByEmail(String Email) {
-        return null;
-    }       //Unused operation
+    public User findByEmail(String Email) { return null; } //Unused operation
 
+    @Override
+    public User findBySede(Sede sede){ return null; } //Unused operation
     /*
     public void createProfileImg(User user){
         try{

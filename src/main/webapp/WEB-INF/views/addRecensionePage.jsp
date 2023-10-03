@@ -1,6 +1,5 @@
-<%@ page import="com.project.chefskiss.modelObjects.User" %>
-<%@ page import="com.project.chefskiss.modelObjects.Piatto" %>
-<%@ page import="com.project.chefskiss.modelObjects.Recensione" %><%--
+<%@ page import="javax.xml.validation.Validator" %>
+<%@ page import="com.project.chefskiss.modelObjects.*" %><%--
   Created by IntelliJ IDEA.
   User: david
   Date: 26/09/2023
@@ -12,7 +11,9 @@
     User utente = (User)request.getAttribute("user");
     Integer type = (Integer) request.getAttribute("typecode");
     Piatto piatto = null;
+    Sede sede = null;
     Recensione recensione = null;
+    Valutazione valutazione = null;
     String nomeSoggetto = null;
     String ID = null;
 
@@ -22,18 +23,21 @@
         ID = String.valueOf(piatto.getId());
         if (type == 3) recensione = (Recensione) request.getAttribute("recensione");
     }
-    if (type == 2){ // aggiunta recensione sede
-        // TODO: cosa viene passato?
+    if (type == 2 || type == 4){ // aggiunta recensione sede
+        sede = (Sede) request.getAttribute("sede");
+        nomeSoggetto = sede.getVia() + " " + sede.getCitta();
+        ID = sede.getCoordinate();
+        if (type == 4) valutazione = (Valutazione) request.getAttribute("valutazione");
     }
     /*if (type == 3){ // modifica recensione piatti
         piatto = (Piatto) request.getAttribute("piatto");
 
         nomeSoggetto = piatto.getNome();
         ID = String.valueOf(piatto.getId());
-    }*/
+    }
     if (type == 4){ // modifica recensione sede
         // TODO: cosa viene passato?
-    }
+    }*/
 
     /*
     boolean isRistorante = (boolean)request.getAttribute("isRistorante");
@@ -62,7 +66,8 @@
         <p><%=utente.getNome()+" "+utente.getCognome()%>, quanto valuteresti <%=nomeSoggetto%>, da 1 a 5 stelle?</p>
         <%
             Integer value_voto = 3;
-            if ((type == 3 || type == 4) && recensione != null) value_voto = recensione.getVoto();
+            if (type == 3 && recensione != null) value_voto = recensione.getVoto();
+            if (type == 4 && valutazione != null) value_voto = valutazione.getVoto();
             // else if (recensione != null) value_voto = 3; // le aggiunte hanno valore di default da visualizzare
         %>
         <input type="range" id="voto" name="voto" min="1" max="5" value="<%= value_voto %>" step="1" list="starValues">
@@ -77,7 +82,7 @@
 
         <%
             String value_commento = "";
-            if ((type == 3 || type == 4) && recensione != null) value_commento = recensione.getCommento();
+            if (type == 3 && recensione != null) value_commento = recensione.getCommento();
             //else if (recensione != null)value_commento = ""; // le aggiunte non hanno ancora nessun dato da visualizzare
         %>
 
@@ -89,6 +94,9 @@
         <input type="hidden" name="ID" value="<%=ID%>">
         <% if (type == 3) { %>
             <input type="hidden" name="recensione" value="<%=recensione%>">
+        <% } %>
+        <% if (type == 4) { %>
+            <input type="hidden" name="valutazione" value="<%=valutazione%>">
         <% } %>
 
         <br>
