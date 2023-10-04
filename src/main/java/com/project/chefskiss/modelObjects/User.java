@@ -3,6 +3,7 @@ package com.project.chefskiss.modelObjects;
 import com.project.chefskiss.configurations.Config;
 
 import java.sql.Blob;
+import java.sql.Clob;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,11 @@ public class User {
     private final Map<String, Boolean> Privileges = new HashMap<>(5);
     private String Username;
     private Blob profilePicture = null;
+
+    private Blob chefPicture = null;
+
+    private Clob chefCV = null;
+
     private Boolean Deleted;
 
     // RELAZIONI
@@ -82,7 +88,13 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
-    //TODO: set di foto e CV per chef
+    public void setChefPicture(Blob chefPicture) {
+        this.chefPicture = chefPicture;
+    }
+
+    public void setChefCV(Clob chefCV) {
+        this.chefCV = chefCV;
+    }
 
     public void setDeleted(boolean deleted) { Deleted = deleted; }
     public void setCoordiante(String coordinate) { Coordiante = coordinate; }
@@ -133,6 +145,14 @@ public class User {
     public Sede getSedeU() { return sede; }
 
     public Ristorante getRistoranteU() { return ristorante; }
+
+    public Blob getChefPicture() {
+        return chefPicture;
+    }
+
+    public Clob getChefCV() {
+        return chefCV;
+    }
 
     public Boolean isCliente(){
         return Privileges.get("Cliente");

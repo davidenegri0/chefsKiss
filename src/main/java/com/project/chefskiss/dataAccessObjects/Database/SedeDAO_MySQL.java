@@ -98,13 +98,17 @@ public class SedeDAO_MySQL implements SedeDAO {
         PreparedStatement query;
 
         try {
-            String SQLQuery = "UPDATE chefskiss.sede SET Via = ?, Citta = ?, Posti_Disponibili = ?, ID_Ristorante = ? WHERE Coordinate = ?";
+            String SQLQuery =
+                    "UPDATE chefskiss.sede " +
+                    "SET Via = ?, Citta = ?, Posti_Disponibili = ?, ID_Ristorante = ? " +
+                    "WHERE Coordinate = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, sede.getVia());
             query.setString(2, sede.getCitta());
             query.setInt(3, sede.getPosti());
             query.setInt(4, sede.getID_Ristorante());
+            query.setString(5, sede.getCoordinate());
 
             query.executeUpdate();
 
@@ -140,7 +144,12 @@ public class SedeDAO_MySQL implements SedeDAO {
         Sede sede = new Sede();
 
         try{
-            String SQLQuery = "SELECT * FROM chefskiss.sede WHERE Via = ? AND Citta = ?";
+            String SQLQuery =
+                    "SELECT * " +
+                    "FROM chefskiss.sede " +
+                    "WHERE Via = ? " +
+                    "AND Citta = ? " +
+                    "AND Deleted = 'N'";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, Via);
@@ -169,7 +178,12 @@ public class SedeDAO_MySQL implements SedeDAO {
         List<Sede> sedi = new ArrayList<>();
 
         try{
-            String SQLQuery = "SELECT Coordinate, Via, Citta, Posti_Disponibili, ID_Ristorante, Deleted FROM chefskiss.sede NATURAL JOIN chefskiss.ristorante WHERE ristorante.Nome_Ristorante LIKE ?";
+            String SQLQuery =
+                    "SELECT Coordinate, Via, Citta, Posti_Disponibili, ID_Ristorante, Deleted " +
+                    "FROM chefskiss.sede " +
+                    "NATURAL JOIN chefskiss.ristorante " +
+                    "WHERE ristorante.Nome_Ristorante LIKE ? " +
+                    "AND sede.Deleted = 'N'";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, "%"+nomeRistorante+"%");
@@ -197,7 +211,11 @@ public class SedeDAO_MySQL implements SedeDAO {
         List<Sede> sedi = new ArrayList<>();
 
         try{
-            String SQLQuery = "SELECT * FROM chefskiss.sede WHERE ID_Ristorante = ?";
+            String SQLQuery =
+                    "SELECT * " +
+                    "FROM chefskiss.sede " +
+                    "WHERE ID_Ristorante = ? " +
+                    "AND Deleted = 'N'";
 
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, ristorante.getID_Ristorante());
@@ -225,7 +243,11 @@ public class SedeDAO_MySQL implements SedeDAO {
         Sede sede = new Sede();
 
         try{
-            String SQLQuery = "SELECT * FROM chefskiss.sede WHERE Coordinate = ?";
+            String SQLQuery =
+                    "SELECT * " +
+                    "FROM chefskiss.sede " +
+                    "WHERE Coordinate = ? " +
+                    "AND Deleted = 'N'";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, Coordinate);
@@ -252,7 +274,12 @@ public class SedeDAO_MySQL implements SedeDAO {
         List<Sede> sedi = new ArrayList<>();
 
         try{
-            String SQLQuery = "SELECT Coordinate, Via, Citta, Posti_Disponibili, ID_Ristorante, Deleted FROM chefskiss.servito_in NATURAL JOIN chefskiss.sede WHERE ID_Piatto = ?";
+            String SQLQuery =
+                    "SELECT Coordinate, Via, Citta, Posti_Disponibili, ID_Ristorante, Deleted " +
+                    "FROM chefskiss.servito_in " +
+                    "NATURAL JOIN chefskiss.sede " +
+                    "WHERE ID_Piatto = ? " +
+                    "AND sede.Deleted = 'N'";
 
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, piatto.getId());

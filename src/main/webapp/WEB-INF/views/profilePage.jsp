@@ -54,11 +54,13 @@
         <a href="/changePassword"><button>Click here to change password</button></a>
     </p>
 
+    <% if (utente.isPrivato()){ %>
     <h3>Dati da utente pubblico</h3>
     <p>
         Username: <%=utente.getUsername()%> <br>
     </p>
     <img src="<%=imgPath%>" height="144px" width="144px"> <br>
+    <% } %>
     <!--
         Ci sono due soluzioni: Condificare l'immagine in formato di testo e poi farla renderizzare direttamente
         al browser attraverso <img src="data:image/jpg;base64, <- base64Data ->">

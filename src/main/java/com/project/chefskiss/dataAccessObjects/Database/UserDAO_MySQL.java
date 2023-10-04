@@ -16,11 +16,12 @@ public class UserDAO_MySQL implements UserDAO {
     }
 
     @Override
-    public User create(String CF, String Nome, String Cognome, Date D_Nascita, String Email, String Password, String N_Telefono, Date D_Iscrizione, Boolean Se_Cliente, Boolean Verificato, Boolean Se_Privato, String Username, Boolean Se_Chef, Boolean Se_Ristoratore, Boolean deleted, Sede sede)
+    public User create(String CF, String Nome, String Cognome, Date D_Nascita, String Email,
+                       String Password, String N_Telefono, Date D_Iscrizione, Boolean Se_Cliente,
+                       Boolean Verificato, Boolean Se_Privato, String Username, Boolean Se_Chef,
+                       Boolean Se_Ristoratore, Boolean deleted, Sede sede)
     throws UserAlreadyKnownException
     {
-        // togliere i se_*
-
         PreparedStatement query;
         User utente = new User();
         utente.setSedeU(sede);
@@ -49,9 +50,15 @@ public class UserDAO_MySQL implements UserDAO {
                     "Email, " + // 5
                     "Password, " + // 6
                     "Telefono, " + // 7
-                    "Data_Iscrizione, " + // 8
-                    "Coordinate) " + // 9
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                    "Data_Iscrizione, " + //8
+                    "Se_Cliente, " +    //9
+                    "Verificato, " +    //10
+                    "Se_Privato, " +    //11
+                    "Username, " +    //12
+                    "Se_Chef, " +   //13
+                    "Se_Ristoratore, " + // 14
+                    "Coordinate) " + // 15
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
             int i = 1;
             query = conn.prepareStatement(SQLQuery2);
@@ -63,7 +70,20 @@ public class UserDAO_MySQL implements UserDAO {
             query.setString(i++, Password);
             query.setString(i++, N_Telefono);
             query.setDate(i++, D_Iscrizione);
-            query.setString(i, utente.getSedeU().getCoordinate());
+            if (Se_Cliente) query.setInt(i++, 1);
+            else query.setInt(i++, 0);
+            if (Verificato) query.setInt(i++, 1);
+            else query.setInt(i++, 0);
+            if (Se_Privato) query.setInt(i++, 1);
+            else query.setInt(i++, 0);
+            if (Username == null || Username.isBlank() || !Se_Privato) query.setNull(i++, Types.VARCHAR);
+            else query.setString(i++, Username);
+            if (Se_Chef) query.setInt(i++, 1);
+            else query.setInt(i++, 0);
+            if (Se_Ristoratore) query.setInt(i++, 1);
+            else query.setInt(i++, 0);
+            if (sede==null) query.setNull(i, Types.VARCHAR);
+            else query.setString(i, sede.getCoordinate());
 
             query.executeUpdate();
 
@@ -73,7 +93,9 @@ public class UserDAO_MySQL implements UserDAO {
             throw new RuntimeException(e.getMessage());
         }
 
-        return utente.setTotalData(Nome, Cognome, CF, Email, N_Telefono, D_Nascita, Password);
+        utente.setTotalData(Nome, Cognome, CF, Email, N_Telefono, D_Nascita, Password);
+        utente.setPrivileges(Se_Cliente, Verificato, Se_Privato, Se_Chef, Se_Ristoratore);
+        return utente;
     }
 
     @Override
@@ -89,9 +111,6 @@ public class UserDAO_MySQL implements UserDAO {
                     "Cognome = ?, " + // 2
                     "Data_Nascita = ?, " + // 3
                     "Email = ?, " + // 4
-
-                    //"Password = ?, " + // 5
-
                     "Telefono = ?, " + // 5
                     "Se_Cliente = ?, " + // 6
                     "Se_Privato = ?, " + // 7
@@ -160,11 +179,10 @@ public class UserDAO_MySQL implements UserDAO {
                 String SQLQuery2 = "UPDATE chefskiss.utente SET Foto_Chef = ?, CV = ?, Coordinate = ? WHERE CF = ?";
 
                 query2 = conn.prepareStatement(SQLQuery2);
-                query2.setBlob(1, user.getProfilePicture()); // ?????
-                //query2.setBlob(2, user.getCV()); // ????? caricare il cv
-                // TODO: Rimuovere questa line dopo aver implementato
-                query2.setNull(2, Types.BLOB); //Per ora non imposta nulla
-                query2.setString(3, user.getSedeU().getCoordinate()); // coordinate c'è solo se l'utente è chef
+                query2.setBlob(1, user.getChefPicture());
+                query2.setClob(2, user.getChefCV());
+                if (user.getSedeU()==null) query2.setNull(3, Types.VARCHAR);
+                else query2.setString(3, user.getSedeU().getCoordinate()); // coordinate c'è solo se l'utente è chef
                 query2.setString(4, user.getCF());
 
                 query2.executeUpdate();

@@ -1,64 +1,97 @@
 package com.project.chefskiss.controllers;
 
 import com.project.chefskiss.Exceptions.UserAlreadyKnownException;
+import com.project.chefskiss.Utility;
 import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.dataAccessObjects.DAOFactory;
+import com.project.chefskiss.dataAccessObjects.RistoranteDAO;
 import com.project.chefskiss.dataAccessObjects.UserDAO;
+import com.project.chefskiss.modelObjects.Ristorante;
 import com.project.chefskiss.modelObjects.User;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialClob;
 import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDate;
 
 @Controller
 public class registrationController {
-    @RequestMapping(value = "/registration")
+
+    @GetMapping(path = "/registration")
+    public ModelAndView viewRegistrationPage(){
+        return new ModelAndView("registrationPage");
+    }
+
+    @PostMapping(value = "/registration",
+            params = {"nome", "cognome", "cf", "email", "telefono", "nascita", "pssw"})
     public ModelAndView showRegistrationComplete(
             HttpServletResponse response,
-            @RequestParam(name = "nome", defaultValue = "", required = false) String Nome,
-            @RequestParam(name = "cognome", defaultValue = "", required = false) String Cognome,
-            @RequestParam(name = "cf", defaultValue = "", required = false) String CF,
-            @RequestParam(name = "email", defaultValue = "", required = false) String Email,
-            @RequestParam(name = "telefono", defaultValue = "", required = false) String Telefono,
-            @RequestParam(name = "nascita", defaultValue = "", required = false) String Data,
-            @RequestParam(name = "pssw", defaultValue = "", required = false) String Password
+            @RequestParam(name = "nome") String Nome,
+            @RequestParam(name = "cognome") String Cognome,
+            @RequestParam(name = "cf") String CF,
+            @RequestParam(name = "email") String Email,
+            @RequestParam(name = "telefono") String Telefono,
+            @RequestParam(name = "nascita") String Data,
+            @RequestParam(name = "pssw") String Password,
+            @RequestParam(value = "cliente", required = false, defaultValue = "false") boolean isCliente,
+            @RequestParam(name = "privato", required = false, defaultValue = "false") boolean isPrivato,
+            @RequestParam(name = "username", required = false) String username,
+            @RequestParam(name = "foto_prv", required = false) MultipartFile foto_prv,
+            @RequestParam(name = "chef", required = false, defaultValue = "false") boolean isChef,
+            @RequestParam(name = "foto_chef", required = false) MultipartFile foto_chef,
+            @RequestParam(name = "cv_chef", required = false) MultipartFile cv,
+            @RequestParam(name = "ristoratore", required = false, defaultValue = "false") boolean isRistoratore,
+            @RequestParam(name = "nome_rist", required = false) String nomeRist
             ){
         // Variabli
         ModelAndView page;
-        User utente;
-
-        // Controllo parametri
-
-        if (Nome.equals("")){
-            page = new ModelAndView("registrationPage");
-            return page;
-        }
+        User utente = null;
 
         page = new ModelAndView("index");
-        //Controllo Data ---> debug
-        //System.out.println(Data);
 
-        // Si prova a fetchare i dati dal DB
+        // Connesione al database
+        DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
+        DatabaseDAO.beginTransaction();
         try {
-            DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
-            DatabaseDAO.beginTransaction();
             UserDAO sessionUserDAO = DatabaseDAO.getUserDAO(null);
+
             utente = sessionUserDAO.create(CF, Nome, Cognome, Date.valueOf(Data), Email, Password, Telefono, Date.valueOf(LocalDate.now()),
-                    false, false, false, null, false, false, false, null);
+                    isCliente, false, isPrivato, null, isChef, isRistoratore, false, null);
+
             DatabaseDAO.commitTransaction();
-            DatabaseDAO.closeTransaction();
+
+            if (isPrivato){
+                utente.setUsername(username);
+                utente.setProfilePicture(new SerialBlob(foto_prv.getBytes()));
+            }
+            if (isChef){
+                utente.setChefPicture(new SerialBlob(foto_chef.getBytes()));
+                utente.setChefCV(new SerialClob(new String(cv.getBytes()).toCharArray()));
+            }
+            if (isPrivato || isChef){
+                sessionUserDAO.update(utente);
+            }
+
+            DatabaseDAO.commitTransaction();
+
         } catch (Exception e){
-            //System.out.println(e.getMessage());
             e.printStackTrace();
+            DatabaseDAO.rollbackTransaction();
             page.setViewName("registrationPage");
             page.addObject("errorCode", 1);
             return page;
         }
+
+        DatabaseDAO.closeTransaction();
 
         //Creazione cookie utente
         try {
@@ -72,13 +105,13 @@ public class registrationController {
                     utente.getEmail(),
                     "redacted",
                     utente.getN_Telefono(),
-                    utente.getD_Iscrizione(),
+                    Date.valueOf(LocalDate.now()),
+                    isCliente,
                     false,
-                    false,
-                    false,
-                    "undefined",
-                    false,
-                    false,
+                    isPrivato,
+                    username,
+                    isChef,
+                    isRistoratore,
                     false,
                     null
             );
@@ -87,6 +120,11 @@ public class registrationController {
         }
 
         page.addObject("user", utente);
+
+        if (isRistoratore){
+            return Utility.redirect(page, "/addRistorante&Sede");
+        }
+
         return page;
     }
 }

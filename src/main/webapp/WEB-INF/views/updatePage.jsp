@@ -51,10 +51,12 @@
         <p>
             Iscritto alla piattaforma dal: <%=utente.getD_Iscrizione()%> <br>
         </p>
+        <% if (utente.isPrivato()){ %>
         <h3>Dati da utente pubblico</h3>
         <label for="username">Username: </label>
         <input id="username" name="username" type="text" value="<%=utente.getUsername()%>"> <br>
         <img src="<%=imgPath%>" height="144px" width="144px">
+        <% } %>
         <br>
         <input type="file" accept="image/jpeg" name="file"> <br>
         <input type="submit" value="Aggiorna profilo">

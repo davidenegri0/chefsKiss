@@ -14,7 +14,7 @@
 <body>
     <h2>Registration Page</h2>
     <div id="registration-form">
-        <form name="registration-form" method="post">
+        <form id="reg_form" name="registration-form" method="post" enctype="multipart/form-data">
             <label for="nome">Nome:</label>
             <input id="nome" name="nome" type="text" required><br>
             <label for="cognome">Cognome:</label>
@@ -31,7 +31,28 @@
             <input id="pssw" name="pssw" type="password" required><br>
             <label for="c_pssw">Conferma Password:</label>
             <input id="c_pssw" name="c_pssw" type="password" required><br>
+            <label for="cliente">Sei interessato a effettuare prenotazioni sul sito?</label>
+            <input id="cliente" name="cliente" type="checkbox" value="true"><br>
+            <label for="privato">Sei interessato a postare ricette sulla piattaforma?</label>
+            <input id="privato" name="privato" type="checkbox" value="true"><br>
+            <div id="priv_data" hidden>
+                <label for="username">Username: </label>
+                <input id="username" name="username" type="text"><br>
+                <label for="foto_prv">Foto profilo: </label>
+                <input id="foto_prv" name="foto_prv" type="file" accept="image/jpeg"><br>
+            </div>
+            <label for="chef">Sei uno chef con occupazione o in cerca di un lavoro?</label>
+            <input id="chef" name="chef" type="checkbox" value="true"><br>
+            <div id="chef_data" hidden>
+                <label for="foto_chef">Foto profilo: </label>
+                <input id="foto_chef" name="foto_chef" type="file" accept="image/jpeg"><br>
+                <label for="cv_chef">Curriculum Vitae: </label>
+                <input id="cv_chef" name="cv_chef" type="file" accept="text/plain"><br>
+            </div>
+            <label for="ristoratore">Sei proprietario di un ristorante?</label>
+            <input id="ristoratore" name="ristoratore" type="checkbox" value="true"><br>
             <input type="submit" value="Conferma">
+            <input type="reset" value="Annulla">
         </form>
     </div>
     <%@include file="repetedElements/homepageLink.html"%>
@@ -47,5 +68,26 @@
         }
     }
     window.addEventListener("load", onLoadRequest);
+
+    var privatoCheckbox = document.getElementById("privato");
+    function privatoCheck(){
+        if (privatoCheckbox.checked){
+            document.getElementById("priv_data").removeAttribute("hidden");
+        } else {
+            document.getElementById("priv_data").setAttribute("hidden", "hidden");
+        }
+    }
+    privatoCheckbox.addEventListener('change', privatoCheck);
+
+    var chefCheckbox = document.getElementById("chef");
+    function chefCheck(){
+        if (chefCheckbox.checked){
+            document.getElementById("chef_data").removeAttribute("hidden");
+        } else {
+            document.getElementById("chef_data").setAttribute("hidden", "hidden");
+        }
+    }
+    chefCheckbox.addEventListener('change', chefCheck);
+
 </script>
 </html>

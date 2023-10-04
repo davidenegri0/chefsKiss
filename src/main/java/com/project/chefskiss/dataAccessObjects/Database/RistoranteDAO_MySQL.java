@@ -36,6 +36,18 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
 
             query.close();
 
+            SQLQuery =
+                    "SELECT ID_Ristorante " +
+                    "FROM chefskiss.ristorante " +
+                    "WHERE CF = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, CF_Ristoratore);
+            ResultSet result = query.executeQuery();
+            if (result.next()) risto.setID(result.getInt("ID_Ristorante"));
+            result.close();
+            query.close();
+
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
