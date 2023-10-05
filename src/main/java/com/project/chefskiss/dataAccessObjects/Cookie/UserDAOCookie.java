@@ -9,6 +9,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.sql.Date;
+import java.util.List;
 
 public class UserDAOCookie implements UserDAO {
     private HttpServletResponse response;
@@ -88,7 +89,12 @@ public class UserDAOCookie implements UserDAO {
     public User findByEmail(String Email) { return null; } //Unused operation
 
     @Override
-    public User findBySede(Sede sede){ return null; } //Unused operation
+    public List<User> findBySede(Sede sede){ return null; } //Unused operation
+
+    @Override
+    public List<User> getAllFreeChefs() {       //Unused operation
+        return null;
+    }
     /*
     public void createProfileImg(User user){
         try{

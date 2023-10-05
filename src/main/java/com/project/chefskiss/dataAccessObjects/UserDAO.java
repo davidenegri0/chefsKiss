@@ -1,6 +1,7 @@
 package com.project.chefskiss.dataAccessObjects;
 
 import java.sql.Date;
+import java.util.List;
 
 import com.project.chefskiss.Exceptions.UserAlreadyKnownException;
 import com.project.chefskiss.modelObjects.Sede;
@@ -40,5 +41,7 @@ public interface UserDAO {
 
     public User findByEmail (String Email);
 
-    public User findBySede(Sede sede);
+    public List<User> findBySede(Sede sede);
+
+    public List<User> getAllFreeChefs();
 }

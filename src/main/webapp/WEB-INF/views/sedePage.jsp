@@ -19,12 +19,24 @@
     <%
         User utente = (User)request.getAttribute("user");
         Sede sede = (Sede) request.getAttribute("sede");
-        User chef = (User) request.getAttribute("chef");
+        List<User> chefs = (List<User>) request.getAttribute("chefs");
         List<Piatto> piatti = (List<Piatto>) request.getAttribute("piatti");
         List<Valutazione> valutazioni = (List<Valutazione>) request.getAttribute("valutazioni");
     %>
     <h2><a href="/restaurant?id=<%= sede.getRistoranteS().getID_Ristorante() %>"><%=sede.getRistoranteS().getNome()%></a> vi da il benvenuto nella sede in <%= sede.getVia() %> a <%= sede.getCitta() %></h2>
-    <p>Da noi potrete trovare il seguente menù preparato con tanta cura e amore dallo chef <%= chef.getNome() %> <%= chef.getCognome() %></p>
+    <p> Da noi potrete trovare il seguente menù preparato con tanta cura e amore dagli chef: </p>
+    <% for (int i = 0; i < chefs.size(); i++) { %>
+    <p>
+        <%=chefs.get(i).getNome()+" "+chefs.get(i).getCognome()%>
+        <a href="/deleteChef?CF=<%=chefs.get(i).getCF()%>&ID=<%=sede.getCoordinate()%>">
+            <button><i class='bx bxs-trash'></i></button>
+        </a>
+    </p>  <!-- TODO: Funzionalità rimozione chef -->
+    <% } %>
+    <% if (utente!=null && utente.isRistoratore() && sede.getRistoranteS().getUtenteRi().getCF().equals(utente.getCF())){ %>
+    <a href="/addChef?ID=<%=sede.getCoordinate()%>"><button>Aggiungi chef</button></a>   <!-- TODO: Funzionalità aggiunta chef -->
+    <% } %>
+    <h3>Menu della sede</h3>
     <nav>
         <ul>
             <%
@@ -37,14 +49,11 @@
         </ul>
     </nav>
 
-    <%
-        if (utente != null && utente.isCliente()){
-    %>
+    <% if (utente != null && utente.isCliente()){ %>
     <h4>Vuoi venire ad assaggiare i nostri piatti?</h4>
     <a href="/addPrenotazione?id=<%=sede.getCoordinate()%>"><button>Prenota qui!</button></a>
     <p>Hai cambiato idea e vuoi modificare o cancellare la prenotazione?</p>
     <a href="/prenotazioniListPage"><button>Le mie prenotazioni</button></a>
-
     <% } %>
 
     <h4>Cosa ne pensano i nostri clienti...</h4>

@@ -6,6 +6,8 @@ import com.project.chefskiss.modelObjects.Sede;
 import com.project.chefskiss.modelObjects.User;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO_MySQL implements UserDAO {
     Connection conn;
@@ -359,27 +361,27 @@ public class UserDAO_MySQL implements UserDAO {
     }
 
     @Override
-    public User findBySede(Sede sede) {
+    public List<User> findBySede(Sede sede) {
         PreparedStatement query;
-        User utente = new User();
+        List<User> utenti = new ArrayList<>();
 
         try {
             String SQLQuery =
                     "SELECT * " +
-                            "FROM Utente " +
-                            "WHERE Coordinate = ? " +
-                            "AND Deleted = 'N'";
+                    "FROM Utente " +
+                    "WHERE Coordinate = ? " +
+                    "AND Deleted = 'N'";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, sede.getCoordinate());
 
             ResultSet result = query.executeQuery();
 
-            if(result.next())
+            while (result.next())
             {
-                utente = read(result);
-                System.out.println("Lettura dati completata!");
+                utenti.add(read(result));
             }
+            System.out.println("Lettura dati completata!");
             result.close();
             query.close();
 
@@ -387,7 +389,32 @@ public class UserDAO_MySQL implements UserDAO {
             throw new RuntimeException(e.getMessage());
         }
 
-        return utente;
+        return utenti;
+    }
+
+    @Override
+    public List<User> getAllFreeChefs() {
+        PreparedStatement query;
+        List<User> utenti = new ArrayList<>();
+
+        try {
+            String SQLQuary =
+                    "SELECT * " +
+                    "FROM utente " +
+                    "WHERE Se_Chef = 1 " +
+                    "AND Coordinate IS NULL";
+
+            query = conn.prepareStatement(SQLQuary);
+            ResultSet result = query.executeQuery();
+
+            while (result.next()){
+                utenti.add(read(result));
+            }
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return utenti;
     }
 
     private User read(ResultSet rs)
