@@ -43,7 +43,7 @@
                 for (int i = 0; i < piatti.size(); i++){
             %>
             <li>
-                <a href="/plate?id=<%= piatti.get(i).getId()%>"><%= piatti.get(i).getNome()%></a> - <%= piatti.get(i).getVotoMedio() %>
+                <a href="/plate?id=<%= piatti.get(i).getId()%>"><%= piatti.get(i).getNome()%></a> - <%= piatti.get(i).getVotoMedio() %> <i class='bx bxs-star bx-tada' style='color:#ffea00'></i>
             </li>
             <% } %>
         </ul>
@@ -51,9 +51,9 @@
 
     <% if (utente != null && utente.isCliente()){ %>
     <h4>Vuoi venire ad assaggiare i nostri piatti?</h4>
-    <a href="/addPrenotazione?id=<%=sede.getCoordinate()%>"><button>Prenota qui!</button></a>
+    <a href="/addPrenotazione?coordinate=<%=sede.getCoordinate()%>"><button>Prenota qui!</button></a>
     <p>Hai cambiato idea e vuoi modificare o cancellare la prenotazione?</p>
-    <a href="/prenotazioniListPage"><button>Le mie prenotazioni</button></a>
+    <a href="/prenotazioniList"><button>Le mie prenotazioni</button></a>
     <% } %>
 
     <h4>Cosa ne pensano i nostri clienti...</h4>

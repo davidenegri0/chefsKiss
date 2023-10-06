@@ -6,18 +6,24 @@ import com.project.chefskiss.modelObjects.Sede;
 import com.project.chefskiss.modelObjects.User;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
     Connection conn;
-    public PrenotazioneDAO_MySQL(Connection conn){ this.conn = conn; }
+
+    public PrenotazioneDAO_MySQL(Connection conn) {
+        this.conn = conn;
+    }
+
     @Override
-    public Prenotazione create (User utente, Sede sede, Date data, Time orario, Integer n_posti) {
+    public Prenotazione create(User utente, Sede sede, Date data, Time orario, Integer n_posti) {
         Prenotazione prenotazione = new Prenotazione();
         PreparedStatement query;
 
-        try{
+        try {
 
-            if ( verifica_posti_disponibili(sede.getCoordinate(), orario, data) >= n_posti ){
+            if (verifica_posti_disponibili(sede.getCoordinate(), orario, data) >= n_posti && isPrenotazioneUp(data, orario)) {
                 String SQLQuery = "INSERT INTO chefskiss.prenota_in (CF, Coordinate, Data, Orario, N_Posti) VALUES (?,?,?,?,?)";
 
                 query = conn.prepareStatement(SQLQuery);
@@ -29,12 +35,11 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
 
                 query.executeUpdate();
                 query.close();
-            }
-            else {
+            } else {
                 throw new RuntimeException("Non ci sono abbastanza posti disponibili");
             }
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
 
@@ -51,8 +56,8 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
     public void update(Prenotazione prenotazione) {
         PreparedStatement query;
 
-        try{
-            if ( (verifica_posti_disponibili(prenotazione.getSedeP().getCoordinate(), prenotazione.getOrario(), prenotazione.getData()) + prenotazione.getN_Posti()) >= prenotazione.getN_Posti() ){
+        try {
+            if ((verifica_posti_disponibili(prenotazione.getSedeP().getCoordinate(), prenotazione.getOrario(), prenotazione.getData()) + prenotazione.getN_Posti()) >= prenotazione.getN_Posti() && isPrenotazioneUp(prenotazione.getData(), prenotazione.getOrario())) {
 
                 String SQLQuery = "UPDATE chefskiss.prenota_in SET Data = ?, Orario = ?, N_Posti = ? WHERE ID_Prenotazione = ?";
 
@@ -65,11 +70,8 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
                 query.executeUpdate();
                 query.close();
             }
-            else {
-                throw new RuntimeException("Cambio prenotazione non disponibile per esaurimento posti");
-            }
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
@@ -78,7 +80,7 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
     public void delete(Prenotazione prenotazione) {
         PreparedStatement query;
 
-        try{
+        try {
             String SQLQuery = "DELETE FROM chefskiss.prenota_in WHERE ID_Prenotazione = ?";
 
             query = conn.prepareStatement(SQLQuery);
@@ -92,18 +94,16 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
         }
     }
 
-    private Integer verifica_posti_disponibili (String coordinate, Time orario, Date data){
+    private Integer verifica_posti_disponibili(String coordinate, Time orario, Date data) {
         PreparedStatement query2;
         PreparedStatement query3;
 
-        try{
+        try {
             String SQLQuery2 = "SELECT Posti_Disponibili FROM chefskiss.sede WHERE Coordinate = ?";
             query2 = conn.prepareStatement(SQLQuery2);
             query2.setString(1, coordinate);
             ResultSet result2 = query2.executeQuery();
-
-            Integer posti_disponibili = result2.getInt("Posti_Disponibili");
-
+            Integer posti_disponibili=0;
 
             String SQLQuery3 = "SELECT SUM(N_Posti) AS somma_posti_prenotati " +
                     "FROM prenota_in " +
@@ -114,11 +114,128 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
             query3.setDate(3, data);
             ResultSet result3 = query3.executeQuery();
 
-            Integer posti_occupati = result3.getInt("somma_posti_prenotati");
+            Integer posti_occupati=0;
+            if (result3.next() && result2.next()){
+                posti_disponibili = result2.getInt("Posti_Disponibili");
+                posti_occupati = result3.getInt("somma_posti_prenotati");
+            }
 
             return (posti_disponibili - posti_occupati);
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    private boolean isPrenotazioneUp(Date data, Time orario) {
+        boolean check = true;
+        PreparedStatement query;
+
+        try {
+            String SQLQuery = "SELECT * FROM chefskiss.prenota_in WHERE Data = ? AND Orario = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setDate(1, data);
+            query.setTime(2, orario);
+
+            ResultSet result;
+            result = query.executeQuery();
+            if (result.next()) check = false;
+
+            result.close();
+            query.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+        return check;
+    }
+
+    @Override
+    public Prenotazione findById(Integer id){
+        PreparedStatement query;
+        Prenotazione prenotazione = new Prenotazione();
+
+        try{
+            String SQLQuery = "SELECT * FROM chefskiss.prenota_in WHERE ID_Prenotazione = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setInt(1, id);
+
+            ResultSet result = query.executeQuery();
+
+            if ( result.next() ) prenotazione = read(result);
+
+            result.close();
+            query.close();
+
         } catch (SQLException e){
             throw new RuntimeException(e.getMessage());
         }
+        return prenotazione;
+    }
+
+    public List<Prenotazione> findByUser (String CF){
+        List<Prenotazione> prenotazioni = new ArrayList<>();
+        PreparedStatement query;
+
+        try{
+            String SQLQuery = "SELECT * FROM chefskiss.prenota_in NATURAL JOIN chefskiss.sede WHERE CF = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, CF);
+
+            ResultSet result = query.executeQuery();
+
+            while (result.next()){
+                prenotazioni.add(read_P_S(result));
+            }
+
+            result.close();
+            query.close();
+
+        }catch(SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return prenotazioni;
+    }
+
+    private Prenotazione read(ResultSet rs) throws SQLException{
+        Prenotazione prenotazione = new Prenotazione();
+        Sede sede = new Sede();
+        User utente = new User();
+
+        prenotazione.setSedeP(sede);
+        prenotazione.setUtenteP(utente);
+
+        prenotazione.setId(rs.getInt("ID_Prenotazione"));
+        prenotazione.getUtenteP().setCF(rs.getString("CF"));
+        prenotazione.getSedeP().setCoordinate(rs.getString("Coordinate"));
+        prenotazione.setData(rs.getDate("Data"));
+        prenotazione.setOrario(rs.getTime("Orario"));
+        prenotazione.setN_Posti(rs.getInt("N_Posti"));
+
+        return prenotazione;
+    }
+
+    private Prenotazione read_P_S(ResultSet rs) throws SQLException{
+        Prenotazione prenotazione = new Prenotazione();
+        Sede sede = new Sede();
+        User utente = new User();
+
+        prenotazione.setUtenteP(utente);
+        prenotazione.setSedeP(sede);
+
+        prenotazione.setId(rs.getInt("ID_Prenotazione"));
+        prenotazione.getUtenteP().setCF(rs.getString("CF"));
+        prenotazione.getSedeP().setCoordinate(rs.getString("Coordinate"));
+        prenotazione.setData(rs.getDate("Data"));
+        prenotazione.setOrario(rs.getTime("Orario"));
+        prenotazione.setN_Posti(rs.getInt("N_Posti"));
+
+        prenotazione.getSedeP().setVia(rs.getString("Via"));
+        prenotazione.getSedeP().setCitta(rs.getString("Citta"));
+        prenotazione.getSedeP().setPosti(rs.getInt("Posti_Disponibili"));
+
+        return prenotazione;
     }
 }

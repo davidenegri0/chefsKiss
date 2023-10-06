@@ -1,0 +1,56 @@
+<%@ page import="java.util.List" %>
+<%@ page import="com.project.chefskiss.modelObjects.Prenotazione" %><%--
+  Created by IntelliJ IDEA.
+  User: spipp
+  Date: 05/10/2023
+  Time: 11:57
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    List<Prenotazione> prenotazioni = (List<Prenotazione>) request.getAttribute("prenotazioni");
+%>
+<html>
+<head>
+    <title>Le tue prenotazioni</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <h2>Le tue prenotazioni</h2>
+    <%
+        Integer id_prenotazione = 0;
+        for ( int i = 0; i < prenotazioni.size(); i++){
+            id_prenotazione = prenotazioni.get(i).getID();
+    %>
+    <table>
+        <tr>
+            <td rowspan="2">
+                #<%=prenotazioni.get(i).getID()%></br>
+                <%=prenotazioni.get(i).getSedeP().getVia()%>, <%=prenotazioni.get(i).getSedeP().getCitta()%></br>
+                <%=prenotazioni.get(i).getData()%> - <%=prenotazioni.get(i).getOrario()%> - <%=prenotazioni.get(i).getN_Posti()%>
+            </td>
+            <td>
+                <a href="/editPrenotazione?id=<%=prenotazioni.get(i).getID()%>&coordinate=<%=prenotazioni.get(i).getSedeP().getCoordinate()%>"><button><i class='bx bxs-edit-alt'></i></button></a>
+            </td>
+        </tr>
+        <tr>
+            <td><button onclick="confermaCancellazione(<%=prenotazioni.get(i).getID()%>)"><i class='bx bxs-trash'></i></button></td>
+        </tr>
+    </table>
+    <br>
+    <%
+        }
+    %>
+    <%@ include file="repetedElements/homepageLink.html"%>
+</body>
+<script>
+
+    function confermaCancellazione(id_prenotazione) {
+        var richiesta = window.confirm("Sei sicuro di voler cancellare la tua prenotazione?");
+        if (richiesta) {
+            window.location.replace("/deletePrenotazione?id="+id_prenotazione);
+        }
+        //else // visualizzare pagina della sede
+    }
+</script>
+</html>

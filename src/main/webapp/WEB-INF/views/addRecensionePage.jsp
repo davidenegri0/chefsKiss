@@ -36,7 +36,6 @@
         ID = String.valueOf(piatto.getId());
     }
     if (type == 4){ // modifica recensione sede
-        // TODO: cosa viene passato?
     }*/
 
     /*
@@ -46,7 +45,6 @@
     int type = 1;
     Piatto piatto = null;
     if (isRistorante){
-        //TODO: Ricevere i dati del ristorante e settare nomeSoggetto
         type = 2;
     } else {
         piatto = (Piatto)request.getAttribute("piatto");

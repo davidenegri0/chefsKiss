@@ -13,6 +13,7 @@ public class Prenotazione {
     private Sede Sede;
 
     public Integer getID() { return ID; }
+    public void setId(Integer id) { ID = id; }
 
     public Date getData() { return Data; }
     public void setData(Date data) { Data = data; }
@@ -28,5 +29,4 @@ public class Prenotazione {
 
     public Sede getSedeP() { return Sede; }
     public void setSedeP(Sede sede) { Sede = sede; }
-
 }
