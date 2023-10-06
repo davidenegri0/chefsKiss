@@ -103,9 +103,6 @@ public class addRecensioneController {
             }
             case 2: //typeCode = 2 --> recensione di una sede di un ristorante
             {
-                //TODO: Implementare il setting per il la recensione del ristorante
-                //Cercare i dati del ristorante nel db/cookie, e inviarli alla page
-
                 SedeDAO sedeDAO = DatabaseDAO.getSedeDAO(null);
                 Sede sede = sedeDAO.findByCoordinate(id);
                 /*

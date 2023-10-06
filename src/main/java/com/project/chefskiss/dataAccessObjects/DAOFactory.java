@@ -30,6 +30,8 @@ public abstract class DAOFactory {
 
     public abstract ValutazioneDAO getValutazioneDAO(HttpServletResponse response);
 
+    public abstract PrenotazioneDAO getPrenotazioneDAO(HttpServletResponse response);
+
     public static DAOFactory getDAOFactory(String whichFactory, HttpServletResponse response) {
 
         if (whichFactory.equals("MySQLJDBCImpl")) {

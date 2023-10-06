@@ -89,4 +89,9 @@ public class MySQLJDBC_DAOFactory extends DAOFactory {
         return new ValutazioneDAO_MySQL(conn);
     }
 
+    @Override
+    public PrenotazioneDAO getPrenotazioneDAO(HttpServletResponse response) {
+        return new PrenotazioneDAO_MySQL(conn);
+    }
+
 }
