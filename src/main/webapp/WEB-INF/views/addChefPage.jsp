@@ -22,7 +22,11 @@
     <% for (int i = 0; i < chefs.size(); i++) { %>
     <div>
         <p><%=chefs.get(i).getNome()+" "+chefs.get(i).getCognome()%></p>
-        <button>Scarica il curriculum</button>
+        <img src="/chef/<%=chefs.get(i).getCF()%>/image" height="100px" width="auto">
+        <a href="/chef/<%=chefs.get(i).getCF()%>/CV" download>
+            <button>Scarica il curriculum</button>
+        </a>
+
     </div>
     <a href="/addChef?Coord=<%=Coord%>&CF=<%=chefs.get(i).getCF()%>"><button>Aggiungi</button></a>
     <% } %>

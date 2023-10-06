@@ -22,19 +22,22 @@
         List<User> chefs = (List<User>) request.getAttribute("chefs");
         List<Piatto> piatti = (List<Piatto>) request.getAttribute("piatti");
         List<Valutazione> valutazioni = (List<Valutazione>) request.getAttribute("valutazioni");
+        Boolean isProprietario = utente!=null && utente.isRistoratore() && sede.getRistoranteS().getUtenteRi().getCF().equals(utente.getCF());
     %>
     <h2><a href="/restaurant?id=<%= sede.getRistoranteS().getID_Ristorante() %>"><%=sede.getRistoranteS().getNome()%></a> vi da il benvenuto nella sede in <%= sede.getVia() %> a <%= sede.getCitta() %></h2>
     <p> Da noi potrete trovare il seguente menù preparato con tanta cura e amore dagli chef: </p>
     <% for (int i = 0; i < chefs.size(); i++) { %>
     <p>
         <%=chefs.get(i).getNome()+" "+chefs.get(i).getCognome()%>
+        <% if (isProprietario){ %>
         <a href="/deleteChef?CF=<%=chefs.get(i).getCF()%>&ID=<%=sede.getCoordinate()%>">
             <button><i class='bx bxs-trash'></i></button>
         </a>
-    </p>  <!-- TODO: Funzionalità rimozione chef -->
+        <% } %>
+    </p>
     <% } %>
-    <% if (utente!=null && utente.isRistoratore() && sede.getRistoranteS().getUtenteRi().getCF().equals(utente.getCF())){ %>
-    <a href="/addChef?ID=<%=sede.getCoordinate()%>"><button>Aggiungi chef</button></a>   <!-- TODO: Funzionalità aggiunta chef -->
+    <% if (isProprietario){ %>
+    <a href="/addChef?ID=<%=sede.getCoordinate()%>"><button>Aggiungi chef</button></a>
     <% } %>
     <h3>Menu della sede</h3>
     <nav>

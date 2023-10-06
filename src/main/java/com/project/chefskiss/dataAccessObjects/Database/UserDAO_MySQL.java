@@ -459,7 +459,8 @@ public class UserDAO_MySQL implements UserDAO {
             user.setProfilePicture(rs.getBlob("Foto_Privato"));
         }
         if (user.isChef()){
-            //TODO: Foto_chef e CV
+            user.setChefPicture(rs.getBlob("Foto_Chef"));
+            user.setChefCV(rs.getClob("CV"));
             user.getSedeU().setCoordinate(rs.getString("Coordinate"));
         }
 
