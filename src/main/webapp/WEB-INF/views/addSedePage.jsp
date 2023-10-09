@@ -20,13 +20,32 @@
     <form method="post">
         <label for="via">Via del locale: </label>
         <input type="text" id="via" name="via" required><br>
+        <label for="n_civ">Numero civico: </label>
+        <input type="number" id="n_civ" name="n_civ" required><br>
         <label for="citta">Città: </label>
         <input type="text" id="citta" name="citta" required><br>
         <label for="nposti">Numero di posti a sedere: </label>
         <input type="number" id="nposti" name="nposti" required><br>
-        <input type="hidden" id="idristo" name="idristo" value="<%=Risto.getID_Ristorante()%>"><br>
-        <input type="submit" value="Conferma">
+        <input type="hidden" id="idristo" name="idristo" value="<%=Risto.getID_Ristorante()%>">
+        <input type="hidden" id="coord" name="coord">
+        <br>
+        <input type="button" onclick="calculateANDsubmit()" value="Conferma">
         <input type="reset" value="Annulla">
     </form>
 </body>
+<script>
+    async function calculateANDsubmit(){
+        let via = document.getElementById("n_civ").value+" "+document.getElementById("via").value;
+        via = via.replaceAll(" ","+");
+        let citta = document.getElementById("citta").value;
+        //console.log(via+" "+citta);
+        let url = "https://geocode.maps.co/search?street="+via+"&city="+citta;
+        let result = await fetch(url);
+        let coordJson = await result.json()
+        coord = coordJson[0].lat+";"+coordJson[0].lon;
+        //console.log(coord);
+        document.getElementById("coord").value = coord;
+        document.querySelector("form").submit();
+    }
+</script>
 </html>

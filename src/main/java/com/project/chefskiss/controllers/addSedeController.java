@@ -138,18 +138,19 @@ public class addSedeController {
         return page;
     }
 
-    @PostMapping(path = "/addSede", params = {"via", "citta", "nposti", "idristo"})
+    @PostMapping(path = "/addSede", params = {"via", "n_civ", "citta", "nposti", "idristo", "coord"})
     public ModelAndView postAddSede(
             @CookieValue(value = "loggedUser", defaultValue = "") String userData,
             @RequestParam("via") String Via,
+            @RequestParam("n_civ") int NCiv,
             @RequestParam("citta") String Citta,
             @RequestParam("nposti") int NPosti,
-            @RequestParam("idristo") int IDRisto
+            @RequestParam("idristo") int IDRisto,
+            @RequestParam("coord") String Coord
     ){
         //Variabili
         ModelAndView page = new ModelAndView();
         User utente;
-        String Coord;
         List<Piatto> piatti = new ArrayList<>();
 
         //Lettura dei cookie dell'utente
@@ -170,10 +171,13 @@ public class addSedeController {
 
         SedeDAO sessionSedeDAO = DatabaseDAO.getSedeDAO(null);
 
-        //TODO: Generazione coordinate reali data via e città
+        //Vecchio metodo di coordinate per debug
+/*
         do {
             Coord = "Coord"+Math.round(Math.random()*2000);
         } while (sessionSedeDAO.findByCoordinate(Coord)==null);
+ */
+        Via = Via.concat(" "+NCiv);
 
         try {
             RistoranteDAO sessionRistorante = DatabaseDAO.getRistoDAO(null);

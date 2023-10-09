@@ -1,5 +1,4 @@
 package com.project.chefskiss;
-
 import org.springframework.web.servlet.ModelAndView;
 
 public class Utility {
@@ -8,4 +7,5 @@ public class Utility {
         page.addObject("url", path);
         return page;
     }
+
 }
