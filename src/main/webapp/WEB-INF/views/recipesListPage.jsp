@@ -29,7 +29,7 @@
             allergeneDiv.append(allergeneTag);
         }
         var allergeneNode = document.createElement("input");
-        allergeneNode.setAttribute("name", "allergene"+i.toString());
+        allergeneNode.setAttribute("name", "allergeni");
         allergeneNode.setAttribute("type", "text");
         allergeneDiv.appendChild(allergeneNode);
         i++;

@@ -23,8 +23,12 @@ public interface PiattoDAO {
     // cerca un piatto per nome
     public List<Piatto> findByName (String Nome_Piatto);
 
+    public List<Piatto> findByName (String Nome_Piatto, List<String> Allergeni);
+
     // cerca un piatto per ingrediente
     public List<Piatto> findByIngediente (Ingrediente Ingrediente);
+
+    public List<Piatto> findByIngediente (Ingrediente Ingrediente, List<String> Allergeni);
 
     // cerca un piatto per sede
     public List<Piatto> findBySede (Sede Sede);
@@ -34,5 +38,5 @@ public interface PiattoDAO {
 
     public Piatto findByIDPiatto(Integer ID_Piatto);
 
-    public List<Piatto> findMostRecent(int num);
+    public List<Piatto> findMostRecent();
 }

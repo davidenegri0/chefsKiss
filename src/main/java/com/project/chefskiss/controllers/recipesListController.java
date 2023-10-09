@@ -35,11 +35,12 @@ public class recipesListController {
         DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
         DatabaseDAO.beginTransaction();
         PiattoDAO sessionPiattiDAO = DatabaseDAO.getPiattoDAO(null);
-        List<Piatto> piatti = sessionPiattiDAO.findMostRecent(10);
+        List<Piatto> piatti = sessionPiattiDAO.findMostRecent();
         DatabaseDAO.closeTransaction();
 
         //Invio lista dei piatti alla pagina
-        Collections.shuffle(piatti); //Perchè si
+        //Collections.shuffle(piatti); //Perchè si
+        if (piatti.size()>10) piatti = piatti.subList(0,10);
         page.addObject("listaPiatti", piatti);
 
         page.addObject("searched", false);
@@ -54,22 +55,10 @@ public class recipesListController {
         @CookieValue(value = "loggedUser", defaultValue = "") String userData,
         @RequestParam("search") String search,
         @RequestParam("searchType") int type,
-        @RequestParam(value = "allergene0", required = false) String allergene0,
-        @RequestParam(value = "allergene1", required = false) String allergene1,
-        @RequestParam(value = "allergene2", required = false) String allergene2,
-        @RequestParam(value = "allergene3", required = false) String allergene3,
-        @RequestParam(value = "allergene4", required = false) String allergene4
+        @RequestParam(value = "allergeni", required = false) List<String> allergeni
     ){
         ModelAndView page = new ModelAndView("recipesListPage");
         List<Piatto> piatti;
-
-        //Gestione allergeni
-        List<String> allergeni = new ArrayList<>();
-        if (allergene0!=null) allergeni.add(allergene0);
-        if (allergene1!=null) allergeni.add(allergene1);
-        if (allergene2!=null) allergeni.add(allergene2);
-        if (allergene3!=null) allergeni.add(allergene3);
-        if (allergene4!=null) allergeni.add(allergene4);
 
         //Lettura dei cookie dell'utente
         if(!userData.isEmpty()){
@@ -79,32 +68,44 @@ public class recipesListController {
         else System.out.println("No cookies :C");
 
         //System.out.println("Tipo di ricerca: "+type+"; Nome ricetta: "+search);
+        if (search.isBlank()) type = 0;
 
         //Accesso al database per la ricerca dei piatti da visualizzare
         DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
         DatabaseDAO.beginTransaction();
         PiattoDAO sessionPiattiDAO = DatabaseDAO.getPiattoDAO(null);
 
-        //Controllo allergeni
-        for (int i = 0; i < allergeni.size(); i++) {
-            System.out.println("Allergene: "+allergeni.get(i));
-        }
-
-        //TODO: Gestire gli allergeni
-
-        //Se type == 1 --> Ricerca per nome, se type == 2 --> Ricerca per ingrediente
-        if (type==1)
+        /*
+        Se type == 1 --> Ricerca per nome,
+        se type == 2 --> Ricerca per ingrediente
+        */
+        switch (type)
         {
-            piatti = sessionPiattiDAO.findByName(search.toLowerCase());
-        } else if (type==2) {
-            Ingrediente i = new Ingrediente();
-            i.setNome(search);
-            piatti = sessionPiattiDAO.findByIngediente(i);
-        } else {
-            piatti = sessionPiattiDAO.findMostRecent(10);
+            case 1:
+            {
+                if (allergeni==null) piatti = sessionPiattiDAO.findByName(search.toLowerCase());
+                else piatti = sessionPiattiDAO.findByName(search.toLowerCase(), allergeni);
+                break;
+            }
+            case 2:
+            {
+                Ingrediente i = new Ingrediente();
+                i.setNome(search);
+
+                if (allergeni==null) piatti = sessionPiattiDAO.findByIngediente(i);
+                else piatti=sessionPiattiDAO.findByIngediente(i, allergeni);
+                break;
+            }
+            default:
+            {
+                piatti = sessionPiattiDAO.findMostRecent();
+                break;
+            }
         }
 
         DatabaseDAO.closeTransaction();
+
+        if (piatti.size()>10) piatti = piatti.subList(0,10);
         page.addObject("listaPiatti", piatti);
 
         page.addObject("searched", true);

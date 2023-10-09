@@ -32,7 +32,7 @@ public class homepageController {
         DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
         DatabaseDAO.beginTransaction();
         PiattoDAO sessionPiattiDAO = DatabaseDAO.getPiattoDAO(null);
-        List<Piatto> piatti = sessionPiattiDAO.findMostRecent(4);
+        List<Piatto> piatti = sessionPiattiDAO.findMostRecent();
         DatabaseDAO.closeTransaction();
 
         //TODO: (EVENTUALE) Si può aggiornare questa feature gestendo le recensioni in base al voto medio
@@ -46,7 +46,7 @@ public class homepageController {
          */
 
         Collections.shuffle(piatti); //Perchè si
-        page.addObject("listaPiatti", piatti);
+        page.addObject("listaPiatti", piatti.subList(0,4));
 
         return page;
     }

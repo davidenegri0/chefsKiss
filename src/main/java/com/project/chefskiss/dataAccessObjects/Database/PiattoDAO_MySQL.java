@@ -4,9 +4,8 @@ import com.project.chefskiss.dataAccessObjects.PiattoDAO;
 import com.project.chefskiss.modelObjects.*;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
-import java.util.List;
 
 public class PiattoDAO_MySQL implements PiattoDAO {
     private Connection conn;
@@ -170,6 +169,50 @@ public class PiattoDAO_MySQL implements PiattoDAO {
     }
 
     @Override
+    public List<Piatto> findByName(String Nome_Piatto, List<String> Allergeni) {
+        PreparedStatement query;
+        List<Piatto> piatti = new ArrayList<>();
+        String ListaAllergeni = Allergeni.toString().replace("[","'").replace("]","'").replace(", ","','");
+        System.out.println("Ricerca escludendo: "+ListaAllergeni);
+        try {
+            String SQLSubQuery =
+                    "SELECT DISTINCT c.ID_Piatto " +
+                    "FROM chefskiss.contiene AS c " +
+                    "JOIN ingrediente i on i.Nome_Ingrediente = c.Nome_Ingrediente " +
+                    "WHERE i.Gruppo_Allergenico IN ("+ListaAllergeni+")";
+
+            String SQLQuery =
+                    "SELECT p.*, AVG(r.Voto) as Media " +
+                    "FROM chefskiss.piatto p " +
+                    "LEFT JOIN chefskiss.recensisce r on p.ID_Piatto = r.ID_Piatto " +
+                    "WHERE p.Nome_Piatto LIKE ? " +
+                    "AND p.Deleted = 'N' " +
+                    "AND p.ID_Piatto NOT IN ("+SQLSubQuery+") " +
+                    "GROUP BY p.ID_Piatto";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, "%"+Nome_Piatto+"%");
+
+            ResultSet result = query.executeQuery();
+
+            while (result.next()) {
+                Piatto p = read(result);
+                p.setVotoMedio(result.getFloat("Media"));
+                piatti.add(p);
+            }
+
+            result.close();
+            query.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        System.out.println("Lettura dati completata!");
+        return piatti;
+    }
+
+    @Override
     public List<Piatto> findByIngediente(Ingrediente Ingrediente) {
         PreparedStatement query;
         List<Piatto> piatti = new ArrayList<>();
@@ -184,6 +227,52 @@ public class PiattoDAO_MySQL implements PiattoDAO {
                     "WHERE c.Nome_Ingrediente LIKE ? " +
                     "AND p.Deleted = 'N'" +
                     "GROUP BY p.ID_Piatto";
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, "%"+ingrediente+"%");
+
+            ResultSet result = query.executeQuery();
+
+            while (result.next()) {
+                Piatto p = read(result);
+                p.setVotoMedio(result.getFloat("Media"));
+                piatti.add(p);
+            }
+
+            result.close();
+            query.close();
+
+            System.out.println("Lettura dati completata!");
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return piatti;
+    }
+
+    @Override
+    public List<Piatto> findByIngediente(Ingrediente Ingrediente, List<String> Allergeni) {
+        PreparedStatement query;
+        List<Piatto> piatti = new ArrayList<>();
+        String ingrediente = Ingrediente.getNome();
+        String ListaAllergeni = Allergeni.toString().replace("[","'").replace("]","'").replace(", ","','");
+        System.out.println("Ricerca escludendo: "+ListaAllergeni);
+
+        try {
+            String SQLSubQuery =
+                    "SELECT DISTINCT c.ID_Piatto " +
+                    "FROM chefskiss.contiene AS c " +
+                    "JOIN ingrediente i on i.Nome_Ingrediente = c.Nome_Ingrediente " +
+                    "WHERE i.Gruppo_Allergenico IN ("+ListaAllergeni+")";
+
+            String SQLQuery =
+                    "SELECT p.*, AVG(r.Voto) as Media " +
+                            "FROM chefskiss.piatto p " +
+                            "LEFT JOIN recensisce r on p.ID_Piatto = r.ID_Piatto " +
+                            "JOIN contiene c on p.ID_Piatto = c.ID_Piatto " +
+                            "WHERE c.Nome_Ingrediente LIKE ? " +
+                            "AND p.Deleted = 'N' " +
+                            "AND p.ID_Piatto NOT IN ("+SQLSubQuery+") " +
+                            "GROUP BY p.ID_Piatto";
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, "%"+ingrediente+"%");
 
@@ -315,10 +404,9 @@ public class PiattoDAO_MySQL implements PiattoDAO {
     }
 
     @Override
-    public List<Piatto> findMostRecent(int num) {
+    public List<Piatto> findMostRecent() {
         PreparedStatement query;
         List<Piatto> piatti = new ArrayList<>();
-        int i;
 
         try {
             String SQLQuery =
@@ -332,13 +420,11 @@ public class PiattoDAO_MySQL implements PiattoDAO {
 
             ResultSet result = query.executeQuery();
 
-            for (i = 0; result.next() && i<num; i++) {
+            while (result.next()) {
                 Piatto p = read(result);
                 p.setVotoMedio(result.getFloat("Media"));
                 piatti.add(p);
             }
-
-            if (i!=num) System.out.println("Piatti ricevuti inferiori al numero richiesto");
 
             System.out.println("Lettura dati piatti completata!");
             result.close();
