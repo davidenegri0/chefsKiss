@@ -111,6 +111,7 @@
                 if (valore == 1) messaggio = "Impossibile aggiungere una nuova valutazione. \nModificare o cancellare quella già presente!";
                 if (valore == 2) messaggio = "Valutazione inesistente, impossibile modificarla!";
                 if (valore == 3) messaggio = "Valutazione inesistente, impossibile cancellarla!";
+                if (valore == 4) messaggio = "Impossibile aggiungere una valutazione se non si ha consumato nel ristorante almeno una volta!";
 
                 alert(messaggio);
                 break;

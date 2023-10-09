@@ -14,4 +14,5 @@ public interface PrenotazioneDAO {
     public void delete(Prenotazione prenotazione);
     public Prenotazione findById(Integer id);
     public List<Prenotazione> findByUser (String CF);
+    public boolean checkPrenotazione(String CF);
 }
