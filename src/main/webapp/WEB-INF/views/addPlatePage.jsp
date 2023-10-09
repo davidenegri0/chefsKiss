@@ -101,7 +101,7 @@
         <br>
         <% } %>
         <input type="submit" value="Ok">
-        <input type="reset" value="Annulla">
+        <input type="reset" value="Annulla" onclick=window.history.back()>
     </form>
     <%@include file="repetedElements/homepageLink.html"%>
 </body>

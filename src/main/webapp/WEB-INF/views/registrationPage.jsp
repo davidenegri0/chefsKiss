@@ -52,7 +52,7 @@
             <label for="ristoratore">Sei proprietario di un ristorante?</label>
             <input id="ristoratore" name="ristoratore" type="checkbox" value="true"><br>
             <input type="submit" value="Conferma">
-            <input type="reset" value="Annulla">
+            <input type="reset" value="Annulla" onclick=window.history.back()>
         </form>
     </div>
     <%@include file="repetedElements/homepageLink.html"%>

@@ -26,7 +26,7 @@
         <label for="nposti">Numero di posti a sedere: </label>
         <input type="number" id="nposti" name="nposti" value="<%=sede.getPosti()%>" required><br>
         <input type="submit" value="Conferma">
-        <input type="reset" value="Annulla">
+        <input type="reset" value="Annulla" onclick=window.history.back()>
     </form>
 </body>
 </html>

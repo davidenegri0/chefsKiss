@@ -54,7 +54,8 @@ public class deleteRecensioneController {
                     "Non è stata ancora inserita alcuna recensione dall'utente " + utente.getCF() +
                             " per il piatto " + id
             );
-            page = Utility.redirect(page, "/plate?id="+id);
+            Integer errorCode = 3;
+            page = Utility.redirect(page, "/plate?id="+id+"&error="+errorCode);
             /*
             page.setViewName("redirect_to");
             page.addObject("url", "/plate?id="+id);
@@ -68,7 +69,8 @@ public class deleteRecensioneController {
                     "Non è stata ancora inserita alcuna valutazione dall'utente " + utente.getCF() +
                             " per il ristorante " + id
             );
-            page = Utility.redirect(page, "/sede?id="+id);
+            Integer errorCode = 3;
+            page = Utility.redirect(page, "/sede?id="+id+"&error="+errorCode);
             /*
             page.setViewName("redirect_to");
             page.addObject("url", "/plate?id="+id);

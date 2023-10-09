@@ -26,7 +26,7 @@
         <input type="number" id="nposti" name="nposti" required><br>
         <input type="hidden" id="idristo" name="idristo" value="<%=Risto.getID_Ristorante()%>"><br>
         <input type="submit" value="Conferma">
-        <input type="reset" value="Annulla">
+        <input type="reset" value="Annulla" onclick=window.history.back()>
     </form>
 </body>
 </html>
