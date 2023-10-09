@@ -24,6 +24,7 @@ public class addRecensioneController {
         User utente;
         boolean isRecensioneUp = false;
         boolean isValutazioneUp = false;
+        boolean isPrenotazioneUp = false;
 
         //Lettura dei cookie dell'utente
         if(userData.isEmpty()){
@@ -43,12 +44,16 @@ public class addRecensioneController {
 
         RecensioneDAO sessionRecensioneDAO = DatabaseDAO.getRecensioneDAO(null);
         ValutazioneDAO sessioneValutazioneDAO = DatabaseDAO.getValutazioneDAO(null);
+        PrenotazioneDAO sessionePrenotazioneDAO = DatabaseDAO.getPrenotazioneDAO(null);
 
         // typecode = 1 --> aggiunta recensione piatto
         // typecode = 2 --> aggiunta recensione sede ristorante
 
         if (typeCode == 1) isRecensioneUp = sessionRecensioneDAO.checkRecensione(utente.getCF(), Integer.parseInt(id)); //String CF, int ID
-        else isValutazioneUp = sessioneValutazioneDAO.checkValutazione(utente.getCF(), id); //TODO: Implementare controllo recensione ristorante
+        else {
+            isValutazioneUp = sessioneValutazioneDAO.checkValutazione(utente.getCF(), id); //TODO: Implementare controllo recensione ristorante
+            isPrenotazioneUp = sessionePrenotazioneDAO.checkPrenotazione(utente.getCF());
+        }
 
 
         if (typeCode == 1 && isRecensioneUp){ // recensione già inserita --> impossibile aggiunta
@@ -72,6 +77,20 @@ public class addRecensioneController {
                             " per il ristorante "+id+" già presente"
             );
             Integer errorCode = 1;
+            page = Utility.redirect(page, "/sede?id="+id+"&error="+errorCode);
+            /*
+            page.setViewName("redirect_to");
+            page.addObject("url", "/plate?id="+id);
+            */
+            page.addObject("errorCode", 4);
+            return page;
+        }
+        if (typeCode == 2 && !isPrenotazioneUp){ // valutazione già inserita --> impossibile aggiunta
+            System.out.println(
+                    "Recensione dell'utente "+utente.getCF()+
+                            " per il ristorante "+id+" già presente"
+            );
+            Integer errorCode = 4;
             page = Utility.redirect(page, "/sede?id="+id+"&error="+errorCode);
             /*
             page.setViewName("redirect_to");

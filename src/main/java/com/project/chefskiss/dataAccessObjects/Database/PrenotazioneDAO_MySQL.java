@@ -199,6 +199,32 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
         return prenotazioni;
     }
 
+    public boolean checkPrenotazione(String CF){
+        boolean check = false;
+        Prenotazione prenotazione;
+        PreparedStatement query;
+        Date dataSQLAttuale = new Date(System.currentTimeMillis());
+
+        try{
+            String SQLQuery = "SELECT * FROM chefskiss.prenota_in WHERE CF = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, CF);
+
+            ResultSet result = query.executeQuery();
+            while (result.next()){
+                prenotazione = read(result);
+                if (prenotazione.getData().before(dataSQLAttuale)) {
+                    System.out.println("La data della valutazione è  successiva ad una prenotazione --> ok!");
+                    check = true;
+                }
+            }
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+        return check;
+    }
+
     private Prenotazione read(ResultSet rs) throws SQLException{
         Prenotazione prenotazione = new Prenotazione();
         Sede sede = new Sede();
