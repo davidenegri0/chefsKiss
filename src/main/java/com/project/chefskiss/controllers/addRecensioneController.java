@@ -56,26 +56,28 @@ public class addRecensioneController {
                     "Recensione dell'utente "+utente.getCF()+
                     " per il piatto "+id+" già presente"
             );
-            page = Utility.redirect(page, "/plate?id="+id);
+            Integer errorCode = 1;
+            page = Utility.redirect(page, "/plate?id="+id+"&error="+errorCode);
             /*
             page.setViewName("redirect_to");
             page.addObject("url", "/plate?id="+id);
             */
-            page.addObject("errorCode", 1);
+
             return page;
         }
 
-        if (typeCode == 2 && isValutazioneUp){ // recensione già inserita --> impossibile aggiunta
+        if (typeCode == 2 && isValutazioneUp){ // valutazione già inserita --> impossibile aggiunta
             System.out.println(
                     "Recensione dell'utente "+utente.getCF()+
                             " per il ristorante "+id+" già presente"
             );
-            page = Utility.redirect(page, "/sede?id="+id);
+            Integer errorCode = 1;
+            page = Utility.redirect(page, "/sede?id="+id+"&error="+errorCode);
             /*
             page.setViewName("redirect_to");
             page.addObject("url", "/plate?id="+id);
             */
-            page.addObject("errorCode", 1);
+            page.addObject("errorCode", 4);
             return page;
         }
 
@@ -191,6 +193,7 @@ public class addRecensioneController {
 
                 //page.addObject("isRistorante", true);
                 DatabaseDAO.commitTransaction();
+
 
                 page = Utility.redirect(page, "/sede?id="+ID);
 

@@ -16,19 +16,20 @@
     <title>Piatto</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
+<%
+    User utente = (User)request.getAttribute("user");
+    Piatto piatto = (Piatto) request.getAttribute("piatto_passato");
+    List<Contiene> ingredienti = (List<Contiene>) request.getAttribute("ingredienti");
+    //Integer id_piatto = (Integer) request.getAttribute("id_piatto");
+    //String nome_piatto = (String) request.getAttribute("nome_piatto");
+    User utente_post = (User) request.getAttribute("utente_post");
+    List<Sede> sedi = (List<Sede>) request.getAttribute("sedi");
+    List<Ristorante> ristoranti = (List<Ristorante>) request.getAttribute("ristoranti");
+    List<Recensione> recensioni = (List<Recensione>) request.getAttribute("recensioni");
+    List<User> utenti_recensori = (List<User>) request.getAttribute("utenti_recensori");
+%>
 <body>
-    <%
-        User utente = (User)request.getAttribute("user");
-        Piatto piatto = (Piatto) request.getAttribute("piatto_passato");
-        List<Contiene> ingredienti = (List<Contiene>) request.getAttribute("ingredienti");
-        //Integer id_piatto = (Integer) request.getAttribute("id_piatto");
-        //String nome_piatto = (String) request.getAttribute("nome_piatto");
-        User utente_post = (User) request.getAttribute("utente_post");
-        List<Sede> sedi = (List<Sede>) request.getAttribute("sedi");
-        List<Ristorante> ristoranti = (List<Ristorante>) request.getAttribute("ristoranti");
-        List<Recensione> recensioni = (List<Recensione>) request.getAttribute("recensioni");
-        List<User> utenti_recensori = (List<User>) request.getAttribute("utenti_recensori");
-    %>
+
     <h1><%=piatto.getNome()%></h1>
     <p>
         Caricato da: <%= utente_post.getNome() %> <%= utente_post.getCognome() %>
@@ -124,6 +125,9 @@
     <%
         }
     %>
+    <div id="error">
+
+    </div>
 
     <%@include file="repetedElements/homepageLink.html"%>
 </body>
@@ -143,5 +147,30 @@
         }
         //else // visualizzare pagina del piatto
     }
+
+    function getErrorMessage(){
+        var url = window.location.search;
+        url = url.substring(1);
+        var parametri = url.split("&");
+
+        for (var i = 0; i < parametri.length; i++){
+            var coppia = parametri[i].split("=");
+            var nomeParametro = decodeURIComponent(coppia[0]);
+            var valore = decodeURIComponent(coppia[1]);
+            var messaggio;
+
+            if (nomeParametro === "error"){
+                console.log("messaggio");
+                if (valore == 1) messaggio = "Impossibile aggiungere una nuova recensione. \nModificare o cancellare quella già presente!";
+                if (valore == 2) messaggio = "Recensione inesistente, impossibile modificarla!";
+                if (valore == 3) messaggio = "Recensione inesistente, impossibile cancellarla!";
+
+                alert(messaggio);
+                break;
+            }
+        }
+    }
+    window.addEventListener("load", getErrorMessage());
+
 </script>
 </html>

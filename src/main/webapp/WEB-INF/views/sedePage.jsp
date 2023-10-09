@@ -94,5 +94,29 @@
         }
         //else // visualizzare pagina della sede
     }
+
+    function getErrorMessage(){
+        var url = window.location.search;
+        url = url.substring(1);
+        var parametri = url.split("&");
+
+        for (var i = 0; i < parametri.length; i++){
+            var coppia = parametri[i].split("=");
+            var nomeParametro = decodeURIComponent(coppia[0]);
+            var valore = decodeURIComponent(coppia[1]);
+            var messaggio;
+
+            if (nomeParametro === "error"){
+                console.log("messaggio");
+                if (valore == 1) messaggio = "Impossibile aggiungere una nuova valutazione. \nModificare o cancellare quella già presente!";
+                if (valore == 2) messaggio = "Valutazione inesistente, impossibile modificarla!";
+                if (valore == 3) messaggio = "Valutazione inesistente, impossibile cancellarla!";
+
+                alert(messaggio);
+                break;
+            }
+        }
+    }
+    window.addEventListener("load", getErrorMessage());
 </script>
 </html>
