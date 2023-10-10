@@ -30,4 +30,6 @@ public interface SedeDAO {
     // cerca una sede per coordinate --> non so quanto possa servire però
     public Sede findByCoordinate (String Coordinate);
     public List<Sede> findByPiatto (Piatto piatto);
+    public List<Sede> findByCitta(String citta);
+    public List<Sede> getAll();
 }

@@ -1,5 +1,6 @@
 package com.project.chefskiss.dataAccessObjects.Database;
 
+import com.project.chefskiss.dataAccessObjects.RistoranteDAO;
 import com.project.chefskiss.dataAccessObjects.SedeDAO;
 import com.project.chefskiss.modelObjects.Piatto;
 import com.project.chefskiss.modelObjects.Ristorante;
@@ -301,6 +302,66 @@ public class SedeDAO_MySQL implements SedeDAO {
         return sedi;
     }
 
+    @Override
+    public List<Sede> findByCitta(String citta) {
+        PreparedStatement query;
+        List<Sede> sedi = new ArrayList<>();
+
+        try{
+            String SQLQuery =
+                    "SELECT s.Coordinate, s.Via, s.Citta, s.Posti_Disponibili, s.ID_Ristorante, s.Deleted, r.ID_Ristorante, r.Nome_Ristorante " +
+                            "FROM chefskiss.sede AS s NATURAL JOIN chefskiss.ristorante AS r " +
+                            "WHERE s.Citta LIKE ? " +
+                            "AND s.Deleted = 'N'";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, "%"+citta+"%");
+
+            ResultSet result = query.executeQuery();
+
+            while (result.next()){
+                sedi.add(read1(result));
+            }
+
+            System.out.println("Lettura dati completata!");
+            result.close();
+            query.close();
+
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return sedi;
+    }
+
+    @Override
+    public List<Sede> getAll() {
+        PreparedStatement quary;
+        List<Sede> sedi = new ArrayList<>();
+
+        try {
+            String SQLQuary = "SELECT * FROM chefskiss.sede";
+
+            quary = conn.prepareStatement(SQLQuary);
+
+            ResultSet result = quary.executeQuery();
+
+            while (result.next()){
+                sedi.add(read(result));
+            }
+
+            System.out.println("Lettura dati completata!");
+
+            quary.close();
+            result.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return sedi;
+    }
+
     private Sede read(ResultSet rs) throws SQLException {
         Sede sede = new Sede();
 
@@ -310,6 +371,24 @@ public class SedeDAO_MySQL implements SedeDAO {
         sede.setPosti(rs.getInt("Posti_Disponibili"));
         sede.setID_Ristorante(rs.getInt("ID_Ristorante"));
         sede.setDeleted(rs.getBoolean("Deleted"));
+
+        return sede;
+    }
+
+    private Sede read1(ResultSet rs) throws SQLException {
+        Sede sede = new Sede();
+        Ristorante ristorante = new Ristorante();
+
+        sede.setRistoranteS(ristorante);
+
+        sede.setCoordinate(rs.getString("Coordinate"));
+        sede.setVia(rs.getString("Via"));
+        sede.setCitta(rs.getString("Citta"));
+        sede.setPosti(rs.getInt("Posti_Disponibili"));
+        sede.setID_Ristorante(rs.getInt("ID_Ristorante"));
+        sede.setDeleted(rs.getBoolean("Deleted"));
+        sede.getRistoranteS().setID(rs.getInt("ID_Ristorante"));
+        sede.getRistoranteS().setNome(rs.getString("Nome_Ristorante"));
 
         return sede;
     }
