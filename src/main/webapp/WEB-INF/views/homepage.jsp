@@ -16,50 +16,57 @@
 <html lang="it">
 <head>
     <title>Homepage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 <body>
-    <h1>Welcome to Chef's Kiss!!</h1>
+    <div class="container-fluid p-3 text-white" style="background-color: darkgreen">
+        <h1 class="text-center">Welcome to Chef's Kiss!!</h1>
+    </div>
+
+    <%@include file="repetedElements/navabar_inc.jsp"%>
+
     <%if(utente!=null){%>
     <p>Bentornato/a <%=utente.getNome()+" "+utente.getCognome()%>!</p>
     <%}%>
-    <nav>
-        <ul>
-            <%if(utente==null){%>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/registration">Registrazione</a></li>
-            <%}else{%>
-            <li><a href="/logout">Logout</a></li>
-            <li><a href="/profile">Il Mio Profilo</a></li>
-            <%}%>
-            <li><a href="/recipesView">Le ricette di Chef's Kiss</a></li>
-            <li><a href="/resturantsList">I Ristoranti</a></li>
-        </ul>
-    </nav>
+
     <h3>Le 4 Ricette più recenti della settimana!</h3>
-    <a href="/plate?id=<%=piatti.get(0).getId()%>">
-        <div id="recipeBlock1">
-            <p><%=piatti.get(0).getNome()%></p>
-            <img src="<%=piatti.get(0).getStarsRating()%>" width="140px" height="auto">
+    <div class="row p-3">
+        <div class="col">
+            <a href="/plate?id=<%=piatti.get(0).getId()%>">
+                <div id="recipeBlock1">
+                    <p><%=piatti.get(0).getNome()%></p>
+                    <img src="<%=piatti.get(0).getStarsRating()%>" width="140px" height="auto">
+                </div>
+            </a>
         </div>
-    </a>
-    <a href="/plate?id=<%=piatti.get(1).getId()%>">
-        <div id="recipeBlock2">
-            <p><%=piatti.get(1).getNome()%></p>
-            <img src="<%=piatti.get(1).getStarsRating()%>" width="140px" height="auto">
+        <div class="col">
+            <a href="/plate?id=<%=piatti.get(1).getId()%>">
+                <div id="recipeBlock2">
+                    <p><%=piatti.get(1).getNome()%></p>
+                    <img src="<%=piatti.get(1).getStarsRating()%>" width="140px" height="auto">
+                </div>
+            </a>
         </div>
-    </a>
-    <a href="/plate?id=<%=piatti.get(2).getId()%>">
-        <div id="recipeBlock3">
-            <p><%=piatti.get(2).getNome()%></p>
-            <img src="<%=piatti.get(2).getStarsRating()%>" width="140px" height="auto">
+    </div>
+    <div class="row p-3">
+        <div class="col">
+            <a href="/plate?id=<%=piatti.get(2).getId()%>">
+                <div id="recipeBlock3">
+                    <p><%=piatti.get(2).getNome()%></p>
+                    <img src="<%=piatti.get(2).getStarsRating()%>" width="140px" height="auto">
+                </div>
+            </a>
         </div>
-    </a>
-    <a href="/plate?id=<%=piatti.get(3).getId()%>">
-        <div id="recipeBlock4">
-            <p><%=piatti.get(3).getNome()%></p>
-            <img src="<%=piatti.get(3).getStarsRating()%>" width="140px" height="auto">
+        <div class="col">
+            <a href="/plate?id=<%=piatti.get(3).getId()%>">
+                <div id="recipeBlock4">
+                    <p><%=piatti.get(3).getNome()%></p>
+                    <img src="<%=piatti.get(3).getStarsRating()%>" width="140px" height="auto">
+                </div>
+            </a>
         </div>
-    </a>
+    </div>
 </body>
 </html>

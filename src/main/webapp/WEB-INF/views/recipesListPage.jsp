@@ -35,6 +35,16 @@
         i++;
         if(i==5) document.getElementById("searchForm").removeChild(document.getElementById("add_allergene"));
     }
+
+    function orderBy(type){
+        let url = window.location.href;
+        console.log(url);
+        let href = new URL(url);
+        href.searchParams.set("ord", type.toString());
+        window.location.replace(href.toString());
+    }
+
+
 </script>
 <body>
     <h1>LA NOSTRA LISTA DEI PIATTI</h1>
@@ -64,6 +74,11 @@
     <%      } else {    %>
         <h3>Oppure, se hai solo voglia di cucinare, lasciati ispirare da una di queste ricette...</h3>
     <%      }       %>
+        <h5>Ordina per: </h5>
+        <button onclick="orderBy(1)">Nome</button>
+        <button onclick="orderBy(2)">Valutazione</button>
+        <button onclick="orderBy(0)">Data upload</button>
+        <br>
     <%for (int i = 0; i < piatti.size(); i++) {%>
         <a href="/plate?id=<%=piatti.get(i).getId()%>">
                 <div id="recipeBlock">

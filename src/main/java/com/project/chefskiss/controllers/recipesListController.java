@@ -1,5 +1,6 @@
 package com.project.chefskiss.controllers;
 
+import com.project.chefskiss.Comparators;
 import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.dataAccessObjects.DAOFactory;
 import com.project.chefskiss.dataAccessObjects.PiattoDAO;
@@ -20,6 +21,7 @@ import java.util.List;
 public class recipesListController {
     @GetMapping(path = "/recipesView")
     public ModelAndView viewRecipesList(
+            @RequestParam(value = "ord", required = false, defaultValue = "0") int ord,
             @CookieValue(value = "loggedUser", defaultValue = "") String userData
     ){
         ModelAndView page = new ModelAndView("recipesListPage");
@@ -38,8 +40,33 @@ public class recipesListController {
         List<Piatto> piatti = sessionPiattiDAO.findMostRecent();
         DatabaseDAO.closeTransaction();
 
+                /*
+        Per ordinamento:
+        Se ord == 1 --> Ordina per Nome
+        Se ord == 2 --> Ordina per Valutazione
+        Altrimenti --> Ordina per Data
+         */
+        try {
+            switch (ord)
+            {
+                case 1:
+                {
+                    System.out.println("Ordinamento per nome");
+                    piatti.sort(Comparators.PiattobyName);
+                    break;
+                }
+                case 2:
+                {
+                    System.out.println("Ordinamento per voto");
+                    piatti.sort(Comparators.PiattobyVoto);
+                    break;
+                }
+            }
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
         //Invio lista dei piatti alla pagina
-        //Collections.shuffle(piatti); //Perchè si
         if (piatti.size()>10) piatti = piatti.subList(0,10);
         page.addObject("listaPiatti", piatti);
 
@@ -55,6 +82,7 @@ public class recipesListController {
         @CookieValue(value = "loggedUser", defaultValue = "") String userData,
         @RequestParam("search") String search,
         @RequestParam("searchType") int type,
+        @RequestParam(value = "ord", required = false, defaultValue = "0") int ord,
         @RequestParam(value = "allergeni", required = false) List<String> allergeni
     ){
         ModelAndView page = new ModelAndView("recipesListPage");
@@ -76,6 +104,7 @@ public class recipesListController {
         PiattoDAO sessionPiattiDAO = DatabaseDAO.getPiattoDAO(null);
 
         /*
+        Se type == 0 --> Nessun input, ricerca per data
         Se type == 1 --> Ricerca per nome,
         se type == 2 --> Ricerca per ingrediente
         */
@@ -104,6 +133,33 @@ public class recipesListController {
         }
 
         DatabaseDAO.closeTransaction();
+
+        /*
+        Per ordinamento:
+        Se ord == 1 --> Ordina per Nome
+        Se ord == 2 --> Ordina per Valutazione
+        Altrimenti --> Ordina per Data
+         */
+        try {
+            switch (ord)
+            {
+                case 1:
+                {
+                    System.out.println("Ordinamento per nome");
+                    piatti.sort(Comparators.PiattobyName);
+                    break;
+                }
+                case 2:
+                {
+                    System.out.println("Ordinamento per voto");
+                    piatti.sort(Comparators.PiattobyVoto);
+                    break;
+                }
+            }
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
 
         if (piatti.size()>10) piatti = piatti.subList(0,10);
         page.addObject("listaPiatti", piatti);
