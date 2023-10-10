@@ -42,26 +42,16 @@
     </div>
 
 
-<!--
-    <h3>Ordina i ristoranti in base a...</h3>
-    <div>
-        <form id="ordinaForm">
-            <label for="ordinaForm">Ordina per:</label>
-            <select id="ordinaForm" name="ordinaForm">
-                <option value="1">Nome del ristorante</option>
-                <option value="2">Città</option>
-                <option value="2">Tag</option>
-            </select>
-            <br>
-            <input id="search" type="search" placeholder="Search.." name="search">
-            <button type="submit"><i class='bx bx-search-alt-2 bx-sm'></i></button>
-        </form>
-    </div>
-    -->
-
     NEXT : MAPPA
 
+    <h5>Ordina per: </h5>
+    <button onclick="orderBy(1)">Nome</button>
+    <%      if (searched && sedi != null){    %>
+    <button onclick="orderBy(2)">Valutazione</button>
+    <br>
+    <%}%>
 
+    <!-- Visualizzazione risultati di ricerca per città (visualizza sedi cercate e ristoranti proposti) -->
     <%      if (searched && sedi != null){    %>
     <h3>I risultati della tua ricerca</h3>
     <%
@@ -70,23 +60,35 @@
     %>
 
         <div id="sediBlock">
-            <p><a href="/sede?id=<%=sedi.get(i).getCoordinate()%>"><%=sedi.get(i).getVia()%>, <%=sedi.get(i).getCitta()%></a> - <a href="/restaurant?id=<%=sedi.get(i).getRistoranteS().getID_Ristorante()%>"><%= sedi.get(i).getRistoranteS().getNome() %></a></p>
+            <p><a href="/sede?id=<%=sedi.get(i).getCoordinate()%>"><%=sedi.get(i).getVia()%>, <%=sedi.get(i).getCitta()%></a> - <a href="/restaurant?id=<%=sedi.get(i).getRistoranteS().getID_Ristorante()%>"><%= sedi.get(i).getRistoranteS().getNome() %></a>
+                <br><img src="<%=sedi.get(i).getStarsRating()%>" width="140px" height="auto"></p>
         </div>
 
     <%}}%>
 
+
+    <!-- Visualizza solo i ristoranti cercati -->
     <%      if (searched && sedi == null){    %>
-    <h3>I risultati della tua ricerca</h3>
+        <h3>I risultati della tua ricerca</h3>
     <%}else{%>
-    <h3>Oppure prova uno di questi locali:</h3>
+        <h3>Oppure prova uno di questi locali:</h3>
     <%}%>
     <% for (int i = 0; i < Math.min(10, ristoranti.size()); i++) { %>
-    <a href="/restaurant?id=<%=ristoranti.get(i).getID_Ristorante()%>">
+        <a href="/restaurant?id=<%=ristoranti.get(i).getID_Ristorante()%>">
         <div>
             <p><%=ristoranti.get(i).getNome()%></p>
         </div>
-    </a>
+        </a>
     <% } %>
     <%@include file="repetedElements/backLink.jsp"%>
 </body>
+<script>
+    function orderBy(type){
+        let url = window.location.href;
+        console.log(url);
+        let href = new URL(url);
+        href.searchParams.set("ord", type.toString());
+        window.location.replace(href.toString());
+    }
+</script>
 </html>
