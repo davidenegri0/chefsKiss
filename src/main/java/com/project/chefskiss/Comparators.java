@@ -15,7 +15,7 @@ public class Comparators {
     public static Comparator<Piatto> PiattobyVoto = new Comparator<Piatto>() {
         @Override
         public int compare(Piatto o1, Piatto o2) {
-            return o1.getVotoMedio().compareTo(o2.getVotoMedio());
+            return o1.getVotoMedio().compareTo(o2.getVotoMedio()) * -1;
         }
     };
 }

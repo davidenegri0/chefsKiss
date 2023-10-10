@@ -19,10 +19,13 @@
 <html>
 <head>
     <title>I Ristoranti</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
-    <h1>I Ristoranti che ci piacciono!</h1>
+    <%@include file="repetedElements/navabar_inc.jsp"%>
+    <h1>I RISTORANTI CHE CI PIACCIONO!</h1>
     <h3>Stai cercando dove mangiare oggi? Fai una ricerca diretta!</h3>
     <div>
         <form id="searchForm">
@@ -84,6 +87,6 @@
         </div>
     </a>
     <% } %>
-    <%@include file="repetedElements/homepageLink.html"%>
+    <%@include file="repetedElements/backLink.jsp"%>
 </body>
 </html>

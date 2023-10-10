@@ -68,7 +68,7 @@ public class Piatto {
             default -> {
                 System.out.println("Media recensioni non valida, " +
                         "supposta mancanza di recensioni, invio rating medio");
-                return relPath+"3-of-5"+fileType;
+                return relPath+"unknown"+fileType;
             }
         }
     }
