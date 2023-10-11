@@ -309,10 +309,11 @@ public class SedeDAO_MySQL implements SedeDAO {
 
         try{
             String SQLQuery =
-                    "SELECT s.Coordinate, s.Via, s.Citta, s.Posti_Disponibili, s.ID_Ristorante, s.Deleted, r.ID_Ristorante, r.Nome_Ristorante " +
-                            "FROM chefskiss.sede AS s NATURAL JOIN chefskiss.ristorante AS r " +
-                            "WHERE s.Citta LIKE ? " +
-                            "AND s.Deleted = 'N'";
+                    "SELECT s.*, r.ID_Ristorante, r.Nome_Ristorante, AVG(v.Voto) AS Media " +
+                            "FROM chefskiss.ristorante AS r NATURAL JOIN chefskiss.sede AS s LEFT JOIN chefskiss.valuta AS v ON s.Coordinate = v.Coordinate " +
+                            "WHERE s.Citta LIKE ? " + // DA MODIFICARE METTENDOCI DENTRO ANCHE LA MEDIA DELLE SEDI!
+                            "AND s.Deleted = 'N' " +
+                            "GROUP BY s.Coordinate";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, "%"+citta+"%");
@@ -320,7 +321,9 @@ public class SedeDAO_MySQL implements SedeDAO {
             ResultSet result = query.executeQuery();
 
             while (result.next()){
-                sedi.add(read1(result));
+                Sede s = read1(result);
+                s.setVotoMedio(result.getFloat("Media"));
+                sedi.add(s);
             }
 
             System.out.println("Lettura dati completata!");
@@ -340,20 +343,26 @@ public class SedeDAO_MySQL implements SedeDAO {
         List<Sede> sedi = new ArrayList<>();
 
         try {
-            String SQLQuary = "SELECT * FROM chefskiss.sede";
+            String SQLQuary = "SELECT s.*, AVG(v.Voto) as Media " +
+                    "FROM chefskiss.sede s " +
+                    "LEFT JOIN valuta v ON s.Coordinate = v.Coordinate " +
+                    "WHERE s.Deleted = 'N' " +
+                    "GROUP BY s.Coordinate ";
 
             quary = conn.prepareStatement(SQLQuary);
 
             ResultSet result = quary.executeQuery();
 
             while (result.next()){
-                sedi.add(read(result));
+                Sede s = read(result);
+                s.setVotoMedio(result.getFloat("Media"));
+                sedi.add(s);
             }
 
             System.out.println("Lettura dati completata!");
 
-            quary.close();
             result.close();
+            quary.close();
 
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());

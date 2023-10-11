@@ -1,5 +1,6 @@
 package com.project.chefskiss.controllers;
 
+import com.project.chefskiss.Comparators;
 import com.project.chefskiss.Utility;
 import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.dataAccessObjects.DAOFactory;
@@ -11,19 +12,17 @@ import com.project.chefskiss.modelObjects.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class resturantsListController {
 
     @GetMapping(path = "/resturantsList")
     public ModelAndView viewResturantsList(
+            @RequestParam(value = "ord", required = false, defaultValue = "0") int ord,
             @CookieValue(value = "loggedUser", defaultValue = "") String userData
     ){
         //Variabili
@@ -39,6 +38,7 @@ public class resturantsListController {
         }
         else System.out.println("No cookies :C");
 
+
         //Ricerca dei ristoranti sul database
         //Accesso al database
         DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
@@ -49,6 +49,27 @@ public class resturantsListController {
 
         ristoranti = sessionRistoDAO.getAll();
         sedi = sessionSedeDAO.getAll();
+
+        try {
+            switch (ord)
+            {
+                case 1:
+                {
+                    System.out.println("Ordinamento per nome");
+                    ristoranti.sort(Comparators.RistoranteByNome);
+                    break;
+                }
+                case 2:
+                {
+                    System.out.println("Ordinamento per voto");
+                    sedi.sort(Comparators.SedeByVoto);
+                    break;
+                }
+            }
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
         page.addObject("ristoranti", ristoranti);
         page.addObject("sedi", sedi);
         page.addObject("searched", false);
@@ -62,12 +83,13 @@ public class resturantsListController {
     public ModelAndView getSearchedResturants(
             @CookieValue(value = "loggedUser", defaultValue = "") String userData,
             @RequestParam("searchType") int type,
-            @RequestParam("search") String search
+            @RequestParam("search") String search,
+            @RequestParam(value = "ord", required = false, defaultValue = "0") int ord
     ){
-        //Variabili<
+        //Variabili
         ModelAndView page = new ModelAndView("resturantsListPage");
         List<Ristorante> ristoranti;
-        List<Sede> sedi;
+        List<Sede> sedi = null;
 
         //Lettura dei cookie dell'utente
         if(!userData.isEmpty()){
@@ -75,6 +97,8 @@ public class resturantsListController {
             page.addObject("user", utente);
         }
         else System.out.println("No cookies :C");
+
+        
 
         if (type==1){
             //Ricerca dei ristoranti sul database
@@ -106,6 +130,26 @@ public class resturantsListController {
         } else {
             System.out.println("Unexpected behaviour, returning to homepage");
             return Utility.redirect(page, "/resturantsList");
+        }
+        
+        try {
+            switch (ord)
+            {
+                case 1:
+                {
+                    System.out.println("Ordinamento per nome");
+                    ristoranti.sort(Comparators.RistoranteByNome);
+                    break;
+                }
+                case 2:
+                {
+                    System.out.println("Ordinamento per voto");
+                    sedi.sort(Comparators.SedeByVoto);
+                    break;
+                }
+            }
+        } catch (Exception e){
+            System.out.println(e.getMessage());
         }
 
         page.addObject("searched", true);
