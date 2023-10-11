@@ -17,7 +17,7 @@
     body {
         margin: 0;
         padding: 0;
-        background-image: url("img/food_background.jpg");
+        background-image: url("img/food_background_v2.jpg");
         background-size: contain;
     }
 

@@ -3,6 +3,7 @@
 <%@ page import="com.project.chefskiss.modelObjects.*" %>
 <%@ page import="org.springframework.web.servlet.ModelAndView" %>
 <%@ page import="com.project.chefskiss.Utility" %>
+<%@ page import="java.util.Base64" %>
 <%--
   Created by IntelliJ IDEA.
   User: spipp
@@ -30,103 +31,131 @@
     List<Recensione> recensioni = (List<Recensione>) request.getAttribute("recensioni");
     List<User> utenti_recensori = (List<User>) request.getAttribute("utenti_recensori");
 %>
-<body>
+<style>
+    .food_background{
+        background-image: url("img/food_background_v2.jpg");
+        background-size: contain;
+    }
+
+    .white_transp_background{
+        background-color: rgba(245,245,245,0.7);
+    }
+</style>
+<body class="food_background">
     <%@include file="repetedElements/navabar_inc.jsp"%>
-    <h1><%=piatto.getNome()%></h1>
-    <p>
-        Caricato da: <%= utente_post.getNome() %> <%= utente_post.getCognome() %>
-    </p>
-    <% if(utente!=null && utente_post.getCF().equals(utente.getCF())){ %>
-    <a href="/editPlate?id=<%=piatto.getId()%>"><button>Modifica la tua ricetta</button></a>
-    <button onclick="confermaCancellazionePiatto()">Cancella la tua ricetta</button>
-    <% } %>
-    <div>Qui ci andrebbe l'immagine del piatto</div>
-    <h3>Ingredienti</h3>
-    <div>Per 4 persone:</div>
-    <table>
-        <tr>
-            <th><i>Ingrediente</i></th><th><i>Quantità</i></th>
-        </tr>
+    <div class="container-fluid m-3 clearfix">
+        <img class="img-thumbnail mx-3 shadow float-end w-50 h-auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatto.getImmaginePiatto().getBytes(1, (int)piatto.getImmaginePiatto().length()))%>">
+        <div class="card mx-auto white_transp_background shadow">
+            <div class="card-body">
+                <h1><%=piatto.getNome()%></h1>
+                <p>
+                    Caricato da: <%= utente_post.getNome() %> <%= utente_post.getCognome() %>
+                </p>
+                <% if(utente!=null && utente_post.getCF().equals(utente.getCF())){ %>
+                <a href="/editPlate?id=<%=piatto.getId()%>"><button class="btn btn-sm btn-primary">Modifica la tua ricetta</button></a>
+                <button class="btn btn-sm btn-danger" onclick="confermaCancellazionePiatto()">Cancella la tua ricetta</button>
+                <% } %>
+                <h3>Ingredienti</h3>
+                <div>Per 4 persone:</div>
+                <table>
+                    <tr>
+                        <th><i>Ingrediente</i></th><th><i>Quantità</i></th>
+                    </tr>
+                    <%
+                        ContieneDAO contiene;
+                        String ingrediente;
+                        Integer quantita;
+
+                        for (int i = 0; i < ingredienti.size(); i++) {
+                            ingrediente = ingredienti.get(i).getIngredienteC().getNome();
+                            quantita = (ingredienti.get(i).getQuantita())*4;
+
+                    %>
+                    <tr>
+                        <td><%= ingrediente %></td>
+                        <td><%= quantita %> gr</td>
+                    </tr>
+                    <%
+                        }
+                    %>
+                </table>
+
+                <!--
+                    FC was here!
+                -->
+
+                <h3>Preparazione</h3>
+                <p>
+                    <%= piatto.getPreparazione() %>
+                </p>
+
+                <h4>Si può trovare tra i menù dei seguenti ristoranti:</h4>
+                <nav>
+                    <ul>
+                        <%
+                            Integer id_ristorante;
+
+                            for (int i = 0; i < sedi.size(); i++){
+                        %>
+                        <li>
+                            <a href = "/restaurant?id=<%= ristoranti.get(i).getID_Ristorante()%>"><%= ristoranti.get(i).getNome() %></a> -
+                            <%= sedi.get(i).getVia() %>, (<%= sedi.get(i).getCitta() %>)
+                        </li>
+                        <% } %>
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="container-fluid p-2 bg-dark text-white text-center">
+        <h3>Recensioni</h3>
+    </div>
+
+    <div class="container mx-auto">
+        <div class="d-flex p-3 text-dark justify-content-around flex-wrap">
+            <%
+                String CF_utente, commento;
+                Integer voto;
+
+
+                for (int i = 0; i < recensioni.size(); i++){
+                    CF_utente = recensioni.get(i).getUtenteR().getCF();
+                    voto = recensioni.get(i).getVoto();
+                    commento = recensioni.get(i).getCommento();
+            %>
+            <div class="d-flex card m-3 white_transp_background justify-content-center shadow" style="width: 256px" id="reviewBlock">
+                <div class="text-center" id="reviewBlock_utente">
+                    <%= utenti_recensori.get(i).getNome() %> <%= utenti_recensori.get(i).getCognome() %>
+                </div>
+                <div id="reviewBlock_voto">
+                    <img class="mx-auto d-block" src="<%=recensioni.get(i).getStarsRating()%>" width="64px" height="auto">
+                </div>
+                <div class="text-center" id="reviewBlock_commento">
+                    <%= commento %>
+                </div>
+            </div>
+            <%
+                }
+            %>
+        </div>
         <%
-            ContieneDAO contiene;
-            String ingrediente;
-            Integer quantita;
-
-            for (int i = 0; i < ingredienti.size(); i++) {
-                ingrediente = ingredienti.get(i).getIngredienteC().getNome();
-                quantita = (ingredienti.get(i).getQuantita())*4;
-
+            if (utente != null) {
         %>
-            <tr>
-                <td><%= ingrediente %></td>
-                <td><%= quantita %> gr</td>
-            </tr>
+        <div class="d-flex justify-content-around">
+            <a href="/addRecensione?type=1&id=<%=piatto.getId()%>"><button class="btn btn-sm btn-success">Aggiungi recesione</button></a>
+            <a href="/modifyRecensione?type=3&id=<%=piatto.getId()%>"><button class="btn btn-sm btn-primary">Modifica recesione</button></a>
+            <button class="btn btn-sm btn-danger" onclick="confermaCancellazione()">Cancella recesione</button>
+
+        </div>
         <%
             }
         %>
-    </table>
-
-    <!--
-        FC was here!
-    -->
-
-    <h3>Preparazione</h3>
-    <p>
-        <%= piatto.getPreparazione() %>
-    </p>
-
-    <h4>Si può trovare tra i menù dei seguenti ristoranti:</h4>
-    <nav>
-        <ul>
-            <%
-                Integer id_ristorante;
-
-                for (int i = 0; i < sedi.size(); i++){
-            %>
-            <li>
-                <a href = "/restaurant?id=<%= ristoranti.get(i).getID_Ristorante()%>"><%= ristoranti.get(i).getNome() %></a> -
-                <%= sedi.get(i).getVia() %>, (<%= sedi.get(i).getCitta() %>)
-            </li>
-            <% } %>
-        </ul>
-    </nav>
-
-    <h3>Recensioni</h3>
-
-    <%
-        String CF_utente, commento;
-        Integer voto;
+    </div>
 
 
-        for (int i = 0; i < recensioni.size(); i++){
-            CF_utente = recensioni.get(i).getUtenteR().getCF();
-            voto = recensioni.get(i).getVoto();
-            commento = recensioni.get(i).getCommento();
-    %>
-        <p id="reviewBlock">
-            <div id="reviewBlock_utente">
-                <%= utenti_recensori.get(i).getNome() %> <%= utenti_recensori.get(i).getCognome() %>
-            </div>
-            <div id="reviewBlock_voto">
-                <img src="<%=recensioni.get(i).getStarsRating()%>" width="8%" height="auto">
-            </div>
-            <div id="reviewBlock_commento">
-                <%= commento %>
-            </div>
-        </p>
-    <%
-        }
-    %>
-    <%
-        if (utente != null) {
-    %>
-        <a href="/addRecensione?type=1&id=<%=piatto.getId()%>"><button>Aggiungi recesione</button></a>
-        <a href="/modifyRecensione?type=3&id=<%=piatto.getId()%>"><button>Modifica recesione</button></a>
-        <button onclick="confermaCancellazione()">Cancella recesione</button>
 
-    <%
-        }
-    %>
     <div id="error">
 
     </div>
