@@ -1,8 +1,10 @@
 package com.project.chefskiss.dataAccessObjects.Database;
 
+import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.dataAccessObjects.PiattoDAO;
 import com.project.chefskiss.modelObjects.*;
 
+import javax.sql.rowset.serial.SerialBlob;
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
@@ -449,6 +451,12 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         User utente = new User();
         piatto.setUtenteP(utente);
         piatto.getUtenteP().setCF(rs.getString("CF"));
+
+        piatto.setImmaginePiatto(rs.getBlob("Foto_Piatto"));
+        if (piatto.getImmaginePiatto()==null){
+            byte[] b = Base64.getDecoder().decode(Config.PLATE_DEFAULT_IMG);
+            piatto.setImmaginePiatto(new SerialBlob(b));
+        }
 
         piatto.setDeleted(rs.getBoolean("Deleted"));
 

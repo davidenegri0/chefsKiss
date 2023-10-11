@@ -34,6 +34,14 @@ public class profileController {
 
         //Caricamento dati dai cookie
         User utente = User.decodeUserData(userData);
+
+        //Caricamento dati utente (e immagine) dal db
+        DAOFactory DatabaseDAO2 = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
+        DatabaseDAO2.beginTransaction();
+        UserDAO sessionUserDAO2 = DatabaseDAO2.getUserDAO(null);
+        utente = sessionUserDAO2.findByEmail(utente.getEmail());
+        DatabaseDAO2.closeTransaction();
+
         page.addObject("utente", utente);
         page.addObject("imgPath", "profile/profileImg.jpg");
 
@@ -50,8 +58,17 @@ public class profileController {
 
         //Caricamento dati dai cookie
         User utente = User.decodeUserData(userData);
+
+        //Caricamento dati utente (e immagine) dal db
+        DAOFactory DatabaseDAO2 = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
+        DatabaseDAO2.beginTransaction();
+        UserDAO sessionUserDAO2 = DatabaseDAO2.getUserDAO(null);
+        utente = sessionUserDAO2.findByEmail(utente.getEmail());
+        DatabaseDAO2.closeTransaction();
+
         page.addObject("utente", utente);
-        page.addObject("imgPath", "profile/profileImg.jpg");
+        //page.addObject("imgPath", "profile/profileImg.jpg");
+
         return page;
     }
 
@@ -202,7 +219,7 @@ public class profileController {
         return Utility.redirect(page, "/profile");
     }
 
-    //Generazione dinamica dell'immagine del profilo
+    /*//Generazione dinamica dell'immagine del profilo
     @RequestMapping(value = "profile/profileImg.jpg", produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody byte[] showProfileImage(
             @CookieValue("loggedUser") String userData
@@ -221,5 +238,5 @@ public class profileController {
             e.printStackTrace();
             return null;
         }
-    }
+    }*/
 }

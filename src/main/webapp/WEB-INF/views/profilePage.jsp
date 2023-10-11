@@ -1,5 +1,6 @@
 <%@ page import="javax.swing.*" %>
 <%@ page import="com.project.chefskiss.modelObjects.User" %>
+<%@ page import="java.util.Base64" %>
 <%--
   Created by IntelliJ IDEA.
   User: david
@@ -31,7 +32,8 @@
 <body>
     <%
         User utente = (User) request.getAttribute("utente");
-        String imgPath = (String) request.getAttribute("imgPath");
+        //String imgPath = (String) request.getAttribute("imgPath");
+        String img = Base64.getEncoder().encodeToString(utente.getProfilePicture().getBytes(1, (int)utente.getProfilePicture().length()));
         //System.out.println("Da jsp: imgPath = "+imgPath);
     %>
     <h1><%=utente.getNome()%> <%=utente.getCognome()%>'s Profile</h1>
@@ -61,7 +63,7 @@
     <p>
         Username: <%=utente.getUsername()%> <br>
     </p>
-    <img src="<%=imgPath%>" height="144px" width="144px"> <br>
+    <img src="data:image/jpeg;base64,<%=img%>" height="144px" width="144px"> <br>
     <% } %>
     <!--
         Ci sono due soluzioni: Condificare l'immagine in formato di testo e poi farla renderizzare direttamente

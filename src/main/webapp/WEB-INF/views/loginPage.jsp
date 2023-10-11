@@ -17,7 +17,8 @@
     body {
         margin: 0;
         padding: 0;
-        background-image: url('https://img.freepik.com/free-vector/delicious-food-background_23-2147846447.jpg?w=740&t=st=1696930642~exp=1696931242~hmac=aabf6ad16016e7901c49976647fc86de1b2834cae21068e7de0285499df5adfe');
+        background-image: url("img/food_background.jpg");
+        background-size: contain;
     }
 
     .card{

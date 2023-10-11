@@ -1,7 +1,8 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.project.chefskiss.modelObjects.User" %>
 <%@ page import="com.project.chefskiss.modelObjects.Piatto" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Base64" %><%--
   Created by IntelliJ IDEA.
   User: david
   Date: 09/08/2023
@@ -22,8 +23,8 @@
 </head>
 <style>
     .food_background{
-        background-image: url('https://img.freepik.com/free-vector/delicious-food-background_23-2147846447.jpg?w=740&t=st=1696930642~exp=1696931242~hmac=aabf6ad16016e7901c49976647fc86de1b2834cae21068e7de0285499df5adfe');
-        background-size: auto;
+        background-image: url("img/food_background.jpg");
+        background-size: contain;
     }
 
     .white_transp_background{
@@ -51,6 +52,7 @@
             <a class="text-decoration-none" href="/plate?id=<%=piatti.get(0).getId()%>">
                 <div class="card-body" id="recipeBlock1">
                     <p class="card-text h5 text-dark text-center"><%=piatti.get(0).getNome()%></p>
+                    <img class="card-img-top mx-auto d-block" style="height: 256px; width: auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatti.get(0).getImmaginePiatto().getBytes(1, (int)piatti.get(0).getImmaginePiatto().length()))%>">
                     <img class="mx-auto d-block" src="<%=piatti.get(0).getStarsRating()%>" width="140px" height="auto">
                 </div>
             </a>
@@ -59,6 +61,7 @@
             <a class="text-decoration-none" href="/plate?id=<%=piatti.get(1).getId()%>">
                 <div class="card-body" id="recipeBlock2">
                     <p class="card-text h5 text-dark text-center"><%=piatti.get(1).getNome()%></p>
+                    <img class="card-img-top mx-auto d-block" style="height: 256px; width: auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatti.get(1).getImmaginePiatto().getBytes(1, (int)piatti.get(1).getImmaginePiatto().length()))%>">
                     <img class="mx-auto d-block" src="<%=piatti.get(1).getStarsRating()%>" width="140px" height="auto">
                 </div>
             </a>
@@ -69,6 +72,7 @@
             <a class="text-decoration-none" href="/plate?id=<%=piatti.get(2).getId()%>">
                 <div class="card-body" id="recipeBlock3">
                     <p class="card-text h5 text-dark text-center"><%=piatti.get(2).getNome()%></p>
+                    <img class="card-img-top mx-auto d-block" style="height: 256px; width: auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatti.get(2).getImmaginePiatto().getBytes(1, (int)piatti.get(2).getImmaginePiatto().length()))%>">
                     <img class="mx-auto d-block" src="<%=piatti.get(2).getStarsRating()%>" width="140px" height="auto">
                 </div>
             </a>
@@ -77,6 +81,7 @@
             <a class="text-decoration-none" href="/plate?id=<%=piatti.get(3).getId()%>">
                 <div class="card-body" id="recipeBlock4">
                     <p class="card-text h5 text-dark text-center"><%=piatti.get(3).getNome()%></p>
+                    <img class="card-img-top mx-auto d-block" style="height: 256px; width: auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatti.get(3).getImmaginePiatto().getBytes(1, (int)piatti.get(3).getImmaginePiatto().length()))%>">
                     <img class="mx-auto d-block" src="<%=piatti.get(3).getStarsRating()%>" width="140px" height="auto">
                 </div>
             </a>

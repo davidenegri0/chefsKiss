@@ -35,15 +35,7 @@ public class homepageController {
         List<Piatto> piatti = sessionPiattiDAO.findMostRecent();
         DatabaseDAO.closeTransaction();
 
-        //TODO: (EVENTUALE) Si può aggiornare questa feature gestendo le recensioni in base al voto medio
         if (piatti.size() < 4) System.out.println("Strano");
-
-        //Debug dei voti
-        /*
-        for (int i = 0; i < piatti.size(); i++) {
-            System.out.println(piatti.get(i).getNome()+" Voto: "+piatti.get(i).getVotoMedio());
-        }
-         */
 
         Collections.shuffle(piatti); //Perchè si
         page.addObject("listaPiatti", piatti.subList(0,4));

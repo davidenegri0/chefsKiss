@@ -1,15 +1,18 @@
 package com.project.chefskiss.modelObjects;
 
+
 import com.project.chefskiss.configurations.Config;
 
 import java.util.HashMap;
 import java.util.List;
+import java.sql.Blob;
 import java.util.Map;
 
 public class Piatto {
     private int Id_Piatto;
     private String Nome_Piatto;
     private String Preparazione;
+    private Blob ImmaginePiatto;
     private Boolean Deleted;
     private Float VotoMedio;
 
@@ -27,6 +30,9 @@ public class Piatto {
     public void setVotoMedio(Float votoMedio) {
         VotoMedio = votoMedio;
     }
+    public void setImmaginePiatto(Blob immaginePiatto) {
+        ImmaginePiatto = immaginePiatto;
+    }
     public int getId (){
         return Id_Piatto;
     }
@@ -42,6 +48,9 @@ public class Piatto {
 
     public Float getVotoMedio() {
         return VotoMedio;
+    }
+    public Blob getImmaginePiatto() {
+        return ImmaginePiatto;
     }
 
     //Funzione per ottenere l'immagine con le stelle dipendentemente della valutazione media

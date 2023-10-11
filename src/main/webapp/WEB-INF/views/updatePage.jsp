@@ -1,5 +1,6 @@
 <%@ page import="javax.swing.*" %>
 <%@ page import="com.project.chefskiss.modelObjects.User" %>
+<%@ page import="java.util.Base64" %>
 <%--
   Created by IntelliJ IDEA.
   User: david
@@ -10,7 +11,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     User utente = (User) request.getAttribute("utente");
-    String imgPath = (String) request.getAttribute("imgPath");
+    //String imgPath = (String) request.getAttribute("imgPath");
+    String img = Base64.getEncoder().encodeToString(utente.getProfilePicture().getBytes(1, (int)utente.getProfilePicture().length()));
     Integer errorCode = (Integer) request.getAttribute("errorCode");
     //System.out.println("Da jsp: imgPath = "+imgPath);
     //System.out.println(utente.getNome());
@@ -57,7 +59,7 @@
         <h3>Dati da utente pubblico</h3>
         <label for="username">Username: </label>
         <input id="username" name="username" type="text" value="<%=utente.getUsername()%>"> <br>
-        <img src="<%=imgPath%>" height="144px" width="144px">
+        <img src="data:image/jpeg;base64,<%=img%>" height="144px" width="144px">
         <% } %>
         <br>
         <input type="file" accept="image/jpeg" name="file"> <br>
