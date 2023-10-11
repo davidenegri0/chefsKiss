@@ -9,6 +9,7 @@ public class Sede {
     private Integer Posti;
     private Integer ID_Ristorante; //TODO: (EVENTUALE) Rimuovere questo con l'implementazione di query complesse
     private Boolean Deleted;
+    private Float VotoMedio;
 
     // GETTER E SETTER
     public void setCoordinate (String coordinate) { Coordinate = coordinate;}
@@ -23,7 +24,10 @@ public class Sede {
     public Boolean getDeleted () { return Deleted; }
     public void setID_Ristorante (Integer id_ristorante) { ID_Ristorante = id_ristorante; }
     public Integer getID_Ristorante () { return ID_Ristorante; }
-
+    public void setVotoMedio (Float votoMedio) {
+        VotoMedio = votoMedio;
+    }
+    public Float getVotoMedio () { return VotoMedio; }
 
     // RELAZIONI
 
@@ -68,4 +72,33 @@ public class Sede {
     private Ristorante ristorante;
     public void setRistoranteS (Ristorante ristorante) {this.ristorante = ristorante; }
     public Ristorante getRistoranteS() { return ristorante; }
+
+    //Funzione per ottenere l'immagine con le stelle dipendentemente della valutazione media
+    public String getStarsRating(){
+        int avgVoto = Math.round(getVotoMedio());
+        String relPath = "/img/rating_stars/rating-star-icon-";
+        String fileType = ".png";
+        switch (avgVoto) {
+            case 1 -> {
+                return relPath+"1-of-5"+fileType;
+            }
+            case 2 -> {
+                return relPath+"2-of-5"+fileType;
+            }
+            case 3 -> {
+                return relPath+"3-of-5"+fileType;
+            }
+            case 4 -> {
+                return relPath+"4-of-5"+fileType;
+            }
+            case 5 -> {
+                return relPath+"5-of-5"+fileType;
+            }
+            default -> {
+                System.out.println("Media recensioni non valida, " +
+                        "supposta mancanza di recensioni, invio rating medio");
+                return relPath+"unknown"+fileType;
+            }
+        }
+    }
 }
