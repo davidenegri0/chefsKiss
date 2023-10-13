@@ -10,9 +10,9 @@
         <li class="nav-item">
             <a class="nav-link" href="/login"><i class='bx bx-log-in bx-sm'></i></a>
         </li>
-        <li class="nav-item">
+        <!--<li class="nav-item">
             <a class="nav-link" href="/registration"><i class='bx bxs-user-plus bx-sm'></i></a>
-        </li>
+        </li>-->
         <%}else{%>
         <li class="nav-item">
             <a class="nav-link" href="/logout"><i class='bx bx-log-out bx-sm'></i></a>

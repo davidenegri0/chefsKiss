@@ -144,9 +144,9 @@
             if (utente != null) {
         %>
         <div class="d-flex justify-content-around">
-            <a href="/addRecensione?type=1&id=<%=piatto.getId()%>"><button class="btn btn-sm btn-success">Aggiungi recesione</button></a>
-            <a href="/modifyRecensione?type=3&id=<%=piatto.getId()%>"><button class="btn btn-sm btn-primary">Modifica recesione</button></a>
-            <button class="btn btn-sm btn-danger" onclick="confermaCancellazione()">Cancella recesione</button>
+            <a href="/addRecensione?type=1&id=<%=piatto.getId()%>"><button class="btn btn-sm btn-success">Aggiungi recensione</button></a>
+            <a href="/modifyRecensione?type=3&id=<%=piatto.getId()%>"><button class="btn btn-sm btn-primary">Modifica recensione</button></a>
+            <button class="btn btn-sm btn-danger" onclick="confermaCancellazione()">Cancella recensione</button>
 
         </div>
         <%

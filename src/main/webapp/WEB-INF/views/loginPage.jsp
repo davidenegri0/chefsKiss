@@ -19,17 +19,22 @@
         padding: 0;
         background-image: url("img/food_background_v2.jpg");
         background-size: contain;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-position: center;
     }
 
     .card{
-        margin-bottom:20px;
+        margin-bottom:100px;
         border:none;
+        align-content: center;
+        background-color: transparent;
     }
 
     .box {
         width: 500px;
         padding: 40px;
-        position: absolute;
         top: 50%;
         left: 50%;
         background: rgba(19,19,19,0.9);
@@ -41,7 +46,6 @@
 
     .box input[type="text"],
     .box input[type="password"] {
-        border: 0;
         background: none;
         display: block;
         margin: 20px auto;
@@ -55,7 +59,7 @@
         transition: 0.25s
     }
 
-    .box h1 {
+    .box h2 {
         color: white;
         text-transform: uppercase;
         font-weight: 500
@@ -68,7 +72,6 @@
     }
 
     .box input[type="submit"] {
-        border: 0;
         background: none;
         display: block;
         margin: 20px auto;
@@ -85,22 +88,47 @@
     .box input[type="submit"]:hover {
         background: #2ecc71
     }
+
+    .box .register-link {
+        text-align: center;
+        margin: 20px 0 15px;
+        color: white;
+    }
+
+    .register-link p a {
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .register-link p a:hover {
+        text-decoration: underline;
+    }
+
 </style>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card" id="login-form">
-                <form class="box" name="loginForm" method="post">
-                    <input id="em" name="email" type="text" placeholder="Email" required>
-                    <input id="ps" name="pssw" type="password" placeholder="Password" required>
-                    <input type="submit" value="Login">
-                </form>
-            </div>
+<div class="card" id="login-form">
+    <form class="box" name="loginForm" method="post">
+        <h2>Login</h2>
+        <div class="input-box">
+            <input id="em" name="email" type="text" placeholder="Email" required>
         </div>
-    </div>
+        <div class="input-box">
+            <input id="ps" name="pssw" type="password" placeholder="Password" required>
+        </div>
+        <input type="submit" value="Login">
+
+        <div class="register-link">
+            <p>Non hai un account?
+                <a href="/registration">Registrati!</a>
+            </p>
+        </div>
+    </form>
 </div>
-    <%@include file="repetedElements/backLink.jsp"%>
+<br>
+    <div>
+        <%@include file="repetedElements/backLink.jsp"%>
+    </div>
 </body>
 <script>
     function onLoginRequest(){

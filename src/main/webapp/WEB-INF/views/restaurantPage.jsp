@@ -16,36 +16,56 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
-<body>
+<style>
+    .food_background{
+        background-image: url("img/food_background_v2.jpg");
+        background-size: contain;
+    }
+
+    .white_transp_background{
+        background-color: rgba(245,245,245,0.7);
+    }
+</style>
+<body class="food_background">
     <%
         User utente = (User) request.getAttribute("user");
         Ristorante ristorante = (Ristorante) request.getAttribute("ristorante");
         List<Sede> sedi = (List<Sede>) request.getAttribute("sedi");
         User ristoratore = (User) request.getAttribute("ristoratore");
     %>
+    <%@include file="repetedElements/navabar_inc.jsp"%>
+    <div class="container-fluid m-3 clearfix">
 
-    <h1><%= ristorante.getNome()%></h1>
-    <h3>Benvenuti nel nostro ristorante! </h3>
+        <div class="card mx-auto white_transp_background shadow">
+            <div class="card-body">
 
-    <h3>Venite a trovarci qui! E scoprirete i nostri menù!</h3>
-    <ul>
-        <% for ( int i = 0; i < sedi.size(); i++ ){ %>
-            <li>
-                <a href="/sede?id=<%= sedi.get(i).getCoordinate() %>"><%= sedi.get(i).getVia()%> (<%=sedi.get(i).getCitta()%>)</a>
-                <% if (utente!=null && ristoratore.getCF().equals(utente.getCF())){ %>
-                <a href="/editSede?idR=<%=ristorante.getID_Ristorante()%>&coord=<%=sedi.get(i).getCoordinate()%>"><button><i class='bx bxs-edit-alt'></i></button></a>
-                <% if (sedi.size()>1){ %>
-                <a href="/deleteSede?idR=<%=ristorante.getID_Ristorante()%>&coord=<%=sedi.get(i).getCoordinate()%>"><button><i class='bx bxs-trash'></i></button></a>
-                <% } %>
-                <% } %>
-            </li>
-        <% } %>
-    </ul>
-    <% if (utente!=null && ristoratore.getCF().equals(utente.getCF())){ %>
-    <a href="/addSede"><button>Aggiungi una sede</button></a>
-    <% } %>
-    <h4>Questo ristorante è gestito da <%= ristoratore.getNome() %> <%= ristoratore.getCognome() %></h4>
-    <div>Per richiedere informazioni scrivere a <i><%= ristoratore.getEmail()%></i> o contattare il numero <i><%=ristoratore.getN_Telefono()%></i></div>
+                <h1><%= ristorante.getNome()%></h1>
+                <h3>Benvenuti nel nostro ristorante! </h3>
+
+                <h4>Venite a trovarci qui! E scoprirete i nostri menù!</h4>
+                <ul>
+                    <% if (utente!=null && ristoratore.getCF().equals(utente.getCF())){ %>
+                    <a href="/addSede"><button class="btn btn-sm btn-success">Aggiungi una sede</button></a>
+                    <% } %>
+                    <% for ( int i = 0; i < sedi.size(); i++ ){ %>
+                    <li>
+                        <% if (utente!=null && ristoratore.getCF().equals(utente.getCF())){ %>
+                        <a href="/editSede?idR=<%=ristorante.getID_Ristorante()%>&coord=<%=sedi.get(i).getCoordinate()%>"><button class="btn btn-sm btn-primary"><i class='bx bxs-edit-alt'></i></button></a>
+                            <% if (sedi.size()>1){ %>
+                            <a href="/deleteSede?idR=<%=ristorante.getID_Ristorante()%>&coord=<%=sedi.get(i).getCoordinate()%>"><button class="btn btn-sm btn-danger"><i class='bx bxs-trash'></i></button></a>
+                            <% } %>
+                        <% } %>
+                        <a href="/sede?id=<%= sedi.get(i).getCoordinate() %>"><%= sedi.get(i).getVia()%> (<%=sedi.get(i).getCitta()%>)</a>
+                    </li>
+                    <% } %>
+                </ul>
+
+                <h4>Questo ristorante è gestito da <%= ristoratore.getNome() %> <%= ristoratore.getCognome() %></h4>
+                <div>Per richiedere informazioni scrivere a <i><%= ristoratore.getEmail()%></i> o contattare il numero <i><%=ristoratore.getN_Telefono()%></i></div>
+            </div>
+        </div>
+    </div>
+
     <%@include file="repetedElements/backLink.jsp"%>
 </body>
 </html>
