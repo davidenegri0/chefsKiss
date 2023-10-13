@@ -140,31 +140,18 @@ public class editPlateController {
 
         //Caricamento nuova lista ingredienti sul database
         ContieneDAO sessionContieneDAO = DatabaseDAO.getContieneDAO(null);
-        for (int i = 0; i < ingredienti.size(); i++) {
 
+        sessionContieneDAO.deleteAllbyPiatto(piatto);
+        for (int i = 0; i < ingredienti.size(); i++) {
             ingrediente.setNome(ingredienti.get(i));
 
-            contenuto = sessionContieneDAO.findByPiatto_Ingrediente(piatto, ingrediente);
-
-            if (contenuto.getPiattoC()!=null){
-                contenuto.setPiattoC(piatto);
-
-                contenuto.setIngredienteC(ingrediente);
-
-                contenuto.setQuantita(quantita.get(i));
-
-                sessionContieneDAO.update(contenuto);
-            } else {
-                sessionContieneDAO.create(piatto, ingrediente, quantita.get(i));
-            }
-
-            DatabaseDAO.commitTransaction();
+            sessionContieneDAO.create(piatto, ingrediente, quantita.get(i));
         }
 
+        DatabaseDAO.commitTransaction();
         DatabaseDAO.closeTransaction();
 
         //Non so se serva fare altro
-
         return Utility.redirect(page, "/plate?id="+id);
     }
 }

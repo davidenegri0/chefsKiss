@@ -19,6 +19,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
+<style>
+    .food_background{
+        background-image: url("img/food_background_v2.jpg");
+        background-size: contain;
+    }
+
+    .white_transp_background{
+        background-color: rgba(245,245,245,0.7);
+    }
+</style>
 <script>
         var i = 1;
 
@@ -59,52 +69,51 @@
             }
         }
 </script>
-<body>
-    <h1>Aggiungi la tua creazione!</h1>
-    <% if (utente.isPrivato()) { %>
-    <h3><%=utente.getUsername()%>, che ricetta vuoi condividere oggi?</h3>
-    <% } else if(utente.isChef()) { %>
-    <h3>Chef <%=utente.getNome()+" "+utente.getCognome()%>, che ricetta vuoi condividere oggi?</h3>
-    <% } %>
-    <form method="post">
-        <label for="nome_piatto">Nome del piatto: </label>
-        <input type="text" id="nome_piatto" name="nomePiatto" required>
-        <br>
-        <% if (utente.isChef()) { %>
-        <label for="preparazione">Preparazione (opzionale): </label>
-        <br>
-        <textarea id="preparazione" name="preparazione" cols="100" rows="20" maxlength="3000"></textarea>
-        <br>
-        <% } else { %>
-        <label for="preparazione">Preparazione : </label>
-        <textarea id="preparazione" name="preparazione" cols="100" rows="20" maxlength="3000" required></textarea>
-        <br>
-        <% } %>
-        <label for="lista_ingredienti">Lista ingredienti (max 10) + Quantità (in grammi): </label>
-        <br>
-        <div id="lista_ingredienti">
-            <select id="ingrediente1" name="ingredienti" required>
-                <% for (int i = 0; i < listaIngredienti.size(); i++) { %>
-                <option value="<%=listaIngredienti.get(i).getNome()%>"><%=listaIngredienti.get(i).getNome()%></option>
-                <% } %>
-            </select>
-            <input type="number" min="1" step="1" id="quantita1" name="quantita" required>
-            <br>
+<body class="food_background">
+    <div class="card m-3 white_transp_background shadow">
+        <div class="card-header">
+            <h1>Aggiungi la tua creazione!</h1>
+            <% if (utente.isPrivato()) { %>
+            <h3><%=utente.getUsername()%>, che ricetta vuoi condividere oggi?</h3>
+            <% } else if(utente.isChef()) { %>
+            <h3>Chef <%=utente.getNome()+" "+utente.getCognome()%>, che ricetta vuoi condividere oggi?</h3>
+            <% } %>
         </div>
-        <br>
-        <input type="button" value="Aggiungi" onclick="addIngrediente()">
-        <input type="button" value="Rimuovi" onclick="removeIngrediente()">
-        <br>
-        <br>
-        <% if(utente.isChef()){ %>
-        <label for="sede">Aggiungere questo piatto al ristorante?</label>
-        <input type="checkbox" id="sede" name="sede" value="<%=utente.getSedeU().getCoordinate()%>">
-        <br>
-        <br>
-        <% } %>
-        <input type="submit" value="Ok">
-        <input type="reset" value="Annulla" onclick=window.history.back()>
-    </form>
+        <div class="card-body">
+            <form method="post">
+                <label class="form-label" for="nome_piatto">Nome del piatto: </label>
+                <input class="form-control" type="text" id="nome_piatto" name="nomePiatto" required>
+                <% if (utente.isChef()) { %>
+                <label class="form-label" for="preparazione">Preparazione (opzionale): </label>
+                <textarea class="form-control" id="preparazione" name="preparazione" cols="100" rows="20" maxlength="3000"></textarea>
+                <% } else { %>
+                <label class="form-label" for="preparazione">Preparazione : </label>
+                <textarea class="form-control" id="preparazione" name="preparazione" cols="100" rows="20" maxlength="3000" required></textarea>
+                <% } %>
+                <label class="form-label" for="lista_ingredienti">Lista ingredienti (max 10) + Quantità (in grammi): </label>
+                <div id="lista_ingredienti">
+                    <div class="input-group">
+                        <select class="form-select-sm" id="ingrediente1" name="ingredienti" required>
+                            <% for (int i = 0; i < listaIngredienti.size(); i++) { %>
+                            <option value="<%=listaIngredienti.get(i).getNome()%>"><%=listaIngredienti.get(i).getNome()%></option>
+                            <% } %>
+                        </select>
+                        <input class="form-control-sm" type="number" min="1" step="1" id="quantita1" name="quantita" required>
+                    </div>
+                </div>
+                <button class="btn btn-success my-2" style="border-radius: 10px" onclick="addIngrediente()"><i class='bx bxs-plus-circle bx-sm'></i></button>
+                <button class="btn btn-danger my-2" style="border-radius: 10px" onclick="removeIngrediente()"><i class='bx bxs-minus-circle bx-sm'></i></button>
+                <% if(utente.isChef()){ %>
+                <label class="form-label" for="sede">Aggiungere questo piatto al ristorante?</label>
+                <input type="checkbox" id="sede" name="sede" value="<%=utente.getSedeU().getCoordinate()%>">
+                <% } %>
+                <div class="my-3">
+                    <input class="btn btn-success" type="submit" value="Ok">
+                    <input class="btn btn-danger" type="reset" value="Annulla" onclick=window.history.back()>
+                </div>
+            </form>
+        </div>
+    </div>
     <%@include file="repetedElements/backLink.jsp"%>
 </body>
 </html>

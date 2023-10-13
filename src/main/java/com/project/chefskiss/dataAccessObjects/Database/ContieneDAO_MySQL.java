@@ -79,6 +79,26 @@ public class ContieneDAO_MySQL implements ContieneDAO {
         }
     }
 
+    @Override
+    public void deleteAllbyPiatto(Piatto piatto) {
+        PreparedStatement query;
+
+        try{
+            String SQLQuery =
+                    "DELETE FROM chefskiss.contiene " +
+                    "WHERE ID_Piatto = ? ";
+            query = conn.prepareStatement(SQLQuery);
+            query.setInt(1, piatto.getId());
+
+            query.executeUpdate();
+
+            query.close();
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
     public List<Contiene> findByPiatto (Piatto piatto){
         PreparedStatement query;
         List<Contiene> piatti = new ArrayList<>();
@@ -104,6 +124,7 @@ public class ContieneDAO_MySQL implements ContieneDAO {
 
         return piatti;
     }
+    @Override
     public Contiene findByPiatto_Ingrediente (Piatto piatto, Ingrediente ingrediente){
         PreparedStatement query;
         Contiene quantita = new Contiene();
