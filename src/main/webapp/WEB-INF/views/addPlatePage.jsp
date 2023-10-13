@@ -101,8 +101,8 @@
                         <input class="form-control-sm" type="number" min="1" step="1" id="quantita1" name="quantita" required>
                     </div>
                 </div>
-                <button class="btn btn-success my-2" style="border-radius: 10px" onclick="addIngrediente()"><i class='bx bxs-plus-circle bx-sm'></i></button>
-                <button class="btn btn-danger my-2" style="border-radius: 10px" onclick="removeIngrediente()"><i class='bx bxs-minus-circle bx-sm'></i></button>
+                <button type="button" class="btn btn-success my-2" style="border-radius: 10px" onclick="addIngrediente()"><i class='bx bxs-plus-circle bx-sm'></i></button>
+                <button type="button" class="btn btn-danger my-2" style="border-radius: 10px" onclick="removeIngrediente()"><i class='bx bxs-minus-circle bx-sm'></i></button>
                 <% if(utente.isChef()){ %>
                 <label class="form-label" for="sede">Aggiungere questo piatto al ristorante?</label>
                 <input type="checkbox" id="sede" name="sede" value="<%=utente.getSedeU().getCoordinate()%>">
