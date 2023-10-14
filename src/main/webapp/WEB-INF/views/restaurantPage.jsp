@@ -54,7 +54,7 @@
                     <% for ( int i = 0; i < sedi.size(); i++ ){ %>
                         <li>
                             <% if (utente!=null && ristoratore.getCF().equals(utente.getCF())){ %>
-                            <a href="/editSede?idR=<%=ristorante.getID_Ristorante()%>&coord=<%=sedi.get(i).getCoordinate()%>><button class="btn btn-sm btn-primary"><i class='bx bxs-edit-alt'></i></button></a>
+                            <a href="/editSede?idR=<%=ristorante.getID_Ristorante()%>&coord=<%=sedi.get(i).getCoordinate()%>"><button class="btn btn-sm btn-primary"><i class='bx bxs-edit-alt'></i></button></a>
                                 <% if (sedi.size()>1){ %>
                                 <a href="/deleteSede?idR=<%=ristorante.getID_Ristorante()%>&coord=<%=sedi.get(i).getCoordinate()%>"><button class="btn btn-sm btn-danger"><i class='bx bxs-trash'></i></button></a>
                                 <% } %>
