@@ -34,7 +34,7 @@
         User ristoratore = (User) request.getAttribute("ristoratore");
     %>
     <%@include file="repetedElements/navabar_inc.jsp"%>
-    <div class="container-fluid m-3 clearfix">
+    <div class="container-fluid my-3 clearfix">
 
         <div class="card mx-auto white_transp_background shadow">
             <div class="card-body">

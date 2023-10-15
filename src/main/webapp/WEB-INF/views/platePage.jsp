@@ -43,7 +43,7 @@
 </style>
 <body class="food_background">
     <%@include file="repetedElements/navabar_inc.jsp"%>
-    <div class="container-fluid m-3 clearfix">
+    <div class="container-fluid my-3 clearfix">
         <img class="img-thumbnail mx-3 shadow float-end w-50 h-auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatto.getImmaginePiatto().getBytes(1, (int)piatto.getImmaginePiatto().length()))%>">
         <div class="card mx-auto white_transp_background shadow">
             <div class="card-body">

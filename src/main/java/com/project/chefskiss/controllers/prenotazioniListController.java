@@ -41,8 +41,6 @@ public class prenotazioniListController {
         List<Prenotazione> prenotazioni = new ArrayList<>();
         prenotazioni = prenotazioneDAO.findByUser(utente.getCF());
 
-
-
         page.addObject("prenotazioni", prenotazioni);
 
         return page;

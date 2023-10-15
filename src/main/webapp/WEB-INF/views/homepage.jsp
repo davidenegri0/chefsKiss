@@ -52,7 +52,7 @@
         <h3>Le 4 Ricette più recenti della settimana!</h3>
     </div>
 
-    <div class="row p-3">
+    <div class="row p-3 mx-0">
         <div class="col card mx-auto white_transp_background" style="max-width: 450px">
             <a class="text-decoration-none" href="/plate?id=<%=piatti.get(0).getId()%>">
                 <div class="card-body" id="recipeBlock1">
@@ -72,7 +72,7 @@
             </a>
         </div>
     </div>
-    <div class="row p-3">
+    <div class="row p-3 mx-0">
         <div class="col card mx-auto white_transp_background" style="max-width: 450px">
             <a class="text-decoration-none" href="/plate?id=<%=piatti.get(2).getId()%>">
                 <div class="card-body" id="recipeBlock3">

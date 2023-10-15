@@ -4,7 +4,9 @@ import com.project.chefskiss.Utility;
 import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.dataAccessObjects.DAOFactory;
 import com.project.chefskiss.dataAccessObjects.Database.MySQLJDBC_DAOFactory;
+import com.project.chefskiss.dataAccessObjects.RistoranteDAO;
 import com.project.chefskiss.dataAccessObjects.UserDAO;
+import com.project.chefskiss.modelObjects.Ristorante;
 import com.project.chefskiss.modelObjects.User;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
@@ -38,8 +40,16 @@ public class profileController {
         //Caricamento dati utente (e immagine) dal db
         DAOFactory DatabaseDAO2 = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
         DatabaseDAO2.beginTransaction();
+
         UserDAO sessionUserDAO2 = DatabaseDAO2.getUserDAO(null);
         utente = sessionUserDAO2.findByEmail(utente.getEmail());
+
+        if (utente.isRistoratore()){
+            RistoranteDAO ristoDAO = DatabaseDAO2.getRistoDAO(null);
+            Ristorante r = ristoDAO.findByRistoratore(utente.getCF());
+            utente.setRistoranteU(r);
+        }
+
         DatabaseDAO2.closeTransaction();
 
         page.addObject("utente", utente);

@@ -36,6 +36,30 @@
     <div class="container-fluid bg-dark text-light p-3">
         <h1 class="text-center"><%=utente.getNome()%> <%=utente.getCognome()%>'s Profile</h1>
     </div>
+    <nav class="navbar navbar-expand-md bg-dark justify-content-center" data-bs-theme="dark">
+        <ul class="navbar-nav">
+            <%if(utente.isCliente()){%>
+            <li class="nav-item">
+                <a class="nav-link" href="/prenotazioniList">Le mie prenotazioni</a>
+            </li>
+            <%}%>
+            <%if(utente.isPrivato()){ //TODO: Aggiungere la pagina delle proprie ricette%>
+            <li class="nav-item">
+                <a class="nav-link" href="#"> Le mie ricette</a>
+            </li>
+            <%}%>
+            <%if(utente.isChef()){%>
+            <li class="nav-item">
+                <a class="nav-link" href="/sede?id=<%=utente.getSedeU().getCoordinate()%>">Il mio locale</a>
+            </li>
+            <%}%>
+            <%if(utente.isRistoratore()){%>
+            <li class="nav-item">
+                <a class="nav-link" href="/restaurant?id=<%=utente.getRistoranteU().getID_Ristorante()%>">Il mio ristorante</a>
+            </li>
+            <%}%>
+        </ul>
+    </nav>
     <div class="container d-flex justify-content-around flex-wrap">
         <div class="card m-3 white_transp_background shadow" style="width: 300px">
             <div class="card-header">

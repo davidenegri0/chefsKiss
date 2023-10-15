@@ -19,6 +19,11 @@
 </head>
 <body>
     <h2>Le tue prenotazioni</h2>
+    <% if(prenotazioni.isEmpty()){ %>
+    <p>
+        Sembra che tu non abbia prenotazioni in sospeso...
+    </p>
+    <% } else { %>
     <%
         Integer id_prenotazione = 0;
         for ( int i = 0; i < prenotazioni.size(); i++){
@@ -27,9 +32,11 @@
     <table>
         <tr>
             <td rowspan="2">
-                #<%=prenotazioni.get(i).getID()%></br>
-                <%=prenotazioni.get(i).getSedeP().getVia()%>, <%=prenotazioni.get(i).getSedeP().getCitta()%></br>
-                <%=prenotazioni.get(i).getData()%> - <%=prenotazioni.get(i).getOrario()%> - <%=prenotazioni.get(i).getN_Posti()%>
+                Prenotazione numero: <%=prenotazioni.get(i).getID()%><br>
+                Presso: <%=prenotazioni.get(i).getSedeP().getVia()%>, <%=prenotazioni.get(i).getSedeP().getCitta()%><br>
+                Il giorno: <%=prenotazioni.get(i).getData()%> <br>
+                Alle ore: <%=prenotazioni.get(i).getOrario()%> <br>
+                Per: <%=prenotazioni.get(i).getN_Posti()%> persone
             </td>
             <td>
                 <a href="/editPrenotazione?id=<%=prenotazioni.get(i).getID()%>&coordinate=<%=prenotazioni.get(i).getSedeP().getCoordinate()%>"><button><i class='bx bxs-edit-alt'></i></button></a>
@@ -40,9 +47,7 @@
         </tr>
     </table>
     <br>
-    <%
-        }
-    %>
+    <% }} %>
     <%@ include file="repetedElements/backLink.jsp"%>
 </body>
 <script>
