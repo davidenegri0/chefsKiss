@@ -48,19 +48,6 @@ public class addPrenotazioneController {
 
         PrenotazioneDAO prenotazioneDAO = DatabaseDAO.getPrenotazioneDAO(null);
 
-        //boolean isPrenotazioneUp = prenotazioneDAO.isPrenotazioneUp(utente.getCF(), id);
-
-        /*if (isPrenotazioneUp) { // recensione già inserita --> impossibile aggiunta
-            System.out.println(
-                    "Prenotazione dell'utente "+utente.getCF()+
-                            " per la sede "+id+" già presente"
-            );
-            page = Utility.redirect(page, "/sede?id="+id);
-
-            page.addObject("errorCode", 1);
-            return page;
-        }*/
-
         SedeDAO sedeDAO = DatabaseDAO.getSedeDAO(null);
         Sede sede = sedeDAO.findByCoordinate(coordinate);
 
@@ -115,19 +102,39 @@ public class addPrenotazioneController {
         SedeDAO sedeDAO = DatabaseDAO.getSedeDAO(null);;
         Sede sede = sedeDAO.findByCoordinate(coordinate);
         // TODO: possibile controllo su esistenza della stessa prenotazione
-        try{
-            prenotazioneDAO.create(utente, sede, data, orario, n_posti);
-        }catch (Exception e){
-            DatabaseDAO.rollbackTransaction();
-            throw new RuntimeException("Non ci sono abbastanza posti disponibili!" + e.getMessage());
+        if (prenotazioneDAO.verifica_posti_disponibili(coordinate, orario, data) < n_posti){
+            System.out.println(
+                    "Prenotazione dell'utente "+utente.getCF()+
+                            " per il ristorante "+coordinate+" non eseguita"
+            );
+            Integer errorCode = 5;
+            page = Utility.redirect(page, "/sede?id="+coordinate+"&error="+errorCode);
+
+            page.addObject("errorCode", 4);
+            return page;
         }
-        finally{
+        if (!prenotazioneDAO.isPrenotazioneUp(utente.getCF(), data, orario)){
+            System.out.println(
+                    "Prenotazione dell'utente "+utente.getCF()+
+                            " per il ristorante "+coordinate+
+                            " nell'orario "+orario_s+
+                            " in data "+data+
+                            " già esistente"
+            );
+            Integer errorCode = 6;
+            page = Utility.redirect(page, "/sede?id="+coordinate+"&error="+errorCode);
+
+            page.addObject("errorCode", 4);
+            return page;
+        }
+        prenotazioneDAO.create(utente, sede, data, orario, n_posti);
+
         DatabaseDAO.commitTransaction();
 
         page = Utility.redirect(page, "/sede?id="+coordinate);
 
         DatabaseDAO.closeTransaction();
 
-        return page;}
+        return page;
     }
 }

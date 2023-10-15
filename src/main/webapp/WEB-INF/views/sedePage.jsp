@@ -99,7 +99,6 @@
                                 <%
                                     for (int i = 0; i < piatti.size(); i++){
                                 %>
-
                                     <a href="/plate?id=<%= piatti.get(i).getId()%>" class="list-group-item list-group-item-action"><%= piatti.get(i).getNome()%> - <%= piatti.get(i).getVotoMedio() %> <i class='bx bxs-star bx-tada' style='color:#ffea00'></i></a>
 
                                 <% } %>
@@ -176,6 +175,8 @@
                 if (valore == 2) messaggio = "Valutazione inesistente, impossibile modificarla!";
                 if (valore == 3) messaggio = "Valutazione inesistente, impossibile cancellarla!";
                 if (valore == 4) messaggio = "Impossibile aggiungere una valutazione se non si ha consumato nel ristorante almeno una volta!";
+                if (valore == 5) messaggio = "Prenotazione non effettuata, superato il numero di posti limite!"
+                if (valore == 6) messaggio = "Prenotazione non effettuata! \nGià esistente con gli stessi dati!"
 
                 alert(messaggio);
                 break;

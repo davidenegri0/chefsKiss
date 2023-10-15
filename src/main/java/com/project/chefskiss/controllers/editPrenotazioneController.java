@@ -124,6 +124,22 @@ public class editPrenotazioneController {
 // TODO: ragionare sul fatto che la modifica va fatta sull'id e non sulla combinazione
         PrenotazioneDAO prenotazioneDAO = DatabaseDAO.getPrenotazioneDAO(null);
         Prenotazione prenotazione = new Prenotazione();
+
+        if (!prenotazioneDAO.isPrenotazioneUp(utente.getCF(), data, orario)){
+            System.out.println(
+                    "Prenotazione dell'utente "+utente.getCF()+
+                            " per il ristorante "+coordinate+
+                            " nell'orario "+orario_s+
+                            " in data "+data+
+                            " già esistente"
+            );
+            Integer errorCode = 1;
+            page = Utility.redirect(page, "/prenotazioniList?id="+id+"&error="+errorCode);
+
+            page.addObject("errorCode", 4);
+            return page;
+        }
+
         prenotazione.setId(id);
         prenotazione.setSedeP(sede);
         prenotazione.setUtenteP(utente);

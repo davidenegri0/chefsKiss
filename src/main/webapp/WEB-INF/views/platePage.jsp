@@ -46,79 +46,87 @@
 <body class="food_background">
     <%@include file="repetedElements/navabar_inc.jsp"%>
     <div class="container-fluid my-3 mr-3 clearfix">
-        <img class="img-thumbnail mx-3 shadow float-end w-50 h-auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatto.getImmaginePiatto().getBytes(1, (int)piatto.getImmaginePiatto().length()))%>">
-        <div class="card mx-auto white_transp_background shadow">
-            <div class="card-body">
-                <h1><%=piatto.getNome()%></h1>
-                <p>
-                    Caricato da: <%= utente_post.getNome() %> <%= utente_post.getCognome() %>
-                </p>
-                <% if(utente!=null && utente_post.getCF().equals(utente.getCF())){ %>
-                <a href="/editPlate?id=<%=piatto.getId()%>"><button class="btn btn-sm btn-primary">Modifica la tua ricetta</button></a>
-                <button class="btn btn-sm btn-danger" onclick="confermaCancellazionePiatto()">Cancella la tua ricetta</button>
-                <% } %>
-                <h3>Ingredienti</h3>
-                <div>Per 4 persone:</div>
-                <table>
-                    <tr>
-                        <th><i>Ingrediente</i></th><th><i>Quantità</i></th>
-                    </tr>
-                    <%
-                        ContieneDAO contiene;
-                        String ingrediente;
-                        Integer quantita;
-
-                        for (int i = 0; i < ingredienti.size(); i++) {
-                            ingrediente = ingredienti.get(i).getIngredienteC().getNome();
-                            quantita = (ingredienti.get(i).getQuantita())*4;
-
-                    %>
-                    <tr>
-                        <td><%= ingrediente %></td>
-                        <td><%= quantita %> gr</td>
-                    </tr>
-                    <%
-                        }
-                    %>
-                </table>
-
-                <!--
-                    FC was here!
-                -->
-
-                <h3>Preparazione</h3>
-                <p>
-                    <%= piatto.getPreparazione() %>
-                </p>
-
-                <h4>Si può trovare tra i menù dei seguenti ristoranti:</h4>
-                <nav>
-                    <ul class="list-group">
-                        <%
-                            Integer id_ristorante;
-
-                            for (int i = 0; i < sedi.size(); i++){
-                        %>
-
-                        <li class="d-flex justify-content-center align-items-center">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md-auto">
-                                        <a href = "/restaurant?id=<%= ristoranti.get(i).getID_Ristorante() %>" class="list-group-item list-group-item-action"><%= ristoranti.get(i).getNome() %></a>
-                                    </div>
-                                    <div class="col-md-auto">
-                                        <a href = "/sede?id=<%= sedi.get(i).getCoordinate() %>" class="list-group-item list-group-item-action"><i class='bx bx-map'></i>  <%= sedi.get(i).getVia() %>, (<%= sedi.get(i).getCitta() %>)</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card float-end mx-auto white_transp_background shadow" style="width: 100%; height: 100%">
+                    <div class="card-body">
+                        <h1><%=piatto.getNome()%></h1>
+                        <p>
+                            Caricato da: <%= utente_post.getNome() %> <%= utente_post.getCognome() %>
+                        </p>
+                        <% if(utente!=null && utente_post.getCF().equals(utente.getCF())){ %>
+                        <a href="/editPlate?id=<%=piatto.getId()%>"><button class="btn btn-sm btn-primary">Modifica la tua ricetta</button></a>
+                        <button class="btn btn-sm btn-danger" onclick="confermaCancellazionePiatto()">Cancella la tua ricetta</button>
                         <% } %>
-                    </ul>
-                </nav>
+                        <h3>Ingredienti</h3>
+                        <div>Per 4 persone:</div>
+                        <table>
+                            <tr>
+                                <th><i>Ingrediente</i></th><th><i>Quantità</i></th>
+                            </tr>
+                            <%
+                                ContieneDAO contiene;
+                                String ingrediente;
+                                Integer quantita;
+
+                                for (int i = 0; i < ingredienti.size(); i++) {
+                                    ingrediente = ingredienti.get(i).getIngredienteC().getNome();
+                                    quantita = (ingredienti.get(i).getQuantita())*4;
+
+                            %>
+                            <tr>
+                                <td><%= ingrediente %></td>
+                                <td><%= quantita %> gr</td>
+                            </tr>
+                            <%
+                                }
+                            %>
+                        </table>
+
+                        <!--
+                            FC was here!
+                        -->
+
+                        <h3>Preparazione</h3>
+                        <p>
+                            <%= piatto.getPreparazione() %>
+                        </p>
+
+                        <h4>Si può trovare tra i menù dei seguenti ristoranti:</h4>
+                        <nav>
+                            <ul class="list-group">
+                                <%
+                                    Integer id_ristorante;
+
+                                    for (int i = 0; i < sedi.size(); i++){
+                                %>
+
+                                <li class="d-flex justify-content-center align-items-center">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-auto">
+                                                <a href = "/restaurant?id=<%= ristoranti.get(i).getID_Ristorante() %>" class="list-group-item list-group-item-action"><%= ristoranti.get(i).getNome() %></a>
+                                            </div>
+                                            <div class="col-md-auto">
+                                                <a href = "/sede?id=<%= sedi.get(i).getCoordinate() %>" class="list-group-item list-group-item-action"><i class='bx bx-map'></i>  <%= sedi.get(i).getVia() %>, (<%= sedi.get(i).getCitta() %>)</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <% } %>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
             </div>
-
+            <div class="col-sm-6">
+                <div class="card float-end mx-auto white_transp_background shadow" style="width: 100%; height: 100%">
+                    <div class="card-body">
+                        <img class="img-thumbnail mx-3 shadow float-end w-50 h-auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatto.getImmaginePiatto().getBytes(1, (int)piatto.getImmaginePiatto().length()))%>">
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
     <div class="container-fluid p-2 bg-dark text-white text-center">
         <h3>Recensioni</h3>

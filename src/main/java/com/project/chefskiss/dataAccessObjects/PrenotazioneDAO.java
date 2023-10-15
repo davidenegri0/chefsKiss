@@ -15,4 +15,6 @@ public interface PrenotazioneDAO {
     public Prenotazione findById(Integer id);
     public List<Prenotazione> findByUser (String CF);
     public boolean checkPrenotazione(String CF);
+    public Integer verifica_posti_disponibili(String coordinate, Time orario, Date data);
+    public boolean isPrenotazioneUp(String CF, Date data, Time orario);
 }

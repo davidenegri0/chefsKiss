@@ -23,7 +23,7 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
 
         try {
 
-            if (verifica_posti_disponibili(sede.getCoordinate(), orario, data) >= n_posti && isPrenotazioneUp(data, orario)) {
+            if (verifica_posti_disponibili(sede.getCoordinate(), orario, data) >= n_posti && isPrenotazioneUp(utente.getCF(), data, orario)) {
                 String SQLQuery = "INSERT INTO chefskiss.prenota_in (CF, Coordinate, Data, Orario, N_Posti) VALUES (?,?,?,?,?)";
 
                 query = conn.prepareStatement(SQLQuery);
@@ -35,10 +35,7 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
 
                 query.executeUpdate();
                 query.close();
-            } else {
-                throw new RuntimeException("Non ci sono abbastanza posti disponibili");
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -57,7 +54,7 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
         PreparedStatement query;
 
         try {
-            if ((verifica_posti_disponibili(prenotazione.getSedeP().getCoordinate(), prenotazione.getOrario(), prenotazione.getData()) + prenotazione.getN_Posti()) >= prenotazione.getN_Posti() && isPrenotazioneUp(prenotazione.getData(), prenotazione.getOrario())) {
+            if ((verifica_posti_disponibili(prenotazione.getSedeP().getCoordinate(), prenotazione.getOrario(), prenotazione.getData()) + prenotazione.getN_Posti()) >= prenotazione.getN_Posti() && isPrenotazioneUp(prenotazione.getUtenteP().getCF(), prenotazione.getData(), prenotazione.getOrario())) {
 
                 String SQLQuery = "UPDATE chefskiss.prenota_in SET Data = ?, Orario = ?, N_Posti = ? WHERE ID_Prenotazione = ?";
 
@@ -94,7 +91,7 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
         }
     }
 
-    private Integer verifica_posti_disponibili(String coordinate, Time orario, Date data) {
+    public Integer verifica_posti_disponibili(String coordinate, Time orario, Date data) {
         PreparedStatement query2;
         PreparedStatement query3;
 
@@ -126,16 +123,17 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
         }
     }
 
-    private boolean isPrenotazioneUp(Date data, Time orario) {
+    public boolean isPrenotazioneUp(String CF, Date data, Time orario) {
         boolean check = true;
         PreparedStatement query;
 
         try {
-            String SQLQuery = "SELECT * FROM chefskiss.prenota_in WHERE Data = ? AND Orario = ?";
+            String SQLQuery = "SELECT * FROM chefskiss.prenota_in WHERE Data = ? AND Orario = ? AND CF = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setDate(1, data);
             query.setTime(2, orario);
+            query.setString(3, CF);
 
             ResultSet result;
             result = query.executeQuery();

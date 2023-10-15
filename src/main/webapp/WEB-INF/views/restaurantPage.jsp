@@ -70,13 +70,13 @@
             </div>
         </div>
     </div>
-
     <div class="d-flex card m-3 white_transp_background justify-content-center shadow" id="reviewBlock">
         <div class="text-center">
             <h5>Questo ristorante è gestito da <%= ristoratore.getNome() %> <%= ristoratore.getCognome() %></h5>
             <div>Per richiedere informazioni scrivere a <i><%= ristoratore.getEmail()%></i> o contattare il numero <i><%=ristoratore.getN_Telefono()%></i></div>
         </div>
     </div>
+
 
     <%@include file="repetedElements/backLink.jsp"%>
 </body>
