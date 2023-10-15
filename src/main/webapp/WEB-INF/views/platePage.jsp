@@ -1,8 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.project.chefskiss.dataAccessObjects.ContieneDAO" %>
 <%@ page import="com.project.chefskiss.modelObjects.*" %>
-<%@ page import="org.springframework.web.servlet.ModelAndView" %>
-<%@ page import="com.project.chefskiss.Utility" %>
 <%@ page import="java.util.Base64" %>
 <%--
   Created by IntelliJ IDEA.
@@ -40,10 +38,14 @@
     .white_transp_background{
         background-color: rgba(245,245,245,0.7);
     }
+
+    ul {
+        list-style-type: none;
+    }
 </style>
 <body class="food_background">
     <%@include file="repetedElements/navabar_inc.jsp"%>
-    <div class="container-fluid my-3 clearfix">
+    <div class="container-fluid my-3 mr-3 clearfix">
         <img class="img-thumbnail mx-3 shadow float-end w-50 h-auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatto.getImmaginePiatto().getBytes(1, (int)piatto.getImmaginePiatto().length()))%>">
         <div class="card mx-auto white_transp_background shadow">
             <div class="card-body">
@@ -91,15 +93,24 @@
 
                 <h4>Si può trovare tra i menù dei seguenti ristoranti:</h4>
                 <nav>
-                    <ul>
+                    <ul class="list-group">
                         <%
                             Integer id_ristorante;
 
                             for (int i = 0; i < sedi.size(); i++){
                         %>
-                        <li>
-                            <a href = "/restaurant?id=<%= ristoranti.get(i).getID_Ristorante()%>"><%= ristoranti.get(i).getNome() %></a> -
-                            <%= sedi.get(i).getVia() %>, (<%= sedi.get(i).getCitta() %>)
+
+                        <li class="d-flex justify-content-center align-items-center">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-auto">
+                                        <a href = "/restaurant?id=<%= ristoranti.get(i).getID_Ristorante() %>" class="list-group-item list-group-item-action"><%= ristoranti.get(i).getNome() %></a>
+                                    </div>
+                                    <div class="col-md-auto">
+                                        <a href = "/sede?id=<%= sedi.get(i).getCoordinate() %>" class="list-group-item list-group-item-action"><i class='bx bx-map'></i>  <%= sedi.get(i).getVia() %>, (<%= sedi.get(i).getCitta() %>)</a>
+                                    </div>
+                                </div>
+                            </div>
                         </li>
                         <% } %>
                     </ul>
@@ -149,15 +160,10 @@
             <button class="btn btn-sm btn-danger" onclick="confermaCancellazione()">Cancella recensione</button>
 
         </div>
+        <br>
         <%
             }
         %>
-    </div>
-
-
-
-    <div id="error">
-
     </div>
 
     <%@include file="repetedElements/backLink.jsp"%>
