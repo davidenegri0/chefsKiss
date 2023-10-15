@@ -67,7 +67,7 @@ public class recipesListController {
         }
 
         //Invio lista dei piatti alla pagina
-        if (piatti.size()>10) piatti = piatti.subList(0,10);
+        //if (piatti.size()>10) piatti = piatti.subList(0,10);
         page.addObject("listaPiatti", piatti);
 
         page.addObject("searched", false);
@@ -161,7 +161,7 @@ public class recipesListController {
         }
 
 
-        if (piatti.size()>10) piatti = piatti.subList(0,10);
+        //if (piatti.size()>10) piatti = piatti.subList(0,10);
         page.addObject("listaPiatti", piatti);
 
         page.addObject("searched", true);
