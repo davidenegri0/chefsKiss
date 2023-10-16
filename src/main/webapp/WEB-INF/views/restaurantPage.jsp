@@ -48,11 +48,8 @@
 
                 <h4>Venite a trovarci qui! E scoprirete i nostri menù!</h4>
                 <ul class="list-group">
-                    <% if (utente!=null && ristoratore.getCF().equals(utente.getCF())){ %>
-                    <a href="/addSede"><button class="btn btn-sm btn-success">Aggiungi una sede</button></a>
-                    <br>
-                    <% } %>
                     <% for ( int i = 0; i < sedi.size(); i++ ){ %>
+                    <br>
                         <li>
                             <div class="row">
                                 <div class="col-4">
@@ -66,6 +63,11 @@
                                 <% } %>
                             <% } %>
                         </li>
+                    <% } %>
+                    <br>
+                    <% if (utente!=null && ristoratore.getCF().equals(utente.getCF())){ %>
+                    <a href="/addSede"><button class="btn btn-sm btn-success">Aggiungi una sede</button></a>
+                    <br>
                     <% } %>
                 </ul>
             </div>
