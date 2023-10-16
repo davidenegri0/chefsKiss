@@ -50,20 +50,21 @@
                 <ul class="list-group">
                     <% if (utente!=null && ristoratore.getCF().equals(utente.getCF())){ %>
                     <a href="/addSede"><button class="btn btn-sm btn-success">Aggiungi una sede</button></a>
+                    <br>
                     <% } %>
                     <% for ( int i = 0; i < sedi.size(); i++ ){ %>
                         <li>
-                            <% if (utente!=null && ristoratore.getCF().equals(utente.getCF())){ %>
-                            <a href="/editSede?idR=<%=ristorante.getID_Ristorante()%>&coord=<%=sedi.get(i).getCoordinate()%>"><button class="btn btn-sm btn-primary"><i class='bx bxs-edit-alt'></i></button></a>
-                                <% if (sedi.size()>1){ %>
-                                <a href="/deleteSede?idR=<%=ristorante.getID_Ristorante()%>&coord=<%=sedi.get(i).getCoordinate()%>"><button class="btn btn-sm btn-danger"><i class='bx bxs-trash'></i></button></a>
-                                <% } %>
-                            <% } %>
                             <div class="row">
                                 <div class="col-4">
                                     <a href="/sede?id=<%= sedi.get(i).getCoordinate() %>" class="list-group-item list-group-item-action"><%= sedi.get(i).getVia()%> (<%=sedi.get(i).getCitta()%>)</a>
                                 </div>
                             </div>
+                            <% if (utente!=null && ristoratore.getCF().equals(utente.getCF())){ %>
+                                <a href="/editSede?idR=<%=ristorante.getID_Ristorante()%>&coord=<%=sedi.get(i).getCoordinate()%>"><button class="btn btn-sm btn-primary"><i class='bx bxs-edit-alt'></i></button></a>
+                                <% if (sedi.size()>1){ %>
+                                <a href="/deleteSede?idR=<%=ristorante.getID_Ristorante()%>&coord=<%=sedi.get(i).getCoordinate()%>"><button class="btn btn-sm btn-danger"><i class='bx bxs-trash'></i></button></a>
+                                <% } %>
+                            <% } %>
                         </li>
                     <% } %>
                 </ul>

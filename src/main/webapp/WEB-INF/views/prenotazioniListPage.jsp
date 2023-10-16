@@ -33,69 +33,6 @@
             <h2 class="text-center">LE TUE PRENOTAZIONI</h2>
         </div>
         <div class="card-body">
-
-            <% if (prenotazioni.isEmpty()) { %>
-            <div class="container my-2">
-                <p>Sembra che tu non abbia prenotazioni in sospeso...</p>
-            </div>
-            <% } else { %>
-            <div class="container my-2">
-                <% for (int i = 0; i < prenotazioni.size(); i++) { %>
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Prenotazione numero: <%= prenotazioni.get(i).getID() %></h5>
-                        <p class="card-text">
-                            Presso: <%= prenotazioni.get(i).getSedeP().getVia() %>, <%= prenotazioni.get(i).getSedeP().getCitta() %><br>
-                            Il giorno: <%= prenotazioni.get(i).getData() %><br>
-                            Alle ore: <%= prenotazioni.get(i).getOrario() %><br>
-                            Per: <%= prenotazioni.get(i).getN_Posti() %> persone
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <a href="/editPrenotazione?id=<%= prenotazioni.get(i).getID() %>&coordinate=<%= prenotazioni.get(i).getSedeP().getCoordinate() %>" class="btn btn-primary"><i class='bx bxs-edit-alt'></i></a>
-                        <button class="btn btn-danger" onclick="confermaCancellazione(<%= prenotazioni.get(i).getID() %>)"><i class='bx bxs-trash'></i></button>
-                    </div>
-                </div>
-                <% } %>
-            </div>
-            <% } %>
-
-
-            <div class="container my-2">
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th>Prenotazione</th>
-                            <th>Data</th>
-                            <th>Orario</th>
-                            <th>Posti</th>
-                            <th>Azioni</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <% for (int i = 0; i < prenotazioni.size(); i++) { %>
-                        <tr>
-                            <td>
-                                Prenotazione numero: <%= prenotazioni.get(i).getID() %><br>
-                                Presso: <%= prenotazioni.get(i).getSedeP().getVia() %>, <%= prenotazioni.get(i).getSedeP().getCitta() %>
-                            </td>
-                            <td><%= prenotazioni.get(i).getData() %></td>
-                            <td><%= prenotazioni.get(i).getOrario() %></td>
-                            <td><%= prenotazioni.get(i).getN_Posti() %></td>
-                            <td>
-                                <a href="/editPrenotazione?id=<%= prenotazioni.get(i).getID() %>&coordinate=<%= prenotazioni.get(i).getSedeP().getCoordinate() %>" class="btn btn-primary"><i class='bx bxs-edit-alt'></i></a>
-                                <button class="btn btn-danger" onclick="confermaCancellazione(<%= prenotazioni.get(i).getID() %>)"><i class='bx bxs-trash'></i></button>
-                            </td>
-                        </tr>
-                        <% } %>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-
-
             <div class="container my-2">
                 <div class="row">
                     <% for (int i = 0; i < prenotazioni.size(); i++) { %>
