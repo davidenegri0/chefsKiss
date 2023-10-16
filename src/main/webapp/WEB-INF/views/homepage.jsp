@@ -53,7 +53,7 @@
     <%}%>
 
     <div class="container-fluid text-dark p-3 white_transp_background">
-        <h3>Le 4 Ricette più recenti della settimana!</h3>
+        <h3>4 Ricette consigliate!</h3>
     </div>
 
     <div class="row p-3 mx-0">

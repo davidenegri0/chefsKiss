@@ -123,7 +123,7 @@
             <div class="col-sm-6">
                 <div class="card float-end mx-auto white_transp_background shadow" style="width: 100%; height: 100%">
                     <div class="card-body">
-                        <img class="img-thumbnail mx-3 shadow float-end w-50 h-auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatto.getImmaginePiatto().getBytes(1, (int)piatto.getImmaginePiatto().length()))%>">
+                        <img class="img-thumbnail shadow float-end w-100 h-auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatto.getImmaginePiatto().getBytes(1, (int)piatto.getImmaginePiatto().length()))%>">
                     </div>
                 </div>
             </div>
@@ -148,6 +148,11 @@
             <div class="d-flex card m-3 white_transp_background justify-content-center shadow" style="width: 256px" id="reviewBlock">
                 <div class="text-center" id="reviewBlock_utente">
                     <%= utenti_recensori.get(i).getNome() %> <%= utenti_recensori.get(i).getCognome() %>
+                    <%
+                    if (utenti_recensori.get(i).isClienteVerificato()){
+                    %>
+                    <i class='bx bx-badge-check' style='color:#1c00ff' ></i>
+                    <% } %>
                 </div>
                 <div id="reviewBlock_voto">
                     <img class="mx-auto d-block" src="<%=recensioni.get(i).getStarsRating()%>" width="64px" height="auto">
