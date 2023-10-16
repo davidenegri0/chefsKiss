@@ -74,7 +74,7 @@
         border-color: #2ecc71
     }
 
-    .box input[type="submit"] {
+    .box input.success[type="button"] {
         background: none;
         display: block;
         margin: 20px auto;
@@ -88,11 +88,11 @@
         cursor: pointer
     }
 
-    .box input[type="submit"]:hover {
+    .box input.success[type="button"]:hover {
         background: #2ecc71
     }
 
-    .box input[type="button"] {
+    .box input.undo[type="button"] {
         background: none;
         display: block;
         margin: 20px auto;
@@ -106,7 +106,7 @@
         cursor: pointer
     }
 
-    .box input[type="button"]:hover {
+    .box input.undo[type="button"]:hover {
         background: darkred;
     }
 
@@ -131,6 +131,15 @@
     <% if(errorCode==1){ %>
     alert("La vecchia password non corrisponde!");
     <% } %>
+
+    function checkPasswordANDsubmit(){
+        var passwordInput = document.getElementById("newP").value;
+        var passwordCheck = document.getElementById("newPRep").value;
+        if (passwordInput != passwordCheck){
+            alert("Le due password non coincidono!");
+        }
+        else document.querySelector('form').submit();
+    }
 </script>
 <body>
     <div class="card">
@@ -145,8 +154,8 @@
             <div class="input-box">
                 <input id="newPRep" type="password" name="newPasswordRep" placeholder="Ripeti Nuova Password" required>
             </div>
-            <input type="submit" value="Invia">
-            <input type="button" value="Annulla" onclick=window.history.back()>
+            <input class="success" type="button" value="Invia" onclick="checkPasswordANDsubmit()">
+            <input class="undo" type="button" value="Annulla" onclick=window.history.back()>
         </form>
     </div>
     <%@include file="repetedElements/backLink.jsp"%>

@@ -77,7 +77,7 @@
         border-color: #2ecc71
     }
 
-    .box input[type="submit"] {
+    .box input[type="button"].conferma {
         background: none;
         width: 150px;
         display: block;
@@ -109,7 +109,7 @@
         float: right;
     }
 
-    .box input[type="submit"]:hover {
+    .box input[type="button"].conferma:hover {
         background: #2ecc71
     }
 
@@ -227,7 +227,7 @@
             <input class="form-check-input" id="ristoratore" name="ristoratore" type="checkbox" value="true"><br>
         </div>
         <div class="d-flex justify-content-around">
-            <input class="conferma" type="submit" value="Conferma" >
+            <input class="conferma" type="button" value="Conferma" onclick="checkPasswordANDsubmit()">
             <input class="annulla" type="reset" value="Annulla" onclick=window.history.back()>
         </div>
 
@@ -279,6 +279,15 @@
         }
     }
     chefCheckbox.addEventListener('change', chefCheck);
+
+    function checkPasswordANDsubmit(){
+        var passwordInput = document.getElementById("pssw").value;
+        var passwordCheck = document.getElementById("c_pssw").value;
+        if (passwordInput != passwordCheck){
+            alert("Le due password non coincidono!");
+        }
+        else document.querySelector('form').submit();
+    }
 
 </script>
 </html>
