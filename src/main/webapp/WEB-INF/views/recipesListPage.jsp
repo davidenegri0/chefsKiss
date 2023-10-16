@@ -18,6 +18,8 @@
 <head>
     <title>La nostra lista di Piatti</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/img/chef'skiss_logo_emoji.png">
+    <link href='https://fonts.googleapis.com/css?family=Bagel Fat One' rel='stylesheet'>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
@@ -29,6 +31,11 @@
 
     .white_transp_background{
         background-color: rgba(245,245,245,0.7);
+    }
+
+    .fancy_font{
+        font-family: 'Bagel Fat One';
+        font-size: 64px;
     }
 </style>
 <script>
@@ -81,7 +88,7 @@
     <%@include file="repetedElements/navabar_inc.jsp"%>
 
     <div class="container-fluid bg-dark text-light py-2">
-        <h1 class="text-center">LA NOSTRA LISTA DEI PIATTI</h1>
+        <h1 class="text-center fancy_font">LA NOSTRA LISTA DEI PIATTI</h1>
     </div>
     <div class="card m-3 white_transp_background shadow">
         <% if(utente!= null && (utente.isPrivato() || utente.isChef())){ %>

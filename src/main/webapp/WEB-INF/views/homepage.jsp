@@ -18,6 +18,7 @@
 <head>
     <title>Homepage</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/img/chef'skiss_logo_emoji.png">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Bagel Fat One' rel='stylesheet'>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -37,8 +38,11 @@
     }
 </style>
 <body class="food_background">
-    <div class="container-fluid p-3 text-white" style="background-color: darkgreen">
-        <h1 class="text-center fancy_font">Welcome to Chef's Kiss!!</h1>
+    <div class="container-fluid p-3 text-white" style="background-image: linear-gradient(to bottom right, orange, yellow)">
+        <h1 class="text-center fancy_font" style="text-shadow: black 1px 0 10px">
+            <img style="height: 128px; width: auto" src="/img/chef'skiss_logo.png">
+            Welcome to Chef's Kiss!!
+        </h1>
     </div>
 
     <%@include file="repetedElements/navabar_inc.jsp"%>
