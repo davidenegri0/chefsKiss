@@ -37,7 +37,10 @@
     <%
         User utente = (User) request.getAttribute("utente");
         //String imgPath = (String) request.getAttribute("imgPath");
-        String img = Base64.getEncoder().encodeToString(utente.getProfilePicture().getBytes(1, (int)utente.getProfilePicture().length()));
+        String img = null;
+        if(utente.isPrivato()) {
+            img = Base64.getEncoder().encodeToString(utente.getProfilePicture().getBytes(1, (int) utente.getProfilePicture().length()));
+        }
         //System.out.println("Da jsp: imgPath = "+imgPath);
     %>
     <div class="container-fluid bg-dark text-light p-3">

@@ -64,8 +64,8 @@ public class loginController {
                     UserDAO userCookie = CookieDAO.getUserDAO(response);
                     userCookie.create(
                             utente.getCF(),
-                            utente.getNome(),
-                            utente.getCognome(),
+                            utente.getNome().replace(" ", "_"),
+                            utente.getCognome().replace(" ", "_"),
                             utente.getD_Nascita(),
                             utente.getEmail(),
                             "redacted",
