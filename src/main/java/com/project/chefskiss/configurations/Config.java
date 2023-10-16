@@ -24,4 +24,6 @@ public class Config {
 
     public static final String ENC_SEPARATOR = "&";
 
+    public static final Integer MAX_VALUTAZIONI = 9;
+
 }

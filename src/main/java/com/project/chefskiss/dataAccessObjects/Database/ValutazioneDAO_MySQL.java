@@ -1,5 +1,6 @@
 package com.project.chefskiss.dataAccessObjects.Database;
 
+import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.dataAccessObjects.ValutazioneDAO;
 import com.project.chefskiss.modelObjects.Sede;
 import com.project.chefskiss.modelObjects.User;
@@ -32,6 +33,31 @@ public class ValutazioneDAO_MySQL implements ValutazioneDAO {
             query.executeUpdate();
 
             query.close();
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+
+        try{
+            String SQLQuery = "SELECT COUNT(*) AS somma FROM chefskiss.valuta WHERE CF = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, utente.getCF());
+            ResultSet result = query.executeQuery();
+
+            if (result.next()){
+                if (result.getInt("somma") > Config.MAX_VALUTAZIONI){
+                    System.out.println(result.getInt("somma"));
+                    String SQLQuery2 = "UPDATE chefskiss.utente SET Verificato = 1 WHERE CF = ?";
+
+                    query = conn.prepareStatement(SQLQuery2);
+                    query.setString(1, utente.getCF());
+                    query.executeUpdate();
+                }
+            }
+
+            result.close();
+            query.close();
+
         } catch (SQLException e){
             throw new RuntimeException(e.getMessage());
         }
