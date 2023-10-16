@@ -58,6 +58,18 @@ public class registrationController {
 
         page = new ModelAndView("index");
 
+        if(isPrivato && foto_prv!=null && foto_prv.getSize()>64000){
+            page.setViewName("registrationPage");
+            page.addObject("errorCode", 2);
+            return page;
+        }
+
+        if(isChef && foto_chef!=null && foto_chef.getSize()>64000){
+            page.setViewName("registrationPage");
+            page.addObject("errorCode", 2);
+            return page;
+        }
+
         // Connesione al database
         DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
         DatabaseDAO.beginTransaction();

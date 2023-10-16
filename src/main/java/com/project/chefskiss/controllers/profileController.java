@@ -150,6 +150,13 @@ public class profileController {
         sessionUserDAO.update(utente);
 
         DatabaseDAO.commitTransaction();
+
+        if (utente.isRistoratore()){
+            RistoranteDAO ristoDAO = DatabaseDAO.getRistoDAO(null);
+            Ristorante r = ristoDAO.findByRistoratore(utente.getCF());
+            utente.setRistoranteU(r);
+        }
+
         DatabaseDAO.closeTransaction();
 
         //Aggiornamento cookie

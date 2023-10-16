@@ -244,6 +244,11 @@
 </div>
 </body>
 <script>
+    <% Integer errorCode = (Integer) request.getAttribute("errorCode");
+    if(errorCode!=null && errorCode==2){%>
+    alert("L'immagine caricata è troppo grande! Max 64Kb");
+    <%}%>
+
     function onLoadRequest(){
         var errorCode = 0;
         <%if(request.getAttribute("errorCode")!=null){%>
