@@ -49,7 +49,11 @@ public class editSedeController {
 
             sede = sessionSedeDAO.findByCoordinate(Coord);
 
+            RistoranteDAO ristoranteDAO = DatabaseDAO.getRistoDAO(null);
+            Ristorante risto = ristoranteDAO.findById(sede.getID_Ristorante());
+
             page.addObject("sede", sede);
+            page.addObject("ristorante", risto);
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
