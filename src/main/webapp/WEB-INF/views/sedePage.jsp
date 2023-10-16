@@ -125,6 +125,11 @@
                 <div class="d-flex card m-3 white_transp_background justify-content-center shadow" style="width: 256px; height: 55px" id="valutazioneBlock">
                     <div class="text-center" id="valutazioneBlock_utente">
                         <%= valutazioni.get(i).getUtenteV().getNome() %> <%= valutazioni.get(i).getUtenteV().getCognome() %>
+                        <%
+                            if (valutazioni.get(i).getUtenteV().isClienteVerificato()){
+                        %>
+                        <i class='bx bx-badge-check' style='color:#1c00ff' ></i>
+                        <% } %>
                     </div>
                     <div id="valutazioneBlock_voto">
                         <img src="<%= valutazioni.get(i).getStarsRating() %>" width="64px" height="auto" class="mx-auto d-block">
