@@ -29,6 +29,7 @@
         <label for="nposti">Numero di posti a sedere: </label>
         <input type="number" id="nposti" name="nposti" required><br>
         <input type="hidden" id="idristo" name="idristo" value="<%=Risto.getID_Ristorante()%>">
+        <input type="hidden" id="coord" name="coord" value="00.000;00.000">
         <br>
         <input type="button" onclick="calculateANDsubmit()" value="Conferma">
         <input type="reset" value="Annulla" onclick=window.history.back()>
