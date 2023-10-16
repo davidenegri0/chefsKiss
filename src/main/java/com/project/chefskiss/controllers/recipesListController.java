@@ -168,4 +168,61 @@ public class recipesListController {
 
         return page;
     }
+
+    @GetMapping(path = "/myRecipes")
+    public ModelAndView viewMyRecipesList(
+        @RequestParam(value = "ord", required = false, defaultValue = "0") int ord,
+        @CookieValue(value = "loggedUser", defaultValue = "") String userData
+    ){
+        ModelAndView page = new ModelAndView("myRecipesPage");
+        List<Piatto> piatti;
+        User utente;
+
+        //Lettura cookie utente
+        if(userData.isEmpty()){
+            System.out.println("No cookies, unexpected behaviour, returning to homepage");
+            page.setViewName("index");
+            return page;
+        }
+        else {
+            utente = User.decodeUserData(userData);
+            page.addObject("user", utente);
+        }
+
+        //Accesso al database per la ricerca dei piatti da visualizzare
+        DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
+        DatabaseDAO.beginTransaction();
+        PiattoDAO sessionPiattiDAO = DatabaseDAO.getPiattoDAO(null);
+        piatti = sessionPiattiDAO.findByCF(utente);
+        DatabaseDAO.closeTransaction();
+
+        /*
+            Per ordinamento:
+            Se ord == 1 --> Ordina per Nome
+            Se ord == 2 --> Ordina per Valutazione
+            Altrimenti --> Ordina per Data
+         */
+        try {
+            switch (ord)
+            {
+                case 1:
+                {
+                    System.out.println("Ordinamento per nome");
+                    piatti.sort(Comparators.PiattobyName);
+                    break;
+                }
+                case 2:
+                {
+                    System.out.println("Ordinamento per voto");
+                    piatti.sort(Comparators.PiattobyVoto);
+                    break;
+                }
+            }
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        page.addObject("listaPiatti", piatti);
+        return page;
+    }
 }

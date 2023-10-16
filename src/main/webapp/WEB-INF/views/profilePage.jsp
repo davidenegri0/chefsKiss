@@ -43,9 +43,9 @@
                 <a class="nav-link" href="/prenotazioniList">Le mie prenotazioni</a>
             </li>
             <%}%>
-            <%if(utente.isPrivato()){ //TODO: Aggiungere la pagina delle proprie ricette%>
+            <%if(utente.isPrivato() || utente.isChef()){ //TODO: Aggiungere la pagina delle proprie ricette%>
             <li class="nav-item">
-                <a class="nav-link" href="#"> Le mie ricette</a>
+                <a class="nav-link" href="/myRecipes"> Le mie ricette</a>
             </li>
             <%}%>
             <%if(utente.isChef()){%>
