@@ -5,13 +5,15 @@ import com.project.chefskiss.modelObjects.Piatto;
 import com.project.chefskiss.modelObjects.Sede;
 import com.project.chefskiss.modelObjects.User;
 
+import java.sql.Blob;
 import java.util.List;
 
 public interface PiattoDAO {
     public Piatto create (
             String Nome_Piatto,
             String Preparazione,
-            User Utente
+            User Utente,
+            Blob img
     );
 
     public void update (Piatto piatto);

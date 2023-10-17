@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.sql.rowset.serial.SerialBlob;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,6 +80,7 @@ public class addPlateController {
             @CookieValue(value = "loggedUser", defaultValue = "") String userData,
             @RequestParam("nomePiatto") String nomePiatto,
             @RequestParam(value = "preparazione", required = false) String preparazione,
+            @RequestParam(value = "file", required = false) MultipartFile file,
             @RequestParam("ingredienti") List<String> ingredienti,
             @RequestParam("quantita") List<Integer> quantita,
             @RequestParam(value = "sede", required = false, defaultValue = "") String sedeCoord
@@ -127,7 +130,7 @@ public class addPlateController {
         try {
             //Caricamento del nuovo piatto sul database
             PiattoDAO sessionPiattoDAO = DatabaseDAO.getPiattoDAO(null);
-            piatto = sessionPiattoDAO.create(nomePiatto, preparazione, utente);
+            piatto = sessionPiattoDAO.create(nomePiatto, preparazione, utente, new SerialBlob(file.getBytes()));
 
             //Caricamento nuova lista ingredienti sul database
             ContieneDAO sessionContieneDAO = DatabaseDAO.getContieneDAO(null);

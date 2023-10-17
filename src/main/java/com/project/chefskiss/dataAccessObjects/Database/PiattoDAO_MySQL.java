@@ -14,7 +14,7 @@ public class PiattoDAO_MySQL implements PiattoDAO {
 
     public PiattoDAO_MySQL(Connection conn) { this.conn = conn; }
     @Override
-    public Piatto create(String Nome_Piatto, String Preparazione, User Utente)
+    public Piatto create(String Nome_Piatto, String Preparazione, User Utente, Blob img)
     {
         PreparedStatement query;
         Piatto piatto = new Piatto();
@@ -22,7 +22,9 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         Timestamp timestamp = new Timestamp(data_ora.getTime());
 
         try {
-            String SQLQuery = "INSERT INTO chefskiss.piatto(Nome_Piatto, Data_Upload, Preparazione, CF) VALUES (?, ?, ?, ?) ";
+            String SQLQuery =
+                    "INSERT INTO chefskiss.piatto(Nome_Piatto, Data_Upload, Preparazione, CF, Foto_Piatto) " +
+                    "VALUES (?, ?, ?, ?, ?) ";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, Nome_Piatto);
@@ -30,6 +32,8 @@ public class PiattoDAO_MySQL implements PiattoDAO {
             if (Preparazione==null || Preparazione.isBlank()) query.setNull(3, Types.VARCHAR);
             else query.setString(3, Preparazione);
             query.setString(4, Utente.getCF());
+            if (img==null) query.setNull(4, Types.BLOB);
+            else query.setBlob(4, img);
 
             query.executeUpdate();
 
@@ -59,13 +63,21 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         Integer id_piatto = piatto.getId();
 
         try {
-            String SQLQuery = "UPDATE chefskiss.piatto SET Nome_Piatto = ?, Preparazione = ?, CF = ? WHERE ID_Piatto = ?";
+            String SQLQuery =
+                    "UPDATE chefskiss.piatto " +
+                    "SET Nome_Piatto = ?, " +
+                    "Preparazione = ?, " +
+                    "CF = ?, " +
+                    "Foto_Piatto = ? " +
+                    "WHERE ID_Piatto = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, piatto.getNome());
             query.setString(2, piatto.getPreparazione());
             query.setString(3, piatto.getUtenteP().getCF());
-            query.setInt(4, id_piatto);
+            if(piatto.getImmaginePiatto()==null) query.setNull(4, Types.BLOB);
+            else query.setBlob(4, piatto.getImmaginePiatto());
+            query.setInt(5, id_piatto);
 
             query.executeUpdate();
 

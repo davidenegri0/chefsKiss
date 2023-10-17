@@ -81,9 +81,11 @@
             <% } %>
         </div>
         <div class="card-body">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 <label class="form-label" for="nome_piatto">Nome del piatto: </label>
                 <input class="form-control" type="text" id="nome_piatto" name="nomePiatto" required>
+                <label class="form-label" for="immagine">Foto del piatto (max 64Kb): </label>
+                <input class="form-control" type="file" accept="image/jpeg" id="immagine" name="file" required>
                 <% if (utente.isChef()) { %>
                 <label class="form-label" for="preparazione">Preparazione (opzionale): </label>
                 <textarea class="form-control" id="preparazione" name="preparazione" cols="100" rows="20" maxlength="3000"></textarea>

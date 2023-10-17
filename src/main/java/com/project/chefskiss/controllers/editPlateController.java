@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.sql.rowset.serial.SerialBlob;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @Controller
@@ -82,6 +86,7 @@ public class editPlateController {
             @CookieValue(value = "loggedUser", defaultValue = "") String userData,
             @RequestParam("id") int id,
             @RequestParam("nomePiatto") String nomePiatto,
+            @RequestParam(value = "file", required = false) MultipartFile file,
             @RequestParam(value = "preparazione", required = false) String preparazione,
             @RequestParam("ingredienti") List<String> ingredienti,
             @RequestParam("quantita") List<Integer> quantita
@@ -135,6 +140,12 @@ public class editPlateController {
         piatto = sessionPiattoDAO.findByIDPiatto(id);
         piatto.setNome(nomePiatto);
         piatto.setPreparazione(preparazione);
+        try {
+            if (!file.isEmpty() && file.getSize()<64000) piatto.setImmaginePiatto(new SerialBlob(file.getBytes()));
+            else piatto.setImmaginePiatto(null);
+        } catch (IOException | SQLException e){
+            e.printStackTrace();
+        }
         sessionPiattoDAO.update(piatto);
         DatabaseDAO.commitTransaction();
 

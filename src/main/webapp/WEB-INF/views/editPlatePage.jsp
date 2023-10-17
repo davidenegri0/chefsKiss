@@ -89,10 +89,12 @@
             <% } %>
         </div>
         <div class="card-body">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="<%=piatto.getId()%>">
                 <label class="form-label" for="nome_piatto">Nome del piatto: </label>
                 <input class="form-control" type="text" id="nome_piatto" name="nomePiatto" value="<%=piatto.getNome()%>" required>
+                <label class="form-label" for="immagine">Foto del piatto (max 64Kb): </label>
+                <input class="form-control" type="file" accept="image/jpeg" id="immagine" name="file" required>
                 <% if (utente.isPrivato()) { %>
                 <label class="form-label" for="preparazione">Preparazione: </label>
                 <textarea class="form-control" id="preparazione" name="preparazione" cols="100" rows="20" maxlength="3000" required><%=piatto.getPreparazione()%></textarea>
