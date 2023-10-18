@@ -51,6 +51,8 @@ public class deleteSedeController {
             DatabaseDAO.rollbackTransaction();
         }
 
+        DatabaseDAO.closeTransaction();
+
         return Utility.redirect(page,"/restaurant?id="+IDR);
     }
 }

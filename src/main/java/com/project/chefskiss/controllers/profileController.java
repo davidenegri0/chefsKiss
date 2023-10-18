@@ -33,10 +33,17 @@ public class profileController {
             @CookieValue("loggedUser") String userData
     ){
         ModelAndView page = new ModelAndView("profilePage");
-
+        User utente;
         //Caricamento dati dai cookie
-        User utente = User.decodeUserData(userData);
-
+        //Lettura dei cookie dell'utente
+        if (userData.isEmpty()) {
+            System.out.println("No cookies, unexpected behaviour, returning to homepage");
+            page.setViewName("index");
+            return page;
+        } else {
+            utente = User.decodeUserData(userData);
+            page.addObject("user", utente);
+        }
         //Caricamento dati utente (e immagine) dal db
         DAOFactory DatabaseDAO2 = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
         DatabaseDAO2.beginTransaction();

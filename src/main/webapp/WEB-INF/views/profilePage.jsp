@@ -131,7 +131,17 @@
     -->
     <div class="container-fluid d-flex my-3 justify-content-center">
         <a href="/updateProfile"><button class="btn btn-primary">Modifica i dati del tuo account</button></a>
+        <button class="btn btn-danger" onclick="confermaCancellazione()">Cancella i dati del tuo account</button>
     </div>
     <%@ include file="repetedElements/backLink.jsp"%>
 </body>
+<script>
+    function confermaCancellazione() {
+        var richiesta = window.confirm("Sei sicuro di voler cancellare il tuo account?");
+        if (richiesta) {
+            window.location.replace("/deleteProfile");
+        }
+        //else // visualizzare pagina della sede
+    }
+</script>
 </html>

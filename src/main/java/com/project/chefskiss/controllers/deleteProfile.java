@@ -3,25 +3,21 @@ package com.project.chefskiss.controllers;
 import com.project.chefskiss.Utility;
 import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.dataAccessObjects.DAOFactory;
-import com.project.chefskiss.dataAccessObjects.PrenotazioneDAO;
-import com.project.chefskiss.modelObjects.Prenotazione;
+import com.project.chefskiss.dataAccessObjects.UserDAO;
 import com.project.chefskiss.modelObjects.User;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.xml.crypto.Data;
-
 @Controller
-public class deletePrenotazioneController {
-    @GetMapping (path = "/deletePrenotazione")
-    public ModelAndView DeletePrenotazione (
-            @CookieValue(value = "loggedUser", defaultValue = "") String userData,
-            @RequestParam("id") Integer id
-    ) {
+public class deleteProfile {
+    @GetMapping (path = "/deleteProfile")
+    public ModelAndView DeleteProfile (
+            HttpServletResponse response,
+            @CookieValue (value = "loggedUser", defaultValue = "") String userData
+    ){
         ModelAndView page = new ModelAndView("index");
         User utente;
 
@@ -38,14 +34,16 @@ public class deletePrenotazioneController {
         DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
         DatabaseDAO.beginTransaction();
 
-        PrenotazioneDAO prenotazioneDAO = DatabaseDAO.getPrenotazioneDAO(null);
-
-        Prenotazione prenotazione = prenotazioneDAO.findById(id);
-        prenotazioneDAO.delete(prenotazione);
+        UserDAO userDAO = DatabaseDAO.getUserDAO(null);
+        userDAO.delete(utente);
         DatabaseDAO.commitTransaction();
         DatabaseDAO.closeTransaction();
 
-        page = Utility.redirect(page, "/prenotazioniList?id=" + utente.getCF());
+        DAOFactory CookieDAO = DAOFactory.getDAOFactory(Config.COOKIE_IMPL, response);
+        UserDAO userDAO1 = CookieDAO.getUserDAO(response);
+        userDAO1.delete(null);
+
+        page = Utility.redirect(page, "/homepage");
 
         return page;
     }

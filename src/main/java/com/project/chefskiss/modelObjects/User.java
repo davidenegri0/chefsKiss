@@ -206,8 +206,8 @@ public class User {
     public static String encodeUserData(User user){
         String sep = Config.ENC_SEPARATOR;
         return user.getCF()+ sep +
-               user.getNome()+ sep +
-               user.getCognome()+ sep +
+               user.getNome().replace(" ", "_")+ sep +
+               user.getCognome().replace(" ", "_")+ sep +
                user.getEmail()+ sep +
                user.getD_Nascita().toString()+ sep +
                user.getN_Telefono()+ sep +
@@ -221,8 +221,8 @@ public class User {
         User utente = new User();
         String[] dataSet = userData.split(Config.ENC_SEPARATOR);
         utente.setTotalData(
-                dataSet[1],
-                dataSet[2],
+                dataSet[1].replace("_", " "),
+                dataSet[2].replace("_", " "),
                 dataSet[0],
                 dataSet[3],
                 dataSet[5],

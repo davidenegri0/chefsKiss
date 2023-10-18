@@ -173,7 +173,7 @@
         </div>
         <div class="input-box">
             <label for="telefono" hidden>Telefono:</label>
-            <input id="telefono" name="telefono" type="number" maxlength="12" placeholder="Telefono" required>
+            <input id="telefono" name="telefono" type="number" min="0000000000" max="9999999999" placeholder="Telefono" required>
         </div>
         <div class="input-box">
             <label for="nascita" hidden>Data di nascita:</label>
