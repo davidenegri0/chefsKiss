@@ -41,8 +41,15 @@ public class deletePrenotazioneController {
         PrenotazioneDAO prenotazioneDAO = DatabaseDAO.getPrenotazioneDAO(null);
 
         Prenotazione prenotazione = prenotazioneDAO.findById(id);
-        prenotazioneDAO.delete(prenotazione);
-        DatabaseDAO.commitTransaction();
+
+        try {
+            prenotazioneDAO.delete(prenotazione);
+            DatabaseDAO.commitTransaction();
+        } catch (RuntimeException e){
+            e.printStackTrace();
+            DatabaseDAO.rollbackTransaction();
+        }
+
         DatabaseDAO.closeTransaction();
 
         page = Utility.redirect(page, "/prenotazioniList?id=" + utente.getCF());

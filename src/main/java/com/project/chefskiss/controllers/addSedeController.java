@@ -94,6 +94,7 @@ public class addSedeController {
         } catch (RuntimeException e){
             e.printStackTrace();
             DatabaseDAO.rollbackTransaction();
+            DatabaseDAO.closeTransaction();
             return Utility.redirect(page, "/addRistorante&Sede");
         }
 

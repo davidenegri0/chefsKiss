@@ -88,9 +88,15 @@ public class deleteRecensioneController {
                 RecensioneDAO recensioneDAO = DatabaseDAO.getRecensioneDAO(null);
                 Recensione recensione = recensioneDAO.findByPiatto_Utente(Integer.parseInt(id), utente.getCF());
 
-                recensioneDAO.delete(recensione);
+                try{
+                    recensioneDAO.delete(recensione);
 
-                DatabaseDAO.commitTransaction();
+                    DatabaseDAO.commitTransaction();
+                } catch (RuntimeException e){
+                    e.printStackTrace();
+                    DatabaseDAO.rollbackTransaction();
+                    DatabaseDAO.closeTransaction();
+                }
 
                 page = Utility.redirect(page, "/plate?id="+Integer.parseInt(id));
 
@@ -104,9 +110,14 @@ public class deleteRecensioneController {
                 ValutazioneDAO valutazioneDAO = DatabaseDAO.getValutazioneDAO(null);
                 Valutazione valutazione = valutazioneDAO.findByCF_Coordinate(utente.getCF(), sede.getCoordinate());
 
-                valutazioneDAO.delete(valutazione);
+                try {
+                    valutazioneDAO.delete(valutazione);
 
-                DatabaseDAO.commitTransaction();
+                    DatabaseDAO.commitTransaction();
+                } catch (RuntimeException e){
+                    e.printStackTrace();
+                    DatabaseDAO.rollbackTransaction();
+                }
 
                 page = Utility.redirect(page, "/sede?id="+id);
 

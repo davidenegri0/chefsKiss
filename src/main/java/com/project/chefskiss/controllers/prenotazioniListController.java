@@ -38,8 +38,7 @@ public class prenotazioniListController {
         DatabaseDAO.beginTransaction();
 
         PrenotazioneDAO prenotazioneDAO = DatabaseDAO.getPrenotazioneDAO(null);
-        List<Prenotazione> prenotazioni = new ArrayList<>();
-        prenotazioni = prenotazioneDAO.findByUser(utente.getCF());
+        List<Prenotazione> prenotazioni = prenotazioneDAO.findByUser(utente.getCF());
 
         page.addObject("prenotazioni", prenotazioni);
 

@@ -50,9 +50,14 @@ public class deletePlateController {
             return page;
         }
 
-        //Cancellazione piatto da database
-        sessionePiattoDAO.delete(piatto);
-        DatabaseDAO.commitTransaction();
+        try {
+            //Cancellazione piatto da database
+            sessionePiattoDAO.delete(piatto);
+            DatabaseDAO.commitTransaction();
+        } catch (RuntimeException e){
+            e.printStackTrace();
+            DatabaseDAO.rollbackTransaction();
+        }
 
         DatabaseDAO.closeTransaction();
 

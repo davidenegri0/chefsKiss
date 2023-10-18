@@ -35,13 +35,26 @@ public class deleteProfile {
         DatabaseDAO.beginTransaction();
 
         UserDAO userDAO = DatabaseDAO.getUserDAO(null);
-        userDAO.delete(utente);
-        DatabaseDAO.commitTransaction();
+
+        try {
+            userDAO.delete(utente);
+            DatabaseDAO.commitTransaction();
+        } catch (RuntimeException e){
+            e.printStackTrace();
+            DatabaseDAO.rollbackTransaction();
+        }
+
         DatabaseDAO.closeTransaction();
 
         DAOFactory CookieDAO = DAOFactory.getDAOFactory(Config.COOKIE_IMPL, response);
         UserDAO userDAO1 = CookieDAO.getUserDAO(response);
-        userDAO1.delete(null);
+        try {
+            userDAO1.delete(null);
+        }  catch (RuntimeException e){
+            e.printStackTrace();
+            CookieDAO.rollbackTransaction();
+            CookieDAO.closeTransaction();
+        }
 
         page = Utility.redirect(page, "/homepage");
 

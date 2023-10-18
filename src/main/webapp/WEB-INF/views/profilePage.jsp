@@ -68,6 +68,9 @@
                 <a class="nav-link" href="/restaurant?id=<%=utente.getRistoranteU().getID_Ristorante()%>">Il mio ristorante</a>
             </li>
             <%}%>
+            <li class="nav-item">
+                <a class="nav-link" href="/homepage"><i class='bx bxs-home bx-sm'></i></a>
+            </li>
         </ul>
     </nav>
     <div class="container d-flex justify-content-around flex-wrap">

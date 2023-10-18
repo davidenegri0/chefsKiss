@@ -126,9 +126,15 @@ public class addPrenotazioneController {
             page.addObject("errorCode", 4);
             return page;
         }
-        prenotazioneDAO.create(utente, sede, data, orario, n_posti);
+        try{
+            prenotazioneDAO.create(utente, sede, data, orario, n_posti);
 
-        DatabaseDAO.commitTransaction();
+            DatabaseDAO.commitTransaction();
+        } catch (RuntimeException e){
+            e.printStackTrace();
+            DatabaseDAO.rollbackTransaction();
+        }
+
 
         page = Utility.redirect(page, "/sede?id="+coordinate);
 

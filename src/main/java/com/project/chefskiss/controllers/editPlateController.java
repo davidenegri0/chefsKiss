@@ -146,9 +146,14 @@ public class editPlateController {
         } catch (IOException | SQLException e){
             e.printStackTrace();
         }
-        sessionPiattoDAO.update(piatto);
-        DatabaseDAO.commitTransaction();
 
+        try {
+            sessionPiattoDAO.update(piatto);
+            DatabaseDAO.commitTransaction();
+        }  catch (RuntimeException e){
+            e.printStackTrace();
+            DatabaseDAO.rollbackTransaction();
+        }
         //Caricamento nuova lista ingredienti sul database
         ContieneDAO sessionContieneDAO = DatabaseDAO.getContieneDAO(null);
 
