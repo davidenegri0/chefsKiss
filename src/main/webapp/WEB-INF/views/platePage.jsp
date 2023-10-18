@@ -123,7 +123,7 @@
             <div class="col-sm-6">
                 <div class="card float-end mx-auto white_transp_background shadow" style="width: 100%; height: 100%">
                     <div class="card-body">
-                        <img class="img-thumbnail shadow float-end w-100 h-auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatto.getImmaginePiatto().getBytes(1, (int)piatto.getImmaginePiatto().length()))%>">
+                        <img class="img-thumbnail shadow float-end w-100 h-auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatto.getImmaginePiatto().getBytes(1, (int)piatto.getImmaginePiatto().length()))%>" alt="Foto piatto <%=piatto.getNome()%>">
                     </div>
                 </div>
             </div>
@@ -155,7 +155,7 @@
                     <% } %>
                 </div>
                 <div id="reviewBlock_voto">
-                    <img class="mx-auto d-block" src="<%=recensioni.get(i).getStarsRating()%>" width="64px" height="auto">
+                    <img class="mx-auto d-block" src="<%=recensioni.get(i).getStarsRating()%>" width="64px" height="auto" alt="Immagine rating">
                 </div>
                 <div class="text-center" id="reviewBlock_commento">
                     <%= commento %>

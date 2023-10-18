@@ -49,7 +49,7 @@
                                 </div>
                                 <p class="card-text">
                                     <br>
-                                    <img src="/chef/<%=chefs.get(i).getCF()%>/image" height="100px" width="auto">
+                                    <img src="/chef/<%=chefs.get(i).getCF()%>/image" height="100px" width="auto" alt="Foto profilo <%=chefs.get(i).getNome()%> <%=chefs.get(i).getCognome()%>">
                                     <br><br>
                                     <a href="/chef/<%=chefs.get(i).getCF()%>/CV" download>
                                         <button class="btn btn-primary">Scarica il curriculum</button>

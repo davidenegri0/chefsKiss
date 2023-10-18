@@ -95,7 +95,7 @@
                 <div class="card-body">
                     <label class="form-label" for="username">Username: </label>
                     <input class="form-control"  id="username" name="username" type="text" value="<%=utente.getUsername()%>"> <br>
-                    <img class="rounded d-block mx-auto" src="data:image/jpeg;base64,<%=img%>" height="144px" width="144px">
+                    <img class="rounded d-block mx-auto" src="data:image/jpeg;base64,<%=img%>" height="144px" width="144px" alt="Immagine profilo <%=utente.getUsername()%>">
                     <input class="form-control" type="file" accept="image/jpeg" name="file"> <br>
                 </div>
             </div>

@@ -118,7 +118,7 @@
                 <h3>Dati da utente pubblico</h3>
             </div>
             <div class="card-body">
-                <img class="rounded d-block mx-auto" src="data:image/jpeg;base64,<%=img%>" height="144px" width="144px"> <br>
+                <img class="rounded d-block mx-auto" src="data:image/jpeg;base64,<%=img%>" height="144px" width="144px" alt="Immagine profilo <%=utente.getUsername()%>"> <br>
                 <p>
                     Username: <%=utente.getUsername()%> <br>
                 </p>

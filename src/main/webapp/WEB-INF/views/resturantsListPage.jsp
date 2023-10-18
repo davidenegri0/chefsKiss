@@ -89,7 +89,7 @@
                         <%= sedi.get(i).getRistoranteS().getNome() %>
                     </a>
                     <br>
-                    <img src="<%=sedi.get(i).getStarsRating()%>" width="140px" height="auto">
+                    <img src="<%=sedi.get(i).getStarsRating()%>" width="140px" height="auto" alt="Immagine rating">
                 </p>
             </div>
 
