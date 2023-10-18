@@ -47,11 +47,11 @@
     }
 </script>
 <body class="food_background">
-    <%@include file="repetedElements/navabar_inc.jsp"%>
 
     <div class="container-fluid bg-dark text-light py-2">
         <h1 class="text-center fancy_font">I TUOI PIATTI</h1>
     </div>
+    <%@include file="repetedElements/navabar_inc.jsp"%>
     <div class="card m-3 white_transp_background shadow">
         <% if(utente!= null && (utente.isPrivato() || utente.isChef())){ %>
         <div class="container row m-3">
