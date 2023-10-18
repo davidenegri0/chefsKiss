@@ -189,10 +189,6 @@ public class UserDAO_MySQL implements UserDAO {
 
                 query2.executeUpdate();
                 query2.close();
-
-                //TODO: getter e setter
-                // query.setBlob(13, user.getFoto_Chef());
-                // query.setClob(14, user.getCV());
             }
             else query.setInt(i++, 0);
             if (user.isRistoratore()) query.setInt(i++, 1);

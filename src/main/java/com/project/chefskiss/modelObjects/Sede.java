@@ -7,7 +7,7 @@ public class Sede {
     private String Via;
     private String Citta;
     private Integer Posti;
-    private Integer ID_Ristorante; //TODO: (EVENTUALE) Rimuovere questo con l'implementazione di query complesse
+    private Integer ID_Ristorante;
     private Boolean Deleted;
     private Float VotoMedio;
 

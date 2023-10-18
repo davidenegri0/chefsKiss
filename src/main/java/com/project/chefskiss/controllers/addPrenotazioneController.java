@@ -101,7 +101,6 @@ public class addPrenotazioneController {
         PrenotazioneDAO prenotazioneDAO = DatabaseDAO.getPrenotazioneDAO(null);
         SedeDAO sedeDAO = DatabaseDAO.getSedeDAO(null);;
         Sede sede = sedeDAO.findByCoordinate(coordinate);
-        // TODO: possibile controllo su esistenza della stessa prenotazione
         if (prenotazioneDAO.verifica_posti_disponibili(coordinate, orario, data) < n_posti){
             System.out.println(
                     "Prenotazione dell'utente "+utente.getCF()+

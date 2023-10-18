@@ -13,6 +13,5 @@ public interface IngredienteDAO {
     public List<Ingrediente> getAllIngredients ();
     public List<String> getAllAllergeni();
     // cerca un ingrediente per gruppo allergenico
-    //TODO: Valutare l'uso di questa
     //public List<Ingrediente> findByGruppo (String Gruppo_Allergenico);
 }

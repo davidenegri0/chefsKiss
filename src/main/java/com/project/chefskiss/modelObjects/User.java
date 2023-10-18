@@ -30,7 +30,6 @@ public class User {
     private Boolean Deleted;
 
     // RELAZIONI
-    private String Coordiante;  //TODO: (EVENTUALE) Rimuovere questo con l'implementazione di query complesse
     private Sede sede;
     private Ristorante ristorante;
     private List<Recensione> Recensioni;
@@ -97,7 +96,6 @@ public class User {
     }
 
     public void setDeleted(boolean deleted) { Deleted = deleted; }
-    public void setCoordiante(String coordinate) { Coordiante = coordinate; }
 
     public void setSedeU(Sede sede) { this.sede = sede; }
 
@@ -192,7 +190,6 @@ public class User {
         return Privileges.get("Ristoratore");
     }
     public Boolean isDeleted() { return Deleted; }
-    public String getCoordiante() { return Coordiante; }
 
     public User setTotalData(String Nome, String Cognome, String CF, String Email, String Telefono, Date Data, String Password){
         this.setNome(Nome);

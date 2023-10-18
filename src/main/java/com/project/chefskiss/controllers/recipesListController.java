@@ -40,7 +40,6 @@ public class recipesListController {
         PiattoDAO sessionPiattiDAO = DatabaseDAO.getPiattoDAO(null);
         List<Piatto> piatti = sessionPiattiDAO.findMostRecent();
 
-        //TODO: parte da sistemare per select allergeni
         IngredienteDAO ingredienteDAO = DatabaseDAO.getIngredienteDAO(null);
         List<String> allergeni = ingredienteDAO.getAllAllergeni();
         List<Ingrediente> ingredienti = ingredienteDAO.getAllIngredients();

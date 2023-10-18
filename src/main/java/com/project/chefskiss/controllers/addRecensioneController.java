@@ -51,7 +51,7 @@ public class addRecensioneController {
 
         if (typeCode == 1) isRecensioneUp = sessionRecensioneDAO.checkRecensione(utente.getCF(), Integer.parseInt(id)); //String CF, int ID
         else {
-            isValutazioneUp = sessioneValutazioneDAO.checkValutazione(utente.getCF(), id); //TODO: Implementare controllo recensione ristorante
+            isValutazioneUp = sessioneValutazioneDAO.checkValutazione(utente.getCF(), id);
             isPrenotazioneUp = sessionePrenotazioneDAO.checkPrenotazione(utente.getCF());
         }
 
@@ -202,7 +202,6 @@ public class addRecensioneController {
             }
             case 2: //typeCode = 2 --> recensione di un ristorante
             {
-                //TODO: Implementare il setting per la recensione del ristorante
                 //Cercare i dati del ristorante nel db/cookie, e inviarli alla pageù
 
                 ValutazioneDAO valutazioneDAO = DatabaseDAO.getValutazioneDAO(null);

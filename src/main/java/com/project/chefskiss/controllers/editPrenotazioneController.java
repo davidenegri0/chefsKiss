@@ -121,7 +121,6 @@ public class editPrenotazioneController {
 
         SedeDAO sedeDAO = DatabaseDAO.getSedeDAO(null);
         Sede sede = sedeDAO.findByCoordinate(coordinate);
-// TODO: ragionare sul fatto che la modifica va fatta sull'id e non sulla combinazione
         PrenotazioneDAO prenotazioneDAO = DatabaseDAO.getPrenotazioneDAO(null);
         Prenotazione prenotazione = new Prenotazione();
 

@@ -46,7 +46,7 @@ public class deleteRecensioneController {
         // typecode = 4 --> modifica recensione sede ristorante
 
         if (type == 3) isRecensioneUp = sessionRecensioneDAO.checkRecensione(utente.getCF(), Integer.parseInt(id)); //String CF, int ID
-        else isValutazioneUp = sessioneValutazioneDAO.checkValutazione(utente.getCF(), id); //TODO: Implementare controllo recensione ristorante
+        else isValutazioneUp = sessioneValutazioneDAO.checkValutazione(utente.getCF(), id);
 
 
         if (type == 3 && !isRecensioneUp){ // recensione non esistente --> impossibile cancellazione
