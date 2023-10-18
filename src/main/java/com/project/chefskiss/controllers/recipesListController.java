@@ -40,12 +40,10 @@ public class recipesListController {
         PiattoDAO sessionPiattiDAO = DatabaseDAO.getPiattoDAO(null);
         List<Piatto> piatti = sessionPiattiDAO.findMostRecent();
 
-/*
         //TODO: parte da sistemare per select allergeni
         IngredienteDAO ingredienteDAO = DatabaseDAO.getIngredienteDAO(null);
         List<String> allergeni = ingredienteDAO.getAllAllergeni();
         List<Ingrediente> ingredienti = ingredienteDAO.getAllIngredients();
-*/
         DatabaseDAO.closeTransaction();
 
                 /*
@@ -77,8 +75,8 @@ public class recipesListController {
         //Invio lista dei piatti alla pagina
         //if (piatti.size()>10) piatti = piatti.subList(0,10);
         page.addObject("listaPiatti", piatti);
-        //page.addObject("allergeni", allergeni);
-        //page.addObject("ingredienti", ingredienti);
+        page.addObject("allergeni", allergeni);
+        page.addObject("ingredienti", ingredienti);
 
         page.addObject("searched", false);
 
@@ -112,6 +110,9 @@ public class recipesListController {
         DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
         DatabaseDAO.beginTransaction();
         PiattoDAO sessionPiattiDAO = DatabaseDAO.getPiattoDAO(null);
+        IngredienteDAO ingredienteDAO = DatabaseDAO.getIngredienteDAO(null);
+        List<String> allergeniList = ingredienteDAO.getAllAllergeni();
+        List<Ingrediente> ingredienti = ingredienteDAO.getAllIngredients();
 
         /*
         Se type == 0 --> Nessun input, ricerca per data
@@ -172,6 +173,8 @@ public class recipesListController {
 
 
         //if (piatti.size()>10) piatti = piatti.subList(0,10);
+        page.addObject("allergeni", allergeniList);
+        page.addObject("ingredienti", ingredienti);
         page.addObject("listaPiatti", piatti);
 
         page.addObject("searched", true);

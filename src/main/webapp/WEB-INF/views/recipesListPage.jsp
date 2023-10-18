@@ -14,8 +14,8 @@
     User utente = (User)request.getAttribute("user");
     List<Piatto> piatti = (List<Piatto>)request.getAttribute("listaPiatti");
     Boolean searched = (Boolean)request.getAttribute("searched");
-    // List<String> allergeni = (List<String>) request.getAttribute("allergeni");
-    // List<Ingrediente> ingredienti = (List<Ingrediente>) request.getAttribute("ingredienti");
+    List<String> allergeni = (List<String>) request.getAttribute("allergeni");
+    List<Ingrediente> ingredienti = (List<Ingrediente>) request.getAttribute("ingredienti");
 %>
 <html>
 <head>
@@ -59,7 +59,7 @@
 
             var allergeneNode = document.createElement("input");
             allergeneNode.setAttribute("name", "allergeni");
-            allergeneNode.setAttribute("type", "text");
+            allergeneNode.setAttribute("list", "allergeni_opt");
             allergeneNode.setAttribute("class", "form-control");
             allergeneDiv.appendChild(allergeneNode);
             i++;
@@ -77,6 +77,17 @@
                 undoButton.hidden = true;
             }
             i--;
+        }
+    }
+
+    function inputOptions() {
+        var searchType = document.getElementById("searchType").value;
+        console.log('Cambiamento in ' + searchType);
+        var campoInput = document.getElementById("search");
+        if (searchType==2){
+            campoInput.setAttribute("list", "ingredienti_opt");
+        } else {
+            campoInput.removeAttribute("list");
         }
     }
 
@@ -111,7 +122,7 @@
             <h3>Voglia di qualcosa in particolare? Cerca ciò che più ti fa gola!</h3>
             <form id="searchForm">
                 <label class="form-label" for="searchType">Cerca per:</label>
-                <select class="form-select" id="searchType" name="searchType">
+                <select class="form-select" id="searchType" name="searchType" onchange="inputOptions()">
                     <option value="1">Nome del piatto</option>
                     <option value="2">Ingrediente</option>
                 </select>
@@ -120,8 +131,18 @@
                     <input class="form-control" id="search" type="search" placeholder="Search.." name="search">
                     <button class="btn btn-secondary" type="submit"><i class='bx bx-search-alt-2 bx-sm'></i></button>
                 </div>
+                <datalist id="ingredienti_opt">
+                    <% for (int i = 0; i < ingredienti.size(); i++) { %>
+                    <option value="<%=ingredienti.get(i).getNome()%>"><%=ingredienti.get(i).getNome()%></option>
+                    <% } %>
+                </datalist>
                 <div class="container my-3 px-0">
                     <div id="allergene_div">
+                        <datalist id="allergeni_opt">
+                            <% for (int i = 0; i < allergeni.size(); i++) {%>
+                            <option value="<%=allergeni.get(i)%>"><%=allergeni.get(i)%></option>
+                            <% } %>
+                        </datalist>
                     </div>
                     <div class="btn-group">
                         <button class="btn btn-warning" id="add_allergene" type="button" onclick="addAllergene()">Aggiungi un allergene</button>
@@ -165,7 +186,6 @@
             <%}%>
         </div>
     </div>
-
     <%@ include file="repetedElements/backLink.jsp"%>
 </body>
 </html>

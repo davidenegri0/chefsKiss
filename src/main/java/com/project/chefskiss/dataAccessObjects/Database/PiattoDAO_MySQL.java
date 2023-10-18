@@ -280,13 +280,13 @@ public class PiattoDAO_MySQL implements PiattoDAO {
 
             String SQLQuery =
                     "SELECT p.*, AVG(r.Voto) as Media " +
-                            "FROM chefskiss.piatto p " +
-                            "LEFT JOIN recensisce r on p.ID_Piatto = r.ID_Piatto " +
-                            "JOIN contiene c on p.ID_Piatto = c.ID_Piatto " +
-                            "WHERE c.Nome_Ingrediente LIKE ? " +
-                            "AND p.Deleted = 'N' " +
-                            "AND p.ID_Piatto NOT IN ("+SQLSubQuery+") " +
-                            "GROUP BY p.ID_Piatto";
+                    "FROM chefskiss.piatto p " +
+                    "LEFT JOIN recensisce r on p.ID_Piatto = r.ID_Piatto " +
+                    "JOIN contiene c on p.ID_Piatto = c.ID_Piatto " +
+                    "WHERE c.Nome_Ingrediente LIKE ? " +
+                    "AND p.Deleted = 'N' " +
+                    "AND p.ID_Piatto NOT IN ("+SQLSubQuery+") " +
+                    "GROUP BY p.ID_Piatto";
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, "%"+ingrediente+"%");
 

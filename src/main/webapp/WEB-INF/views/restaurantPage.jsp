@@ -42,35 +42,37 @@
     <%@include file="repetedElements/navabar_inc.jsp"%>
     <div class="container-fluid my-3 mr-2 clearfix">
         <div class="card mx-auto white_transp_background shadow">
-            <div class="card-body">
+            <div class="d-inline-flex flex-row card-body">
+                <div class="container">
+                    <h1><%= ristorante.getNome()%></h1>
+                    <h3>Benvenuti nel nostro ristorante! </h3>
 
-                <h1><%= ristorante.getNome()%></h1>
-                <h3>Benvenuti nel nostro ristorante! </h3>
-
-                <h4>Venite a trovarci qui! E scoprirete i nostri menù!</h4>
-                <ul class="list-group">
-                    <% for ( int i = 0; i < sedi.size(); i++ ){ %>
-                    <br>
+                    <h4>Venite a trovarci qui! E scoprirete i nostri menù!</h4>
+                    <ul class="list-group">
+                        <% for ( int i = 0; i < sedi.size(); i++ ){ %>
+                        <br>
                         <li>
                             <div class="row">
-                                <div class="col-4">
+                                <div class="col-12">
                                     <a href="/sede?id=<%= sedi.get(i).getCoordinate() %>" class="list-group-item list-group-item-action"><%= sedi.get(i).getVia()%> (<%=sedi.get(i).getCitta()%>)</a>
                                 </div>
                             </div>
                             <% if (utente!=null && ristoratore.getCF().equals(utente.getCF())){ %>
-                                <a href="/editSede?idR=<%=ristorante.getID_Ristorante()%>&coord=<%=sedi.get(i).getCoordinate()%>"><button class="btn btn-sm btn-primary"><i class='bx bxs-edit-alt'></i></button></a>
-                                <% if (sedi.size()>1){ %>
-                                <a href="/deleteSede?idR=<%=ristorante.getID_Ristorante()%>&coord=<%=sedi.get(i).getCoordinate()%>"><button class="btn btn-sm btn-danger"><i class='bx bxs-trash'></i></button></a>
-                                <% } %>
+                            <a href="/editSede?idR=<%=ristorante.getID_Ristorante()%>&coord=<%=sedi.get(i).getCoordinate()%>"><button class="btn btn-sm btn-primary"><i class='bx bxs-edit-alt'></i></button></a>
+                            <% if (sedi.size()>1){ %>
+                            <a href="/deleteSede?idR=<%=ristorante.getID_Ristorante()%>&coord=<%=sedi.get(i).getCoordinate()%>"><button class="btn btn-sm btn-danger"><i class='bx bxs-trash'></i></button></a>
+                            <% } %>
                             <% } %>
                         </li>
-                    <% } %>
-                    <br>
-                    <% if (utente!=null && ristoratore.getCF().equals(utente.getCF())){ %>
-                    <a href="/addSede"><button class="btn btn-sm btn-success">Aggiungi una sede</button></a>
-                    <br>
-                    <% } %>
-                </ul>
+                        <% } %>
+                        <br>
+                        <% if (utente!=null && ristoratore.getCF().equals(utente.getCF())){ %>
+                        <a href="/addSede"><button class="btn btn-sm btn-success">Aggiungi una sede</button></a>
+                        <br>
+                        <% } %>
+                    </ul>
+                </div>
+                <%@include file="repetedElements/map_inc.jsp"%>
             </div>
         </div>
     </div>
