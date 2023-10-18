@@ -1,7 +1,8 @@
 <%@ page import="com.project.chefskiss.modelObjects.User" %>
 <%@ page import="com.project.chefskiss.modelObjects.Piatto" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.Base64" %><%--
+<%@ page import="java.util.Base64" %>
+<%@ page import="com.project.chefskiss.modelObjects.Ingrediente" %><%--
   Created by IntelliJ IDEA.
   User: david
   Date: 24/09/2023
@@ -13,6 +14,8 @@
     User utente = (User)request.getAttribute("user");
     List<Piatto> piatti = (List<Piatto>)request.getAttribute("listaPiatti");
     Boolean searched = (Boolean)request.getAttribute("searched");
+    // List<String> allergeni = (List<String>) request.getAttribute("allergeni");
+    // List<Ingrediente> ingredienti = (List<Ingrediente>) request.getAttribute("ingredienti");
 %>
 <html>
 <head>
@@ -43,6 +46,7 @@
     function addAllergene(){
         if(i<5){
             var allergeneDiv = document.getElementById("allergene_div");
+
             if(i==0){
                 var allergeneTag = document.createElement("p");
                 allergeneTag.setAttribute("class", "my-3")
@@ -52,12 +56,14 @@
                 var undoButton = document.getElementById("remove_allergene");
                 undoButton.hidden = false;
             }
+
             var allergeneNode = document.createElement("input");
             allergeneNode.setAttribute("name", "allergeni");
             allergeneNode.setAttribute("type", "text");
-            allergeneNode.setAttribute("class", "form-control")
+            allergeneNode.setAttribute("class", "form-control");
             allergeneDiv.appendChild(allergeneNode);
             i++;
+
         }
     }
 
@@ -81,7 +87,6 @@
         href.searchParams.set("ord", type.toString());
         window.location.replace(href.toString());
     }
-
 
 </script>
 <body class="food_background">
@@ -111,7 +116,7 @@
                     <option value="2">Ingrediente</option>
                 </select>
                 <br>
-                <div class="input-group">
+                <div class="input-group" id="campoInput">
                     <input class="form-control" id="search" type="search" placeholder="Search.." name="search">
                     <button class="btn btn-secondary" type="submit"><i class='bx bx-search-alt-2 bx-sm'></i></button>
                 </div>

@@ -43,6 +43,10 @@
         transform: translate(-1px, -2px);
     }
 
+    .link {
+        color: #28282f;
+    }
+
 </style>
 <body class="food_background">
     <%
@@ -59,7 +63,7 @@
             <div class="col-sm-6">
                 <div class="card mx-auto white_transp_background shadow" style="width: 100%; height: 100%">
                     <div class="card-body">
-                        <h3 class="text-center"><a href="/restaurant?id=<%= sede.getRistoranteS().getID_Ristorante() %>"><%=sede.getRistoranteS().getNome()%></a> <br>vi da il benvenuto nella sede in <br><%= sede.getVia() %> a <%= sede.getCitta() %></h3>
+                        <h3 class="text-center"><a href="/restaurant?id=<%= sede.getRistoranteS().getID_Ristorante() %>" class="link"><%=sede.getRistoranteS().getNome()%></a> <br>vi da il benvenuto nella sede in <br><%= sede.getVia() %> a <%= sede.getCitta() %></h3>
                         <p> Da noi potrete trovare il seguente menù preparato con tanta cura e amore dagli chef: </p>
                         <% for (int i = 0; i < chefs.size(); i++) { %>
                         <p>

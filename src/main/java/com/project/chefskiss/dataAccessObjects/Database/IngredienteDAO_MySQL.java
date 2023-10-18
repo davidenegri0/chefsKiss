@@ -68,6 +68,32 @@ public class IngredienteDAO_MySQL implements IngredienteDAO {
         return listaIngredienti;
     }
 
+    @Override
+    public List<String> getAllAllergeni(){
+        PreparedStatement query;
+        List<String> allergeni = new ArrayList<>();
+
+        try{
+            String SQLQuery = "SELECT DISTINCT Gruppo_Allergenico FROM chefskiss.ingrediente";
+
+            query = conn.prepareStatement(SQLQuery);
+
+            ResultSet result = query.executeQuery();
+
+            while (result.next()){
+                allergeni.add(result.getString("Gruppo_Allergenico"));
+            }
+
+            result.close();
+            query.close();
+
+        }catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return allergeni;
+    }
+
     /* SE TUTTO VA BENE, QUESTO NON SERVE
     @Override
     public List<Ingrediente> findByGruppo(String Gruppo_Allergenico) {

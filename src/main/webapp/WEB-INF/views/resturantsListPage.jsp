@@ -67,12 +67,6 @@
         </div>
     </div>
 
-
-
-    NEXT : MAPPA
-
-
-
     <!-- Visualizzazione risultati di ricerca per città (visualizza sedi cercate e ristoranti proposti) -->
     <%      if (searched && sedi != null){    %>
     <div class="container-fluid py-3 px-0">
@@ -117,7 +111,7 @@
 
     <div class="container white_transp_background p-2 rounded-bottom" style="max-width: fit-content">
         <h5>Ordina per: </h5>
-        <div class="btn-group">
+        <div class="btn-group align-content-center justify-content-center">
             <button class="btn btn-secondary" onclick="orderBy(1)">Nome</button>
             <%      if (searched && sedi != null){    %>
             <button class="btn btn-secondary" onclick="orderBy(2)">Valutazione</button>

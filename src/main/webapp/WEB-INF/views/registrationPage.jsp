@@ -203,24 +203,30 @@
                 <label for="username" hidden>Username: </label>
                 <input id="username" name="username" type="text" placeholder="Username">
             </div>
-            <div class="mb-3 center">
+            <div class="mb-3">
                 <label for="foto_prv" class="form-label">Foto profilo: </label><br>
-                <input id="foto_prv" name="foto_prv" type="file" accept="image/jpeg" class="form-control form-control-sm"><br>
+                <div class="input-group mb-3" style="width: 60%; margin: 0 auto">
+                    <input id="foto_prv" name="foto_prv" type="file" accept="image/jpeg" class="form-control form-control-sm"><br>
+                </div>
             </div>
         </div>
         <div class="form-check">
             <input class="form-check-input" id="chef" name="chef" type="checkbox" value="true">
             <label for="chef" class="form-check-label">Sei uno chef con occupazione o in cerca di un lavoro?</label>
-
         </div>
         <div id="chef_data" hidden>
             <div class="mb-3">
                 <label for="foto_chef" class="form-label">Foto profilo: </label>
-                <input id="foto_chef" name="foto_chef" type="file" accept="image/jpeg" class="form-control form-control-sm">
+                <div class="input-group mb-3" style="width: 60%; margin: 0 auto">
+                    <input id="foto_chef" name="foto_chef" type="file" accept="image/jpeg" class="form-control form-control-sm">
+                </div>
+
             </div>
             <div class="mb-3">
                 <label for="cv_chef" class="form-label">Curriculum Vitae: </label>
-                <input id="cv_chef" name="cv_chef" type="file" accept="text/plain" class="form-control form-control-sm"><br>
+                <div class="input-group mb-3" style="width: 60%; margin: 0 auto">
+                    <input id="cv_chef" name="cv_chef" type="file" accept="text/plain" class="form-control form-control-sm"><br>
+                </div>
             </div>
         </div>
         <div class="form-check">
