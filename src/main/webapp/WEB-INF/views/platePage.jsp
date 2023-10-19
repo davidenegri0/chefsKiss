@@ -94,6 +94,13 @@
                         </p>
 
                         <h4>Si può trovare tra i menù dei seguenti ristoranti:</h4>
+                        <%
+                            if (ristoranti.isEmpty()){
+                        %>
+                        <div>Il piatto non è servito in nessun ristorante!</div>
+                        <%
+                            } else {
+                        %>
                         <nav>
                             <ul class="list-group">
                                 <%
@@ -117,6 +124,7 @@
                                 <% } %>
                             </ul>
                         </nav>
+                        <% } %>
                     </div>
                 </div>
             </div>
