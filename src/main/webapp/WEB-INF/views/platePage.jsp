@@ -106,10 +106,10 @@
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-md-auto">
-                                                <a href = "/restaurant?id=<%= ristoranti.get(i).getID_Ristorante() %>" class="list-group-item list-group-item-action"><%= ristoranti.get(i).getNome() %></a>
+                                                <a href = "/restaurant?id=<%= ristoranti.get(i).getID_Ristorante() %>" class="list-group-item list-group-item-action rounded-start"><%= ristoranti.get(i).getNome() %></a>
                                             </div>
                                             <div class="col-md-auto">
-                                                <a href = "/sede?id=<%= sedi.get(i).getCoordinate() %>" class="list-group-item list-group-item-action"><i class='bx bx-map'></i>  <%= sedi.get(i).getVia() %>, (<%= sedi.get(i).getCitta() %>)</a>
+                                                <a href = "/sede?id=<%= sedi.get(i).getCoordinate() %>" class="list-group-item list-group-item-action rounded-end"><i class='bx bx-map'></i>  <%= sedi.get(i).getVia() %>, (<%= sedi.get(i).getCitta() %>)</a>
                                             </div>
                                         </div>
                                     </div>

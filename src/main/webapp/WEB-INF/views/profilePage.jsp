@@ -132,10 +132,12 @@
         al browser attraverso <img src="data:image/jpg;base64, <- base64Data ->">
         Oppure fare una response diretta con l'immagine >>> Metodo testato e funzionante
     -->
-    <div class="container-fluid d-flex my-3 justify-content-center">
+
+    <div class="d-flex justify-content-around">
         <a href="/updateProfile"><button class="btn btn-primary">Modifica i dati del tuo account</button></a>
         <button class="btn btn-danger" onclick="confermaCancellazione()">Cancella i dati del tuo account</button>
     </div>
+    <br>
     <%@ include file="repetedElements/backLink.jsp"%>
 </body>
 <script>

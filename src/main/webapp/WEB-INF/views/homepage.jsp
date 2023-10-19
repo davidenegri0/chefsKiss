@@ -60,7 +60,7 @@
         <div class="col card mx-auto white_transp_background" style="max-width: 450px">
             <a class="text-decoration-none" href="/plate?id=<%=piatti.get(0).getId()%>">
                 <div class="card-body" id="recipeBlock1">
-                    <img class="card-img-top mx-auto d-block" style="height: 256px; width: auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatti.get(0).getImmaginePiatto().getBytes(1, (int)piatti.get(0).getImmaginePiatto().length()))%>" alt="Foto piatto <%=piatti.get(0).getNome()%>">
+                    <img class="card-img-top mx-auto d-block w-100 h-auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatti.get(0).getImmaginePiatto().getBytes(1, (int)piatti.get(0).getImmaginePiatto().length()))%>" alt="Foto piatto <%=piatti.get(0).getNome()%>">
                     <p class="card-text h5 text-dark text-center"><%=piatti.get(0).getNome()%></p>
                     <img class="mx-auto d-block" src="<%=piatti.get(0).getStarsRating()%>" width="140px" height="auto" alt="Immagine rating">
                 </div>
@@ -69,7 +69,7 @@
         <div class="col card mx-auto white_transp_background" style="max-width: 450px">
             <a class="text-decoration-none" href="/plate?id=<%=piatti.get(1).getId()%>">
                 <div class="card-body" id="recipeBlock2">
-                    <img class="card-img-top mx-auto d-block" style="height: 256px; width: auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatti.get(1).getImmaginePiatto().getBytes(1, (int)piatti.get(1).getImmaginePiatto().length()))%>" alt="Foto piatto <%=piatti.get(1).getNome()%>">
+                    <img class="card-img-top mx-auto d-block w-100 h-auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatti.get(1).getImmaginePiatto().getBytes(1, (int)piatti.get(1).getImmaginePiatto().length()))%>" alt="Foto piatto <%=piatti.get(1).getNome()%>">
                     <p class="card-text h5 text-dark text-center"><%=piatti.get(1).getNome()%></p>
                     <img class="mx-auto d-block" src="<%=piatti.get(1).getStarsRating()%>" width="140px" height="auto" alt="Immagine rating">
                 </div>
@@ -80,7 +80,7 @@
         <div class="col card mx-auto white_transp_background" style="max-width: 450px">
             <a class="text-decoration-none" href="/plate?id=<%=piatti.get(2).getId()%>">
                 <div class="card-body" id="recipeBlock3">
-                    <img class="card-img-top mx-auto d-block" style="height: 256px; width: auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatti.get(2).getImmaginePiatto().getBytes(1, (int)piatti.get(2).getImmaginePiatto().length()))%>" alt="Foto piatto <%=piatti.get(2).getNome()%>">
+                    <img class="card-img-top mx-auto d-block w-100 h-auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatti.get(2).getImmaginePiatto().getBytes(1, (int)piatti.get(2).getImmaginePiatto().length()))%>" alt="Foto piatto <%=piatti.get(2).getNome()%>">
                     <p class="card-text h5 text-dark text-center"><%=piatti.get(2).getNome()%></p>
                     <img class="mx-auto d-block" src="<%=piatti.get(2).getStarsRating()%>" width="140px" height="auto" alt="Immagine rating">
                 </div>
@@ -89,7 +89,7 @@
         <div class="col card mx-auto white_transp_background" style="max-width: 450px">
             <a class="text-decoration-none" href="/plate?id=<%=piatti.get(3).getId()%>">
                 <div class="card-body" id="recipeBlock4">
-                    <img class="card-img-top mx-auto d-block" style="height: 256px; width: auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatti.get(3).getImmaginePiatto().getBytes(1, (int)piatti.get(3).getImmaginePiatto().length()))%>" alt="Foto piatto <%=piatti.get(3).getNome()%>">
+                    <img class="card-img-top mx-auto d-block w-100 h-auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatti.get(3).getImmaginePiatto().getBytes(1, (int)piatti.get(3).getImmaginePiatto().length()))%>" alt="Foto piatto <%=piatti.get(3).getNome()%>">
                     <p class="card-text h5 text-dark text-center"><%=piatti.get(3).getNome()%></p>
                     <img class="mx-auto d-block" src="<%=piatti.get(3).getStarsRating()%>" width="140px" height="auto" alt="Immagine rating">
                 </div>
