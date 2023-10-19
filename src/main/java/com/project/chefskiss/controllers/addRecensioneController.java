@@ -190,9 +190,15 @@ public class addRecensioneController {
                 RecensioneDAO sessionRecensioneDAO = DatabaseDAO.getRecensioneDAO(null);
                 PiattoDAO sessionPiattoDAO = DatabaseDAO.getPiattoDAO(null);
                 Piatto piatto = sessionPiattoDAO.findByIDPiatto(plateID);
-                sessionRecensioneDAO.create(utente, piatto, voto, commento);
 
-                DatabaseDAO.commitTransaction();
+                try{
+                    sessionRecensioneDAO.create(utente, piatto, voto, commento);
+
+                    DatabaseDAO.commitTransaction();
+                } catch (RuntimeException e) {
+                    e.printStackTrace();
+                    DatabaseDAO.rollbackTransaction();
+                }
 
                 //System.out.println("Per piatto con ID: "+ID+" Votazione: "+voto+" e commento: "+commento);
 
@@ -207,11 +213,16 @@ public class addRecensioneController {
                 ValutazioneDAO valutazioneDAO = DatabaseDAO.getValutazioneDAO(null);
                 SedeDAO sedeDAO = DatabaseDAO.getSedeDAO(null);
                 Sede sede = sedeDAO.findByCoordinate(ID);
-                valutazioneDAO.create(utente, sede, voto);
 
-                //page.addObject("isRistorante", true);
-                DatabaseDAO.commitTransaction();
+                try {
+                    valutazioneDAO.create(utente, sede, voto);
 
+                    //page.addObject("isRistorante", true);
+                    DatabaseDAO.commitTransaction();
+                } catch (RuntimeException e){
+                    e.printStackTrace();
+                    DatabaseDAO.rollbackTransaction();
+                }
 
                 page = Utility.redirect(page, "/sede?id="+ID);
 

@@ -139,16 +139,21 @@ public class editPrenotazioneController {
             return page;
         }
 
-        prenotazione.setId(id);
-        prenotazione.setSedeP(sede);
-        prenotazione.setUtenteP(utente);
-        prenotazione.setData(data);
-        prenotazione.setOrario(orario);
-        prenotazione.setN_Posti(n_posti);
+        try {
+            prenotazione.setId(id);
+            prenotazione.setSedeP(sede);
+            prenotazione.setUtenteP(utente);
+            prenotazione.setData(data);
+            prenotazione.setOrario(orario);
+            prenotazione.setN_Posti(n_posti);
 
-        prenotazioneDAO.update(prenotazione);
+            prenotazioneDAO.update(prenotazione);
 
-        DatabaseDAO.commitTransaction();
+            DatabaseDAO.commitTransaction();
+        } catch (RuntimeException e){
+            e.printStackTrace();
+            DatabaseDAO.rollbackTransaction();
+        }
 
         page = Utility.redirect(page, "/prenotazioniList?id="+id);
 

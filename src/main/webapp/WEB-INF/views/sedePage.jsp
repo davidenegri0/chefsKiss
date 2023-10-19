@@ -136,7 +136,7 @@
                         <% } %>
                     </div>
                     <div id="valutazioneBlock_voto">
-                        <img src="<%= valutazioni.get(i).getStarsRating() %>" width="64px" height="auto" class="mx-auto d-block">
+                        <img src="<%= valutazioni.get(i).getStarsRating() %>" width="64px" height="auto" class="mx-auto d-block" alt="Immagine rating">
                     </div>
                 </div>
             <% } %>

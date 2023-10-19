@@ -54,7 +54,7 @@
                         <li>
                             <div class="row">
                                 <div class="col-12">
-                                    <a href="/sede?id=<%= sedi.get(i).getCoordinate() %>" class="list-group-item list-group-item-action"><%= sedi.get(i).getVia()%> (<%=sedi.get(i).getCitta()%>)</a>
+                                    <a href="/sede?id=<%= sedi.get(i).getCoordinate() %>" class="list-group-item list-group-item-action rounded"><%= sedi.get(i).getVia()%> (<%=sedi.get(i).getCitta()%>)</a>
                                 </div>
                             </div>
                             <% if (utente!=null && ristoratore.getCF().equals(utente.getCF())){ %>

@@ -42,11 +42,11 @@
 </style>
 <body class="food_background">
 
-    <%@include file="repetedElements/navabar_inc.jsp"%>
-
     <div class="container-fluid bg-dark text-light py-2">
         <h1 class="text-center fancy_font">I RISTORANTI CHE CI PIACCIONO!</h1>
     </div>
+
+    <%@include file="repetedElements/navabar_inc.jsp"%>
 
     <div class="card m-3 p-3 white_transp_background shadow">
         <h3>Stai cercando dove mangiare oggi? Fai una ricerca diretta!</h3>
@@ -89,7 +89,7 @@
                         <%= sedi.get(i).getRistoranteS().getNome() %>
                     </a>
                     <br>
-                    <img src="<%=sedi.get(i).getStarsRating()%>" width="140px" height="auto">
+                    <img src="<%=sedi.get(i).getStarsRating()%>" width="140px" height="auto" alt="Immagine rating">
                 </p>
             </div>
 

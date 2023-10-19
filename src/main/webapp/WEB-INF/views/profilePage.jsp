@@ -68,6 +68,9 @@
                 <a class="nav-link" href="/restaurant?id=<%=utente.getRistoranteU().getID_Ristorante()%>">Il mio ristorante</a>
             </li>
             <%}%>
+            <li class="nav-item">
+                <a class="nav-link" href="/homepage"><i class='bx bxs-home bx-sm'></i></a>
+            </li>
         </ul>
     </nav>
     <div class="container d-flex justify-content-around flex-wrap">
@@ -115,7 +118,7 @@
                 <h3>Dati da utente pubblico</h3>
             </div>
             <div class="card-body">
-                <img class="rounded d-block mx-auto" src="data:image/jpeg;base64,<%=img%>" height="144px" width="144px"> <br>
+                <img class="rounded d-block mx-auto" src="data:image/jpeg;base64,<%=img%>" height="144px" width="144px" alt="Immagine profilo <%=utente.getUsername()%>"> <br>
                 <p>
                     Username: <%=utente.getUsername()%> <br>
                 </p>
@@ -129,9 +132,21 @@
         al browser attraverso <img src="data:image/jpg;base64, <- base64Data ->">
         Oppure fare una response diretta con l'immagine >>> Metodo testato e funzionante
     -->
-    <div class="container-fluid d-flex my-3 justify-content-center">
+
+    <div class="d-flex justify-content-around">
         <a href="/updateProfile"><button class="btn btn-primary">Modifica i dati del tuo account</button></a>
+        <button class="btn btn-danger" onclick="confermaCancellazione()">Cancella i dati del tuo account</button>
     </div>
+    <br>
     <%@ include file="repetedElements/backLink.jsp"%>
 </body>
+<script>
+    function confermaCancellazione() {
+        var richiesta = window.confirm("Sei sicuro di voler cancellare il tuo account?");
+        if (richiesta) {
+            window.location.replace("/deleteProfile");
+        }
+        //else // visualizzare pagina della sede
+    }
+</script>
 </html>

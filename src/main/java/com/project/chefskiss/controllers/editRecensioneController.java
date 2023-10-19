@@ -177,16 +177,22 @@ public class editRecensioneController {
                 Piatto piatto = piattoDAO.findByIDPiatto(Integer.parseInt(id));
 
                 RecensioneDAO recensioneDAO = DatabaseDAO.getRecensioneDAO(null);
-                Recensione recensione = new Recensione();
-                recensione.setVoto(voto);
-                recensione.setCommento(commento);
-                recensione.setUtenteR(utente);
-                recensione.setPiattoR(piatto);
-                System.out.println(recensione.getPiattoR().getNome() + " " + recensione.getVoto() + " " + recensione.getCommento() + " " + recensione.getUtenteR().getNome());
 
-                recensioneDAO.update(recensione);
+                try {
+                    Recensione recensione = new Recensione();
+                    recensione.setVoto(voto);
+                    recensione.setCommento(commento);
+                    recensione.setUtenteR(utente);
+                    recensione.setPiattoR(piatto);
+                    System.out.println(recensione.getPiattoR().getNome() + " " + recensione.getVoto() + " " + recensione.getCommento() + " " + recensione.getUtenteR().getNome());
 
-                DatabaseDAO.commitTransaction();
+                    recensioneDAO.update(recensione);
+
+                    DatabaseDAO.commitTransaction();
+                } catch (RuntimeException e){
+                    e.printStackTrace();
+                    DatabaseDAO.rollbackTransaction();
+                }
 
                 page = Utility.redirect(page, "/plate?id="+Integer.parseInt(id));
 
@@ -198,14 +204,20 @@ public class editRecensioneController {
                 Sede sede = sedeDAO.findByCoordinate(id);
 
                 ValutazioneDAO valutazioneDAO = DatabaseDAO.getValutazioneDAO(null);
-                Valutazione valutazione = new Valutazione();
-                valutazione.setUtenteV(utente);
-                valutazione.setSedeV(sede);
-                valutazione.setVoto(voto);
 
-                valutazioneDAO.update(valutazione);
+                try {
+                    Valutazione valutazione = new Valutazione();
+                    valutazione.setUtenteV(utente);
+                    valutazione.setSedeV(sede);
+                    valutazione.setVoto(voto);
 
-                DatabaseDAO.commitTransaction();
+                    valutazioneDAO.update(valutazione);
+
+                    DatabaseDAO.commitTransaction();
+                } catch (RuntimeException e){
+                    e.printStackTrace();
+                    DatabaseDAO.rollbackTransaction();
+                }
 
                 page = Utility.redirect(page, "/sede?id="+id);
 

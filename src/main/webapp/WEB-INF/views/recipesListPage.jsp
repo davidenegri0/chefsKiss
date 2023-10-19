@@ -101,11 +101,11 @@
 
 </script>
 <body class="food_background">
-    <%@include file="repetedElements/navabar_inc.jsp"%>
 
     <div class="container-fluid bg-dark text-light py-2">
         <h1 class="text-center fancy_font">LA NOSTRA LISTA DEI PIATTI</h1>
     </div>
+    <%@include file="repetedElements/navabar_inc.jsp"%>
     <div class="card m-3 white_transp_background shadow">
         <% if(utente!= null && (utente.isPrivato() || utente.isChef())){ %>
         <div class="container row m-3">
@@ -177,9 +177,9 @@
             <div class="d-flex card m-3 white_transp_background justify-content-center shadow" style="width: 320px">
                 <a class="text-decoration-none" href="/plate?id=<%=piatti.get(i).getId()%>">
                     <div class="card-body justify-content-center" id="recipeBlock">
-                        <img class="card-img-top mx-auto d-block" style="height: auto; width: 256px" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatti.get(i).getImmaginePiatto().getBytes(1, (int)piatti.get(i).getImmaginePiatto().length()))%>">
+                        <img class="card-img-top mx-auto d-block w-100 h-auto" src="data:image/jpeg;base64,<%=Base64.getEncoder().encodeToString(piatti.get(i).getImmaginePiatto().getBytes(1, (int)piatti.get(i).getImmaginePiatto().length()))%>" alt="Foto piatto <%=piatti.get(i).getNome()%>">
                         <p class="card-text h5 text-dark text-center"><%=piatti.get(i).getNome()%></p>
-                        <img class="mx-auto d-block" src="<%=piatti.get(i).getStarsRating()%>" width="140px" height="auto">
+                        <img class="mx-auto d-block" src="<%=piatti.get(i).getStarsRating()%>" width="140px" height="auto" alt="Immagine rating">
                     </div>
                 </a>
             </div>
