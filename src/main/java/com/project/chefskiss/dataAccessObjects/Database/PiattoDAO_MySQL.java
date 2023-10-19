@@ -32,8 +32,8 @@ public class PiattoDAO_MySQL implements PiattoDAO {
             if (Preparazione==null || Preparazione.isBlank()) query.setNull(3, Types.VARCHAR);
             else query.setString(3, Preparazione);
             query.setString(4, Utente.getCF());
-            if (img==null) query.setNull(4, Types.BLOB);
-            else query.setBlob(4, img);
+            if (img==null) query.setNull(5, Types.BLOB);
+            else query.setBlob(5, img);
 
             query.executeUpdate();
 
