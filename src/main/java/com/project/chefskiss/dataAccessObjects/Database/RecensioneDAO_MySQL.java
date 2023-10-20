@@ -80,6 +80,40 @@ public class RecensioneDAO_MySQL implements RecensioneDAO {
         }
     }
 
+    @Override
+    public void deleteByCF (String CF){
+        PreparedStatement query;
+
+        try{
+            String SQLQuery = "DELETE FROM chefskiss.recensisce WHERE CF = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, CF);
+
+            query.executeUpdate();
+            query.close();
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void deleteByPiatto (Integer ID){
+        PreparedStatement query;
+
+        try{
+            String SQLQuery = "DELETE FROM chefskiss.recensisce WHERE ID_Piatto = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setInt(1, ID);
+
+            query.executeUpdate();
+            query.close();
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
     public List<Recensione> findByPiatto (Integer id_piatto){
         List<Recensione> recensioni = new ArrayList<>();
 

@@ -3,7 +3,9 @@ package com.project.chefskiss.controllers;
 import com.project.chefskiss.Utility;
 import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.dataAccessObjects.DAOFactory;
+import com.project.chefskiss.dataAccessObjects.PrenotazioneDAO;
 import com.project.chefskiss.dataAccessObjects.SedeDAO;
+import com.project.chefskiss.dataAccessObjects.ValutazioneDAO;
 import com.project.chefskiss.modelObjects.Sede;
 import com.project.chefskiss.modelObjects.User;
 import org.springframework.stereotype.Controller;
@@ -41,8 +43,13 @@ public class deleteSedeController {
 
         try {
             SedeDAO sessionSedeDAO = DatabaseDAO.getSedeDAO(null);
+            ValutazioneDAO valutazioneDAO = DatabaseDAO.getValutazioneDAO(null);
+            PrenotazioneDAO prenotazioneDAO = DatabaseDAO.getPrenotazioneDAO(null);
+
             Sede s = new Sede();
             s.setCoordinate(Coord);
+            valutazioneDAO.deleteBySede(Coord);
+            prenotazioneDAO.deleteBySede(Coord);
             sessionSedeDAO.delete(s);
 
             DatabaseDAO.commitTransaction();

@@ -52,8 +52,12 @@
                 <div class="card float-end mx-auto white_transp_background shadow" style="width: 100%; height: 100%">
                     <div class="card-body">
                         <h1><%=piatto.getNome()%></h1>
+                        <%  String utente_piatto;
+                            if (utente_post.getNome() == null) utente_piatto = "L'utente ha cancellato il proprio account";
+                            else utente_piatto = utente_post.getNome() +" "+ utente_post.getCognome();
+                        %>
                         <p>
-                            Caricato da: <%= utente_post.getNome() %> <%= utente_post.getCognome() %>
+                            Caricato da: <%= utente_piatto %>
                         </p>
                         <% if(utente!=null && utente_post.getCF().equals(utente.getCF())){ %>
                         <a href="/editPlate?id=<%=piatto.getId()%>"><button class="btn btn-sm btn-primary">Modifica la tua ricetta</button></a>

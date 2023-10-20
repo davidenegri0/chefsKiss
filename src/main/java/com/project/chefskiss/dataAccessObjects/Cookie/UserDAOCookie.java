@@ -81,6 +81,11 @@ public class UserDAOCookie implements UserDAO {
     }       //Unused operation
 
     @Override
+    public User findByCF1(String CF) {
+        return null;
+    }       //Unused operation
+
+    @Override
     public User findByNomeCognome(String Nome, String Cognome) {
         return null;
     }       //Unused operation

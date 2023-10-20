@@ -10,6 +10,8 @@ public interface ValutazioneDAO {
     public Valutazione create(User utente, Sede sede, Integer voto);
     public void update(Valutazione valutazione);
     public void delete(Valutazione valutazione);
+    public void deleteByCF (String CF);
+    public void deleteBySede (String Coordinate);
     public List<Valutazione> miglioriSedi (Integer numero);
     public boolean checkValutazione(String CF_recensore, String coordinate_sede);
     public Valutazione findByCF_Coordinate (String CF, String Coordinate);

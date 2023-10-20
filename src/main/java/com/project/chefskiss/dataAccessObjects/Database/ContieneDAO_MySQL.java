@@ -80,6 +80,23 @@ public class ContieneDAO_MySQL implements ContieneDAO {
     }
 
     @Override
+    public void deleteByPiatto(Integer ID) {
+        PreparedStatement query;
+
+        try{
+            String SQLQuery = "DELETE FROM chefskiss.contiene WHERE ID_Piatto = ?";
+            query = conn.prepareStatement(SQLQuery);
+            query.setInt(1, ID);
+
+            query.executeUpdate();
+
+            query.close();
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
     public void deleteAllbyPiatto(Piatto piatto) {
         PreparedStatement query;
 

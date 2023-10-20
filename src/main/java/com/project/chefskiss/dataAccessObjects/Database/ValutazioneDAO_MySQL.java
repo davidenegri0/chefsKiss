@@ -105,6 +105,40 @@ public class ValutazioneDAO_MySQL implements ValutazioneDAO {
         }
     }
 
+    @Override
+    public void deleteByCF (String CF){
+        PreparedStatement query;
+
+        try{
+            String SQLQuery = "DELETE FROM chefskiss.valuta WHERE CF = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, CF);
+
+            query.executeUpdate();
+            query.close();
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void deleteBySede (String Coordinate){
+        PreparedStatement query;
+
+        try{
+            String SQLQuery = "DELETE FROM chefskiss.valuta WHERE Coordinate = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, Coordinate);
+
+            query.executeUpdate();
+            query.close();
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
     public List<Valutazione> miglioriSedi (Integer numero){
         List<Valutazione> sedi = new ArrayList<>();
         PreparedStatement query;

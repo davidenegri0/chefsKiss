@@ -25,8 +25,10 @@ public class sedeController {
             @CookieValue(value = "loggedUser", defaultValue = "") String UserData
     ){
         ModelAndView page = new ModelAndView("sedePage");
+        User utente;
+
         if(!UserData.isEmpty()){
-            User utente = User.decodeUserData(UserData);
+            utente = User.decodeUserData(UserData);
             page.addObject("user", utente);
         }
         else System.out.println("No cookies :C");
@@ -55,7 +57,7 @@ public class sedeController {
         valutazioni = valutazioneDAO.findBySede(sede);
         List<User> recensori = new ArrayList<>();
         for ( int i = 0; i < valutazioni.size(); i++){
-            valutazioni.get(i).setUtenteV(userDAO.findByCF(valutazioni.get(i).getUtenteV().getCF()));
+            valutazioni.get(i).setUtenteV(userDAO.findByCF1(valutazioni.get(i).getUtenteV().getCF()));
         }
             //recensori.add();
 

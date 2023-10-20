@@ -2,9 +2,13 @@ package com.project.chefskiss.controllers;
 
 import com.project.chefskiss.Utility;
 import com.project.chefskiss.configurations.Config;
+import com.project.chefskiss.dataAccessObjects.ContieneDAO;
 import com.project.chefskiss.dataAccessObjects.DAOFactory;
 import com.project.chefskiss.dataAccessObjects.PiattoDAO;
+import com.project.chefskiss.dataAccessObjects.RecensioneDAO;
+import com.project.chefskiss.modelObjects.Contiene;
 import com.project.chefskiss.modelObjects.Piatto;
+import com.project.chefskiss.modelObjects.Recensione;
 import com.project.chefskiss.modelObjects.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -50,8 +54,13 @@ public class deletePlateController {
             return page;
         }
 
+        ContieneDAO contieneDAO = DatabaseDAO.getContieneDAO(null);
+        RecensioneDAO recensioneDAO = DatabaseDAO.getRecensioneDAO(null);
+
         try {
             //Cancellazione piatto da database
+            contieneDAO.deleteByPiatto(piatto.getId());
+            recensioneDAO.deleteByPiatto(piatto.getId());
             sessionePiattoDAO.delete(piatto);
             DatabaseDAO.commitTransaction();
         } catch (RuntimeException e){

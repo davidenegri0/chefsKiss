@@ -12,6 +12,8 @@ public interface PrenotazioneDAO {
     public Prenotazione create (User utente, Sede sede, Date data, Time orario, Integer n_posti);
     public void update(Prenotazione prenotazione);
     public void delete(Prenotazione prenotazione);
+    public void deleteByCF (String CF);
+    public void deleteBySede (String Coordinate);
     public Prenotazione findById(Integer id);
     public List<Prenotazione> findByUser (String CF);
     public boolean checkPrenotazione(String CF);

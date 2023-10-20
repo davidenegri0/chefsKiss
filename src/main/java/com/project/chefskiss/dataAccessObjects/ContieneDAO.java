@@ -10,6 +10,7 @@ public interface ContieneDAO {
     public Contiene create (Piatto piatto, Ingrediente ingrediente, Integer quantita);
     public void update(Contiene contiene);
     public void delete(Contiene contiene);
+    public void deleteByPiatto(Integer ID);
     public void deleteAllbyPiatto(Piatto piatto);
 
     public List<Contiene> findByPiatto (Piatto piatto);

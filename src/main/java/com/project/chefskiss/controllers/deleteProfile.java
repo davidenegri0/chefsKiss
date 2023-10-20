@@ -2,9 +2,10 @@ package com.project.chefskiss.controllers;
 
 import com.project.chefskiss.Utility;
 import com.project.chefskiss.configurations.Config;
-import com.project.chefskiss.dataAccessObjects.DAOFactory;
-import com.project.chefskiss.dataAccessObjects.UserDAO;
+import com.project.chefskiss.dataAccessObjects.*;
+import com.project.chefskiss.modelObjects.Recensione;
 import com.project.chefskiss.modelObjects.User;
+import com.project.chefskiss.modelObjects.Valutazione;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -35,9 +36,17 @@ public class deleteProfile {
         DatabaseDAO.beginTransaction();
 
         UserDAO userDAO = DatabaseDAO.getUserDAO(null);
+        RecensioneDAO recensioneDAO = DatabaseDAO.getRecensioneDAO(null);
+        ValutazioneDAO valutazioneDAO = DatabaseDAO.getValutazioneDAO(null);
+        PrenotazioneDAO prenotazioneDAO = DatabaseDAO.getPrenotazioneDAO(null);
 
         try {
+            recensioneDAO.deleteByCF(utente.getCF());
+            valutazioneDAO.deleteByCF(utente.getCF());
+            prenotazioneDAO.deleteByCF(utente.getCF());
+
             userDAO.delete(utente);
+
             DatabaseDAO.commitTransaction();
         } catch (RuntimeException e){
             e.printStackTrace();

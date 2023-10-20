@@ -10,6 +10,8 @@ public interface RecensioneDAO {
     public Recensione create(User utente, Piatto piatto, Integer voto, String commento);
     public void update(Recensione recensione);
     public void delete(Recensione recensione);
+    public void deleteByCF (String CF);
+    public void deleteByPiatto (Integer ID);
     public List<Recensione> miglioriPiatti (Integer numero);
     public List<Recensione> findByPiatto (Integer id_piatto);
     public boolean checkRecensione(String CF_recensore, Integer id_piatto);

@@ -91,6 +91,40 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
         }
     }
 
+    @Override
+    public void deleteByCF (String CF){
+        PreparedStatement query;
+
+        try{
+            String SQLQuery = "DELETE FROM chefskiss.prenota_in WHERE CF = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, CF);
+
+            query.executeUpdate();
+            query.close();
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void deleteBySede (String Coordinate){
+        PreparedStatement query;
+
+        try{
+            String SQLQuery = "DELETE FROM chefskiss.valuta WHERE Coordinate = ?";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, Coordinate);
+
+            query.executeUpdate();
+            query.close();
+        } catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
     public Integer verifica_posti_disponibili(String coordinate, Time orario, Date data) {
         PreparedStatement query2;
         PreparedStatement query3;

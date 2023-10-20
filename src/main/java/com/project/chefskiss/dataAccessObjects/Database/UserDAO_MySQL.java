@@ -291,6 +291,36 @@ public class UserDAO_MySQL implements UserDAO {
     }
 
     @Override
+    public User findByCF1(String CF) {
+        PreparedStatement query;
+        User utente = new User();
+
+        try{
+            String SQLQuery = "SELECT * " +
+                    "FROM chefskiss.utente " +
+                    "WHERE CF = ? ";
+
+            query = conn.prepareStatement(SQLQuery);
+            query.setString(1, CF);
+
+            ResultSet result = query.executeQuery();
+
+            if(result.next())
+            {
+                utente = read(result);
+                System.out.println("Lettura dati completata!");
+            }
+            result.close();
+            query.close();
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return utente;
+    }
+
+    @Override
     public User findByNomeCognome(String Nome, String Cognome) {
 
         PreparedStatement query;
