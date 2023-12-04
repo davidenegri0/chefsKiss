@@ -39,7 +39,8 @@
         //String imgPath = (String) request.getAttribute("imgPath");
         String img = null;
         if(utente.isPrivato()) {
-            img = Base64.getEncoder().encodeToString(utente.getProfilePicture().getBytes(1, (int) utente.getProfilePicture().length()));
+            if (utente.getProfilePicture() != null)
+                img = Base64.getEncoder().encodeToString(utente.getProfilePicture().getBytes(1, (int) utente.getProfilePicture().length()));
         }
         //System.out.println("Da jsp: imgPath = "+imgPath);
     %>
@@ -118,7 +119,13 @@
                 <h3>Dati da utente pubblico</h3>
             </div>
             <div class="card-body">
+                <%
+                    if (img != null){
+                %>
                 <img class="rounded d-block mx-auto" src="data:image/jpeg;base64,<%=img%>" height="144px" width="144px" alt="Immagine profilo <%=utente.getUsername()%>"> <br>
+                <% } else { %>
+                <img class="rounded d-block mx-auto" src="img/food_background_v2.jpg" height="1px" width="1px" alt="Immagine profilo <%=utente.getUsername()%>"> <br>
+                <% } %>
                 <p>
                     Username: <%=utente.getUsername()%> <br>
                 </p>
