@@ -21,7 +21,7 @@ public class IngredienteDAO_MySQL implements IngredienteDAO {
         Ingrediente ingrediente = new Ingrediente();
 
         try {
-            String SQLQuery = "SELECT * FROM chefskiss.ingrediente WHERE Nome_Ingrediente LIKE ?";
+            String SQLQuery = "SELECT * FROM boru5sh3eoe2vtbznsll.ingrediente WHERE Nome_Ingrediente LIKE ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, "%"+Nome_Ingrediente+"%");
@@ -49,7 +49,7 @@ public class IngredienteDAO_MySQL implements IngredienteDAO {
         List<Ingrediente> listaIngredienti = new ArrayList<>();
 
         try{
-            String SQLQuery = "SELECT * FROM chefskiss.ingrediente ORDER BY Nome_Ingrediente";
+            String SQLQuery = "SELECT * FROM boru5sh3eoe2vtbznsll.ingrediente ORDER BY Nome_Ingrediente";
 
             query = conn.prepareStatement(SQLQuery);
             ResultSet result = query.executeQuery();
@@ -74,7 +74,7 @@ public class IngredienteDAO_MySQL implements IngredienteDAO {
         List<String> allergeni = new ArrayList<>();
 
         try{
-            String SQLQuery = "SELECT DISTINCT Gruppo_Allergenico FROM chefskiss.ingrediente";
+            String SQLQuery = "SELECT DISTINCT Gruppo_Allergenico FROM boru5sh3eoe2vtbznsll.ingrediente";
 
             query = conn.prepareStatement(SQLQuery);
 
@@ -101,7 +101,7 @@ public class IngredienteDAO_MySQL implements IngredienteDAO {
         List<Ingrediente> ingredienti = new ArrayList<>();
 
         try{
-            String SQLQuery = "SELECT * FROM chefskiss.ingrediente WHERE Gruppo_Allergenico LIKE ?";
+            String SQLQuery = "SELECT * FROM boru5sh3eoe2vtbznsll.ingrediente WHERE Gruppo_Allergenico LIKE ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, "%"+Gruppo_Allergenico+"%");

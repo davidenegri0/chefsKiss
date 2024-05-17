@@ -24,7 +24,7 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
         try {
 
             if (verifica_posti_disponibili(sede.getCoordinate(), orario, data) >= n_posti && isPrenotazioneUp(utente.getCF(), data, orario)) {
-                String SQLQuery = "INSERT INTO chefskiss.prenota_in (CF, Coordinate, Data, Orario, N_Posti) VALUES (?,?,?,?,?)";
+                String SQLQuery = "INSERT INTO boru5sh3eoe2vtbznsll.prenota_in (CF, Coordinate, Data, Orario, N_Posti) VALUES (?,?,?,?,?)";
 
                 query = conn.prepareStatement(SQLQuery);
                 query.setString(1, utente.getCF());
@@ -56,7 +56,7 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
         try {
             if ((verifica_posti_disponibili(prenotazione.getSedeP().getCoordinate(), prenotazione.getOrario(), prenotazione.getData()) + prenotazione.getN_Posti()) >= prenotazione.getN_Posti() && isPrenotazioneUp(prenotazione.getUtenteP().getCF(), prenotazione.getData(), prenotazione.getOrario())) {
 
-                String SQLQuery = "UPDATE chefskiss.prenota_in SET Data = ?, Orario = ?, N_Posti = ? WHERE ID_Prenotazione = ?";
+                String SQLQuery = "UPDATE boru5sh3eoe2vtbznsll.prenota_in SET Data = ?, Orario = ?, N_Posti = ? WHERE ID_Prenotazione = ?";
 
                 query = conn.prepareStatement(SQLQuery);
                 query.setDate(1, prenotazione.getData());
@@ -78,7 +78,7 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
         PreparedStatement query;
 
         try {
-            String SQLQuery = "DELETE FROM chefskiss.prenota_in WHERE ID_Prenotazione = ?";
+            String SQLQuery = "DELETE FROM boru5sh3eoe2vtbznsll.prenota_in WHERE ID_Prenotazione = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, prenotazione.getID());
@@ -96,7 +96,7 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
         PreparedStatement query;
 
         try{
-            String SQLQuery = "DELETE FROM chefskiss.prenota_in WHERE CF = ?";
+            String SQLQuery = "DELETE FROM boru5sh3eoe2vtbznsll.prenota_in WHERE CF = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, CF);
@@ -113,7 +113,7 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
         PreparedStatement query;
 
         try{
-            String SQLQuery = "DELETE FROM chefskiss.valuta WHERE Coordinate = ?";
+            String SQLQuery = "DELETE FROM boru5sh3eoe2vtbznsll.valuta WHERE Coordinate = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, Coordinate);
@@ -130,7 +130,7 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
         PreparedStatement query3;
 
         try {
-            String SQLQuery2 = "SELECT Posti_Disponibili FROM chefskiss.sede WHERE Coordinate = ?";
+            String SQLQuery2 = "SELECT Posti_Disponibili FROM boru5sh3eoe2vtbznsll.sede WHERE Coordinate = ?";
             query2 = conn.prepareStatement(SQLQuery2);
             query2.setString(1, coordinate);
             ResultSet result2 = query2.executeQuery();
@@ -162,7 +162,7 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
         PreparedStatement query;
 
         try {
-            String SQLQuery = "SELECT * FROM chefskiss.prenota_in WHERE Data = ? AND Orario = ? AND CF = ?";
+            String SQLQuery = "SELECT * FROM boru5sh3eoe2vtbznsll.prenota_in WHERE Data = ? AND Orario = ? AND CF = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setDate(1, data);
@@ -187,7 +187,7 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
         Prenotazione prenotazione = new Prenotazione();
 
         try{
-            String SQLQuery = "SELECT * FROM chefskiss.prenota_in WHERE ID_Prenotazione = ?";
+            String SQLQuery = "SELECT * FROM boru5sh3eoe2vtbznsll.prenota_in WHERE ID_Prenotazione = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, id);
@@ -210,7 +210,7 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
         PreparedStatement query;
 
         try{
-            String SQLQuery = "SELECT * FROM chefskiss.prenota_in NATURAL JOIN chefskiss.sede WHERE CF = ?";
+            String SQLQuery = "SELECT * FROM boru5sh3eoe2vtbznsll.prenota_in NATURAL JOIN boru5sh3eoe2vtbznsll.sede WHERE CF = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, CF);
@@ -238,7 +238,7 @@ public class PrenotazioneDAO_MySQL implements PrenotazioneDAO {
         Date dataSQLAttuale = new Date(System.currentTimeMillis());
 
         try{
-            String SQLQuery = "SELECT * FROM chefskiss.prenota_in WHERE CF = ?";
+            String SQLQuery = "SELECT * FROM boru5sh3eoe2vtbznsll.prenota_in WHERE CF = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, CF);
