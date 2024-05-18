@@ -22,7 +22,7 @@ public class ContieneDAO_MySQL implements ContieneDAO {
         Contiene contiene = new Contiene();
 
         try{
-            String SQLQuery = "INSERT INTO boru5sh3eoe2vtbznsll.contiene (ID_Piatto, Nome_Ingrediente, Quantita) VALUES (?,?,?)";
+            String SQLQuery = "INSERT INTO contiene (ID_Piatto, Nome_Ingrediente, Quantita) VALUES (?,?,?)";
 
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, piatto.getId());
@@ -47,7 +47,7 @@ public class ContieneDAO_MySQL implements ContieneDAO {
         PreparedStatement query;
 
         try{
-            String SQLQuery = "UPDATE boru5sh3eoe2vtbznsll.contiene SET Quantita = ? WHERE ID_Piatto = ? AND Nome_Ingrediente = ?";
+            String SQLQuery = "UPDATE contiene SET Quantita = ? WHERE ID_Piatto = ? AND Nome_Ingrediente = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, contiene.getQuantita());
@@ -66,7 +66,7 @@ public class ContieneDAO_MySQL implements ContieneDAO {
         PreparedStatement query;
 
         try{
-            String SQLQuery = "DELETE FROM boru5sh3eoe2vtbznsll.contiene WHERE ID_Piatto = ? AND Nome_Ingrediente = ?";
+            String SQLQuery = "DELETE FROM contiene WHERE ID_Piatto = ? AND Nome_Ingrediente = ?";
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, contiene.getPiattoC().getId());
             query.setString(2, contiene.getIngredienteC().getNome());
@@ -84,7 +84,7 @@ public class ContieneDAO_MySQL implements ContieneDAO {
         PreparedStatement query;
 
         try{
-            String SQLQuery = "DELETE FROM boru5sh3eoe2vtbznsll.contiene WHERE ID_Piatto = ?";
+            String SQLQuery = "DELETE FROM contiene WHERE ID_Piatto = ?";
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, ID);
 
@@ -102,7 +102,7 @@ public class ContieneDAO_MySQL implements ContieneDAO {
 
         try{
             String SQLQuery =
-                    "DELETE FROM boru5sh3eoe2vtbznsll.contiene " +
+                    "DELETE FROM contiene " +
                     "WHERE ID_Piatto = ? ";
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, piatto.getId());
@@ -121,7 +121,7 @@ public class ContieneDAO_MySQL implements ContieneDAO {
         List<Contiene> piatti = new ArrayList<>();
 
         try{
-            String SQLQuery = "SELECT * FROM boru5sh3eoe2vtbznsll.contiene WHERE ID_Piatto = ?";
+            String SQLQuery = "SELECT * FROM contiene WHERE ID_Piatto = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, piatto.getId());
@@ -147,7 +147,7 @@ public class ContieneDAO_MySQL implements ContieneDAO {
         Contiene quantita = new Contiene();
 
         try{
-            String SQLQuery = "SELECT * FROM boru5sh3eoe2vtbznsll.contiene WHERE ID_Piatto = ? AND Nome_Ingrediente LIKE ?";
+            String SQLQuery = "SELECT * FROM contiene WHERE ID_Piatto = ? AND Nome_Ingrediente LIKE ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, piatto.getId());

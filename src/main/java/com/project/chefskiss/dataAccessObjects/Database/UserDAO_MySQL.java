@@ -29,7 +29,7 @@ public class UserDAO_MySQL implements UserDAO {
         utente.setSedeU(sede);
 
         try {
-            String SQLQuery = "SELECT * FROM boru5sh3eoe2vtbznsll.utente WHERE CF = ? OR Email = ? OR Telefono = ?";
+            String SQLQuery = "SELECT * FROM utente WHERE CF = ? OR Email = ? OR Telefono = ?";
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, CF);
             query.setString(2, Email);
@@ -44,7 +44,7 @@ public class UserDAO_MySQL implements UserDAO {
             rs.close();
             query.close();
 
-            String SQLQuery2 = "INSERT INTO boru5sh3eoe2vtbznsll.utente(" +
+            String SQLQuery2 = "INSERT INTO utente(" +
                     "CF, " + // 1
                     "Nome, " + // 2
                     "Cognome, " + // 3
@@ -108,7 +108,7 @@ public class UserDAO_MySQL implements UserDAO {
         //Il metodo update non è impostato per aggiornare la password --> Funzionalità spostata su funzione apposita
 
         try {
-            String SQLQuery = "UPDATE boru5sh3eoe2vtbznsll.utente " +
+            String SQLQuery = "UPDATE utente " +
                     "SET Nome = ?, " + // 1
                     "Cognome = ?, " + // 2
                     "Data_Nascita = ?, " + // 3
@@ -134,7 +134,7 @@ public class UserDAO_MySQL implements UserDAO {
                 query.setInt(i++, 1);
 
                 if (user.isClienteVerificato()) {
-                    String SQLQuery2 = "UPDATE boru5sh3eoe2vtbznsll.utente SET Verificato = ? WHERE CF = ?";
+                    String SQLQuery2 = "UPDATE utente SET Verificato = ? WHERE CF = ?";
 
                     query2 = conn.prepareStatement(SQLQuery2);
                     query2.setInt(1, 1);
@@ -151,7 +151,7 @@ public class UserDAO_MySQL implements UserDAO {
                 if (user.getProfilePicture()!=null)
                 {
                     String SQLQuery2 =
-                            "UPDATE boru5sh3eoe2vtbznsll.utente " +
+                            "UPDATE utente " +
                                     "SET Username = ?," +
                                     "Foto_Privato = ? " +
                                     "WHERE CF = ?";
@@ -163,7 +163,7 @@ public class UserDAO_MySQL implements UserDAO {
                 else
                 {
                     String SQLQuery2 =
-                            "UPDATE boru5sh3eoe2vtbznsll.utente " +
+                            "UPDATE utente " +
                             "SET Username = ? " +
                             "WHERE CF = ?";
                     query2 = conn.prepareStatement(SQLQuery2);
@@ -178,7 +178,7 @@ public class UserDAO_MySQL implements UserDAO {
             if (user.isChef()) {
                 query.setInt(i++, 1);
 
-                String SQLQuery2 = "UPDATE boru5sh3eoe2vtbznsll.utente SET Foto_Chef = ?, CV = ?, Coordinate = ? WHERE CF = ?";
+                String SQLQuery2 = "UPDATE utente SET Foto_Chef = ?, CV = ?, Coordinate = ? WHERE CF = ?";
 
                 query2 = conn.prepareStatement(SQLQuery2);
                 query2.setBlob(1, user.getChefPicture());
@@ -211,14 +211,14 @@ public class UserDAO_MySQL implements UserDAO {
         String CF = user.getCF();
 
         try{
-            String SQLQuery = "UPDATE boru5sh3eoe2vtbznsll.utente SET Deleted = 'Y' WHERE CF = ?";
+            String SQLQuery = "UPDATE utente SET Deleted = 'Y' WHERE CF = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, CF);
 
             query.executeUpdate();
 
-            String Verifica = "SELECT Deleted FROM boru5sh3eoe2vtbznsll.utente WHERE CF = ?";
+            String Verifica = "SELECT Deleted FROM utente WHERE CF = ?";
             query = conn.prepareStatement(Verifica);
             query.setString(1, CF);
             ResultSet result2 = query.executeQuery();
@@ -243,7 +243,7 @@ public class UserDAO_MySQL implements UserDAO {
 
         try {
             String SQLQuery =
-                    "UPDATE boru5sh3eoe2vtbznsll.utente " +
+                    "UPDATE utente " +
                     "SET Password = ? " +
                     "WHERE CF = ?";
 
@@ -266,7 +266,7 @@ public class UserDAO_MySQL implements UserDAO {
 
         try{
             String SQLQuery = "SELECT * " +
-                    "FROM boru5sh3eoe2vtbznsll.utente " +
+                    "FROM utente " +
                     "WHERE CF = ? " +
                     "AND Deleted = 'N'";
 
@@ -297,7 +297,7 @@ public class UserDAO_MySQL implements UserDAO {
 
         try{
             String SQLQuery = "SELECT * " +
-                    "FROM boru5sh3eoe2vtbznsll.utente " +
+                    "FROM utente " +
                     "WHERE CF = ? ";
 
             query = conn.prepareStatement(SQLQuery);

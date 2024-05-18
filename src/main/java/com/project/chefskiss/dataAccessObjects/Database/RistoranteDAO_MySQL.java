@@ -25,7 +25,7 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
         risto.setUtenteRi(utente);
 
         try {
-            String SQLQuery = "INSERT INTO boru5sh3eoe2vtbznsll.ristorante(Nome_Ristorante, CF, Deleted) VALUES (?, ?, ?)";
+            String SQLQuery = "INSERT INTO ristorante(Nome_Ristorante, CF, Deleted) VALUES (?, ?, ?)";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, Nome_Ristorante);
@@ -38,7 +38,7 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
 
             SQLQuery =
                     "SELECT ID_Ristorante " +
-                    "FROM boru5sh3eoe2vtbznsll.ristorante " +
+                    "FROM ristorante " +
                     "WHERE CF = ?";
 
             query = conn.prepareStatement(SQLQuery);
@@ -61,7 +61,7 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
         Integer id_ristorante = ristorante.getID_Ristorante();
 
         try{
-            String SQLQuery = "UPDATE boru5sh3eoe2vtbznsll.ristorante " +
+            String SQLQuery = "UPDATE ristorante " +
                     "SET Nome_Ristorante = ?, " +
                     "CF = ? " +
                     "WHERE ID_Ristorante = ?";
@@ -85,7 +85,7 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
         PreparedStatement query;
 
         try {
-            String SQLQuery = "UPDATE boru5sh3eoe2vtbznsll.ristorante SET Deleted = 'Y' WHERE ID_Ristorante = ?";
+            String SQLQuery = "UPDATE ristorante SET Deleted = 'Y' WHERE ID_Ristorante = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, ristorante.getID_Ristorante());
@@ -104,7 +104,7 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
         Ristorante ristorante = new Ristorante();
 
         try {
-            String SQLQuery = "SELECT * FROM boru5sh3eoe2vtbznsll.ristorante WHERE ID_Ristorante = ?";
+            String SQLQuery = "SELECT * FROM ristorante WHERE ID_Ristorante = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, id);
@@ -132,7 +132,7 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
         List<Ristorante> ristoranti = new ArrayList<>();
 
         try {
-            String SQLQuery = "SELECT * FROM boru5sh3eoe2vtbznsll.ristorante WHERE Nome_Ristorante LIKE ?";
+            String SQLQuery = "SELECT * FROM ristorante WHERE Nome_Ristorante LIKE ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, "%"+risto+"%");
@@ -160,7 +160,7 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
         Ristorante ristorante = new Ristorante();
 
         try{
-            String SQLQuery = "SELECT * FROM boru5sh3eoe2vtbznsll.ristorante WHERE CF = ?";
+            String SQLQuery = "SELECT * FROM ristorante WHERE CF = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, CF_Risto);
@@ -188,7 +188,7 @@ public class RistoranteDAO_MySQL implements RistoranteDAO {
         List<Ristorante> ristoranti = new ArrayList<>();
 
         try {
-            String SQLQuary = "SELECT * FROM boru5sh3eoe2vtbznsll.ristorante";
+            String SQLQuary = "SELECT * FROM ristorante";
 
             quary = conn.prepareStatement(SQLQuary);
 

@@ -23,7 +23,7 @@ public class ValutazioneDAO_MySQL implements ValutazioneDAO {
         Valutazione valutazione = new Valutazione();
 
         try{
-            String SQLQuery = "INSERT INTO boru5sh3eoe2vtbznsll.valuta (CF, Coordinate, Voto) VALUES(?,?,?)";
+            String SQLQuery = "INSERT INTO valuta (CF, Coordinate, Voto) VALUES(?,?,?)";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, utente.getCF());
@@ -38,7 +38,7 @@ public class ValutazioneDAO_MySQL implements ValutazioneDAO {
         }
 
         try{
-            String SQLQuery = "SELECT COUNT(*) AS somma FROM boru5sh3eoe2vtbznsll.valuta WHERE CF = ?";
+            String SQLQuery = "SELECT COUNT(*) AS somma FROM valuta WHERE CF = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, utente.getCF());
@@ -47,7 +47,7 @@ public class ValutazioneDAO_MySQL implements ValutazioneDAO {
             if (result.next()){
                 if (result.getInt("somma") > Config.MAX_VALUTAZIONI){
                     System.out.println(result.getInt("somma"));
-                    String SQLQuery2 = "UPDATE boru5sh3eoe2vtbznsll.utente SET Verificato = 1 WHERE CF = ?";
+                    String SQLQuery2 = "UPDATE utente SET Verificato = 1 WHERE CF = ?";
 
                     query = conn.prepareStatement(SQLQuery2);
                     query.setString(1, utente.getCF());
@@ -74,7 +74,7 @@ public class ValutazioneDAO_MySQL implements ValutazioneDAO {
         PreparedStatement query;
 
         try{
-            String SQLQuery = "UPDATE boru5sh3eoe2vtbznsll.valuta SET Voto = ? WHERE Coordinate = ? AND CF = ?";
+            String SQLQuery = "UPDATE valuta SET Voto = ? WHERE Coordinate = ? AND CF = ?";
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, valutazione.getVoto());
             query.setString(2, valutazione.getSedeV().getCoordinate());
@@ -92,7 +92,7 @@ public class ValutazioneDAO_MySQL implements ValutazioneDAO {
         PreparedStatement query;
 
         try{
-            String SQLQuery = "DELETE FROM boru5sh3eoe2vtbznsll.valuta WHERE CF = ? AND Coordinate = ?";
+            String SQLQuery = "DELETE FROM valuta WHERE CF = ? AND Coordinate = ?";
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, valutazione.getUtenteV().getCF());
             query.setString(2, valutazione.getSedeV().getCoordinate());
@@ -110,7 +110,7 @@ public class ValutazioneDAO_MySQL implements ValutazioneDAO {
         PreparedStatement query;
 
         try{
-            String SQLQuery = "DELETE FROM boru5sh3eoe2vtbznsll.valuta WHERE CF = ?";
+            String SQLQuery = "DELETE FROM valuta WHERE CF = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, CF);
@@ -127,7 +127,7 @@ public class ValutazioneDAO_MySQL implements ValutazioneDAO {
         PreparedStatement query;
 
         try{
-            String SQLQuery = "DELETE FROM boru5sh3eoe2vtbznsll.valuta WHERE Coordinate = ?";
+            String SQLQuery = "DELETE FROM valuta WHERE Coordinate = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, Coordinate);
@@ -147,7 +147,7 @@ public class ValutazioneDAO_MySQL implements ValutazioneDAO {
             String SQLQuery = "SELECT *" +
                     "FROM (" +
                     "    SELECT Coordinate, AVG(voto) AS media_voto" +
-                    "    FROM boru5sh3eoe2vtbznsll.valuta" +
+                    "    FROM valuta" +
                     "    GROUP BY Coordinate" +
                     "    ORDER BY media_voto DESC" +
                     ") as sedi_migliori";
@@ -174,7 +174,7 @@ public class ValutazioneDAO_MySQL implements ValutazioneDAO {
 
         PreparedStatement query;
         try{
-            String SQLQuery = "SELECT * FROM boru5sh3eoe2vtbznsll.valuta WHERE CF = ? AND Coordinate = ?";
+            String SQLQuery = "SELECT * FROM valuta WHERE CF = ? AND Coordinate = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, CF_recensore);
@@ -200,7 +200,7 @@ public class ValutazioneDAO_MySQL implements ValutazioneDAO {
         Valutazione valutazione = new Valutazione();
 
         try{
-            String SQLQuery = "SELECT * FROM boru5sh3eoe2vtbznsll.valuta WHERE CF = ? AND Coordinate = ?";
+            String SQLQuery = "SELECT * FROM valuta WHERE CF = ? AND Coordinate = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, CF);
@@ -226,7 +226,7 @@ public class ValutazioneDAO_MySQL implements ValutazioneDAO {
         List<Valutazione> valutazioni = new ArrayList<>();
 
         try{
-            String SQLQuery = "SELECT * FROM boru5sh3eoe2vtbznsll.valuta WHERE Coordinate = ?";
+            String SQLQuery = "SELECT * FROM valuta WHERE Coordinate = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, sede.getCoordinate());

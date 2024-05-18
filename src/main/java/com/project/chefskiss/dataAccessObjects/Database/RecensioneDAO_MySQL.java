@@ -19,7 +19,7 @@ public class RecensioneDAO_MySQL implements RecensioneDAO {
         Recensione recensione = new Recensione();
 
         try{
-            String SQLQuery = "INSERT INTO boru5sh3eoe2vtbznsll.recensisce(CF, ID_Piatto, Voto, Commento) VALUES (?,?,?,?)";
+            String SQLQuery = "INSERT INTO recensisce(CF, ID_Piatto, Voto, Commento) VALUES (?,?,?,?)";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, utente.getCF());
@@ -46,7 +46,7 @@ public class RecensioneDAO_MySQL implements RecensioneDAO {
         PreparedStatement query;
 
         try{
-            String SQLQuery = "UPDATE boru5sh3eoe2vtbznsll.recensisce SET Voto = ?, Commento = ? WHERE CF = ? AND ID_Piatto = ?";
+            String SQLQuery = "UPDATE recensisce SET Voto = ?, Commento = ? WHERE CF = ? AND ID_Piatto = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, recensione.getVoto());
@@ -66,7 +66,7 @@ public class RecensioneDAO_MySQL implements RecensioneDAO {
         PreparedStatement query;
 
         try{
-            String SQLQuery = "DELETE FROM boru5sh3eoe2vtbznsll.recensisce WHERE CF = ? AND ID_Piatto = ?";
+            String SQLQuery = "DELETE FROM recensisce WHERE CF = ? AND ID_Piatto = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, recensione.getUtenteR().getCF());
@@ -85,7 +85,7 @@ public class RecensioneDAO_MySQL implements RecensioneDAO {
         PreparedStatement query;
 
         try{
-            String SQLQuery = "DELETE FROM boru5sh3eoe2vtbznsll.recensisce WHERE CF = ?";
+            String SQLQuery = "DELETE FROM recensisce WHERE CF = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, CF);
@@ -102,7 +102,7 @@ public class RecensioneDAO_MySQL implements RecensioneDAO {
         PreparedStatement query;
 
         try{
-            String SQLQuery = "DELETE FROM boru5sh3eoe2vtbznsll.recensisce WHERE ID_Piatto = ?";
+            String SQLQuery = "DELETE FROM recensisce WHERE ID_Piatto = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, ID);
@@ -120,7 +120,7 @@ public class RecensioneDAO_MySQL implements RecensioneDAO {
         PreparedStatement query;
 
         try{
-            String SQLQuery = "SELECT * FROM boru5sh3eoe2vtbznsll.recensisce WHERE ID_Piatto = ?";
+            String SQLQuery = "SELECT * FROM recensisce WHERE ID_Piatto = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, id_piatto);
@@ -147,7 +147,7 @@ public class RecensioneDAO_MySQL implements RecensioneDAO {
         PreparedStatement query;
 
         try{
-            String SQLQuery = "SELECT * FROM boru5sh3eoe2vtbznsll.recensisce WHERE ID_Piatto = ? AND CF = ?";
+            String SQLQuery = "SELECT * FROM recensisce WHERE ID_Piatto = ? AND CF = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, id_piatto);
@@ -177,7 +177,7 @@ public class RecensioneDAO_MySQL implements RecensioneDAO {
             String SQLQuery = "SELECT *" +
                     "FROM (" +
                     "    SELECT ID_Piatto, AVG(voto) AS media_voto" +
-                    "    FROM boru5sh3eoe2vtbznsll.recensisce" +
+                    "    FROM recensisce" +
                     "    GROUP BY ID_Piatto" +
                     "    ORDER BY media_voto DESC" +
                     ") as piatti_migliori";
@@ -204,7 +204,7 @@ public class RecensioneDAO_MySQL implements RecensioneDAO {
 
         PreparedStatement query;
         try{
-            String SQLQuery = "SELECT * FROM boru5sh3eoe2vtbznsll.recensisce WHERE CF = ? AND ID_Piatto = ?";
+            String SQLQuery = "SELECT * FROM recensisce WHERE CF = ? AND ID_Piatto = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, CF_recensore);
