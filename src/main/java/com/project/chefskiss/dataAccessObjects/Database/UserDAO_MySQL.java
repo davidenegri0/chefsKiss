@@ -328,7 +328,7 @@ public class UserDAO_MySQL implements UserDAO {
 
         try{
             String SQLQuery = "SELECT * " +
-                    "FROM Utente " +
+                    "FROM utente " +
                     "WHERE Nome LIKE ? " +
                     "AND Cognome LIKE ? " +
                     "AND Deleted = 'N'";
@@ -362,7 +362,7 @@ public class UserDAO_MySQL implements UserDAO {
         try {
             String SQLQuery =
                     "SELECT * " +
-                    "FROM Utente " +
+                    "FROM utente " +
                     "WHERE Email = ? " +
                     "AND Deleted = 'N'";
 
@@ -394,7 +394,7 @@ public class UserDAO_MySQL implements UserDAO {
         try {
             String SQLQuery =
                     "SELECT * " +
-                    "FROM Utente " +
+                    "FROM utente " +
                     "WHERE Coordinate = ? " +
                     "AND Deleted = 'N'";
 
