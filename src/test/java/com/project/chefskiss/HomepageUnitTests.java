@@ -59,7 +59,7 @@ public class HomepageUnitTests {
     @ParameterizedTest
     @EmptySource
     @ValueSource(strings = {"CF12345678901234&Mario&Rossi&mario@example.com&1985-05-15&1234567890&2023-08-19&true&false&true&false&true&false&mario_rossi"})
-    void homepageLoads(String usr_data) throws Exception {
+    void homepageLoads_less_piatti(String usr_data) throws Exception {
         System.out.println("Inizio test");
 
         // Mock data
@@ -82,19 +82,44 @@ public class HomepageUnitTests {
 
         // Mock of static methods
         user_mock.when(() -> User.decodeUserData(anyString())).thenReturn(utente);
-        assertEquals(utente, User.decodeUserData(usr_data));
+        //assertEquals(utente, User.decodeUserData(usr_data));
         dao_factory_mock.when(() -> DAOFactory.getDAOFactory(anyString(), any())).thenReturn(DatabaseDAO_mock);
-        assertEquals(DatabaseDAO_mock, DAOFactory.getDAOFactory("MYSQL", null));
+        //assertEquals(DatabaseDAO_mock, DAOFactory.getDAOFactory("MYSQL", null));
 
         // Mock of classes
-        doNothing().when(DatabaseDAO_mock).beginTransaction();
+        //doNothing().when(DatabaseDAO_mock).beginTransaction();
         when(DatabaseDAO_mock.getPiattoDAO(null)).thenReturn(sessionPiattiDAO_mock);
-        assertEquals(sessionPiattiDAO_mock, DatabaseDAO_mock.getPiattoDAO(null));
+        //assertEquals(sessionPiattiDAO_mock, DatabaseDAO_mock.getPiattoDAO(null));
         when(sessionPiattiDAO_mock.findMostRecent()).thenReturn(piatti);
-        assertEquals(piatti, sessionPiattiDAO_mock.findMostRecent());
+        //assertEquals(piatti, sessionPiattiDAO_mock.findMostRecent());
+
+        when(piatti.size()).thenReturn(3);
 
         // Effective test
-        assertNotNull(controller.homepageLoader(usr_data));
+        //assertNotNull(controller.homepageLoader(usr_data));
+        assertEquals("homepage", controller.homepageLoader(usr_data).getViewName());
+
+        System.out.println("Fine test");
+    }
+
+    @ParameterizedTest
+    @EmptySource
+    void homepageLoads_more_piatti(String usr_data) throws Exception {
+        System.out.println("Inizio test");
+
+        // Mock of static methods
+        user_mock.when(() -> User.decodeUserData(anyString())).thenReturn(utente);
+        dao_factory_mock.when(() -> DAOFactory.getDAOFactory(anyString(), any())).thenReturn(DatabaseDAO_mock);
+
+        // Mock of classes
+        when(DatabaseDAO_mock.getPiattoDAO(null)).thenReturn(sessionPiattiDAO_mock);
+        when(sessionPiattiDAO_mock.findMostRecent()).thenReturn(piatti);
+
+        when(piatti.size()).thenReturn(4);
+
+        // Effective test
+        //assertNotNull(controller.homepageLoader(usr_data));
+        assertEquals("homepage", controller.homepageLoader(usr_data).getViewName());
 
         System.out.println("Fine test");
     }
