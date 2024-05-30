@@ -97,7 +97,7 @@ public class HomepageUnitTests {
 
         // Effective test
         //assertNotNull(controller.homepageLoader(usr_data));
-        assertEquals("homepage", controller.homepageLoader(usr_data).getViewName());
+        assertEquals("homepagePage", controller.homepageLoader(usr_data).getViewName());
 
         System.out.println("Fine test");
     }
@@ -119,7 +119,7 @@ public class HomepageUnitTests {
 
         // Effective test
         //assertNotNull(controller.homepageLoader(usr_data));
-        assertEquals("homepage", controller.homepageLoader(usr_data).getViewName());
+        assertEquals("homepagePage", controller.homepageLoader(usr_data).getViewName());
 
         System.out.println("Fine test");
     }
