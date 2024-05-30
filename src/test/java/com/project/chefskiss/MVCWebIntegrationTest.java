@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ContextConfiguration
 @WebAppConfiguration
-public class IntegrationTest_MVCWeb {
+public class MVCWebIntegrationTest {
 
     MockMvc mockMvc;
 
