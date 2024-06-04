@@ -11,7 +11,7 @@
     <groupId>com.project</groupId>
     <artifactId>chefsKiss</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <name>chefsKiss</name>
     <description>chefsKiss</description>
     <properties>
