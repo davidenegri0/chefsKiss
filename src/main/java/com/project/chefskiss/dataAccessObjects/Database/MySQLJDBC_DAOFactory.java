@@ -18,7 +18,7 @@ public class MySQLJDBC_DAOFactory extends DAOFactory {
             Class.forName(Config.DATABASE_DRIVER);
             String url = Config.DATABASE_URL;
             if (Config.DATABASE_HOSTNAME != null) {
-                url.replace("localhost", Config.DATABASE_HOSTNAME);
+                url = url.replace("localhost", Config.DATABASE_HOSTNAME);
             }
             System.out.println("Connecting to " + url);
             this.conn = DriverManager.getConnection(url);

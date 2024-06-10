@@ -31,29 +31,23 @@ public class HomepageUnitTests {
     @Mock
     private DAOFactory DatabaseDAO_mock;
 
-    @Mock
-    private User utente;
-
-    @Mock
-    List<Piatto> piatti;
-
     @InjectMocks
     private homepageController controller;
 
-    private MockedStatic<User> user_mock;
+    //private MockedStatic<User> user_mock;
     private MockedStatic<DAOFactory> dao_factory_mock;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         // Registering a static mock for UserService before each test
-        user_mock = Mockito.mockStatic(User.class);
+        //user_mock = Mockito.mockStatic(User.class);
         dao_factory_mock = Mockito.mockStatic(DAOFactory.class);
     }
     @AfterEach
     public void tearDown() {
         // Closing the mockStatic after each test
-        user_mock.close();
+        //user_mock.close();
         dao_factory_mock.close();
     }
     @ParameterizedTest
@@ -63,10 +57,9 @@ public class HomepageUnitTests {
         System.out.println("Inizio test");
 
         // Mock data
-        /*
         User utente = new User();
         utente.setCF("CF12345678901234");
-        utente.setNome("Wario");
+        utente.setNome("Mario");
         utente.setCognome("Rossi");
         utente.setEmail("mario@example.com");
 
@@ -75,16 +68,13 @@ public class HomepageUnitTests {
             Piatto p = new Piatto();
             p.setID(i);
             p.setNome("Pasta");
-            p.setVotoMedio(Float.parseFloat("3"));
+            p.setVotoMedio(3.0F);
             piatti.add(p);
         }
-         */
 
         // Mock of static methods
-        user_mock.when(() -> User.decodeUserData(anyString())).thenReturn(utente);
-        //assertEquals(utente, User.decodeUserData(usr_data));
+        //user_mock.when(() -> User.decodeUserData(anyString())).thenReturn(utente);
         dao_factory_mock.when(() -> DAOFactory.getDAOFactory(anyString(), any())).thenReturn(DatabaseDAO_mock);
-        //assertEquals(DatabaseDAO_mock, DAOFactory.getDAOFactory("MYSQL", null));
 
         // Mock of classes
         //doNothing().when(DatabaseDAO_mock).beginTransaction();
@@ -93,7 +83,7 @@ public class HomepageUnitTests {
         when(sessionPiattiDAO_mock.findMostRecent()).thenReturn(piatti);
         //assertEquals(piatti, sessionPiattiDAO_mock.findMostRecent());
 
-        when(piatti.size()).thenReturn(3);
+        //when(piatti.size()).thenReturn(3);
 
         // Effective test
         //assertNotNull(controller.homepageLoader(usr_data));
@@ -107,15 +97,25 @@ public class HomepageUnitTests {
     void homepageLoads_more_piatti(String usr_data) throws Exception {
         System.out.println("Inizio test");
 
+        //Mock data
+        List<Piatto> piatti = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            Piatto p = new Piatto();
+            p.setID(i);
+            p.setNome("Pasta");
+            p.setVotoMedio(3.0F);
+            piatti.add(p);
+        }
+
         // Mock of static methods
-        user_mock.when(() -> User.decodeUserData(anyString())).thenReturn(utente);
+        //user_mock.when(() -> User.decodeUserData(anyString())).thenReturn(utente);
         dao_factory_mock.when(() -> DAOFactory.getDAOFactory(anyString(), any())).thenReturn(DatabaseDAO_mock);
 
         // Mock of classes
         when(DatabaseDAO_mock.getPiattoDAO(null)).thenReturn(sessionPiattiDAO_mock);
         when(sessionPiattiDAO_mock.findMostRecent()).thenReturn(piatti);
 
-        when(piatti.size()).thenReturn(4);
+        //when(piatti.size()).thenReturn(4);
 
         // Effective test
         //assertNotNull(controller.homepageLoader(usr_data));
