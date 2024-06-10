@@ -25,5 +25,5 @@ jobs:
       with:
         context: .
         push: true
-        tags: antonyanlinux/myapp:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/chefskiss_webapp:latest
       #run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
