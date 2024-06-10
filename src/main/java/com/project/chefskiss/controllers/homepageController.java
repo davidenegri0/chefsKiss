@@ -5,9 +5,12 @@ import com.project.chefskiss.dataAccessObjects.DAOFactory;
 import com.project.chefskiss.dataAccessObjects.PiattoDAO;
 import com.project.chefskiss.modelObjects.Piatto;
 import com.project.chefskiss.modelObjects.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Collections;
@@ -20,7 +23,7 @@ public class homepageController {
             @CookieValue(value = "loggedUser", defaultValue = "") String UserData
     )
     {
-        ModelAndView page = new ModelAndView("homepage");
+        ModelAndView page = new ModelAndView("homepagePage");
         User utente;
 
         if(!UserData.isEmpty()){

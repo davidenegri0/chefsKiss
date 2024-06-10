@@ -16,7 +16,12 @@ public class MySQLJDBC_DAOFactory extends DAOFactory {
     public void beginTransaction() {
         try {
             Class.forName(Config.DATABASE_DRIVER);
-            this.conn = DriverManager.getConnection(Config.DATABASE_URL);
+            String url = Config.DATABASE_URL;
+            if (Config.DATABASE_HOSTNAME != null) {
+                url = url.replace("localhost", Config.DATABASE_HOSTNAME);
+            }
+            System.out.println("Connecting to " + url);
+            this.conn = DriverManager.getConnection(url);
             this.conn.setAutoCommit(false);
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);

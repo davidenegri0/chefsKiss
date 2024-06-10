@@ -25,8 +25,8 @@ public class SedeDAO_MySQL implements SedeDAO {
         Sede sede = new Sede();
 
         try{
-            String SQLQuery_sede = "INSERT INTO chefskiss.sede (Coordinate, Via, Citta, Posti_Disponibili, ID_Ristorante) VALUES (?,?,?,?,?)";
-            String SQLQuery_servito_in = "INSERT INTO chefskiss.servito_in (ID_Piatto, Coordinate) VALUES (?,?)";
+            String SQLQuery_sede = "INSERT INTO sede (Coordinate, Via, Citta, Posti_Disponibili, ID_Ristorante) VALUES (?,?,?,?,?)";
+            String SQLQuery_servito_in = "INSERT INTO servito_in (ID_Piatto, Coordinate) VALUES (?,?)";
 
             query_sede = conn.prepareStatement(SQLQuery_sede);
             query_sede.setString(1, Coordinate);
@@ -72,7 +72,7 @@ public class SedeDAO_MySQL implements SedeDAO {
         sede.setID_Ristorante(ID_Ristorante);
 
         try{
-            String SQLQuery = "INSERT INTO chefskiss.sede(Coordinate, Via, Citta, Posti_Disponibili, ID_Ristorante) " +
+            String SQLQuery = "INSERT INTO sede(Coordinate, Via, Citta, Posti_Disponibili, ID_Ristorante) " +
                     "VALUES (?, ?, ?, ?, ?)";
 
             query = conn.prepareStatement(SQLQuery);
@@ -100,7 +100,7 @@ public class SedeDAO_MySQL implements SedeDAO {
 
         try {
             String SQLQuery =
-                    "UPDATE chefskiss.sede " +
+                    "UPDATE sede " +
                     "SET Via = ?, Citta = ?, Posti_Disponibili = ?, ID_Ristorante = ? " +
                     "WHERE Coordinate = ?";
 
@@ -125,7 +125,7 @@ public class SedeDAO_MySQL implements SedeDAO {
         PreparedStatement query;
 
         try{
-            String SQLQuery = "UPDATE chefskiss.sede SET Deleted = 'Y' WHERE Coordinate = ?";
+            String SQLQuery = "UPDATE sede SET Deleted = 'Y' WHERE Coordinate = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, sede.getCoordinate());
@@ -147,7 +147,7 @@ public class SedeDAO_MySQL implements SedeDAO {
         try{
             String SQLQuery =
                     "SELECT * " +
-                    "FROM chefskiss.sede " +
+                    "FROM sede " +
                     "WHERE Via = ? " +
                     "AND Citta = ? " +
                     "AND Deleted = 'N'";
@@ -181,8 +181,8 @@ public class SedeDAO_MySQL implements SedeDAO {
         try{
             String SQLQuery =
                     "SELECT Coordinate, Via, Citta, Posti_Disponibili, ID_Ristorante, Deleted " +
-                    "FROM chefskiss.sede " +
-                    "NATURAL JOIN chefskiss.ristorante " +
+                    "FROM sede " +
+                    "NATURAL JOIN ristorante " +
                     "WHERE ristorante.Nome_Ristorante LIKE ? " +
                     "AND sede.Deleted = 'N'";
 
@@ -214,7 +214,7 @@ public class SedeDAO_MySQL implements SedeDAO {
         try{
             String SQLQuery =
                     "SELECT * " +
-                    "FROM chefskiss.sede " +
+                    "FROM sede " +
                     "WHERE ID_Ristorante = ? " +
                     "AND Deleted = 'N'";
 
@@ -246,7 +246,7 @@ public class SedeDAO_MySQL implements SedeDAO {
         try{
             String SQLQuery =
                     "SELECT * " +
-                    "FROM chefskiss.sede " +
+                    "FROM sede " +
                     "WHERE Coordinate = ? " +
                     "AND Deleted = 'N'";
 
@@ -277,8 +277,8 @@ public class SedeDAO_MySQL implements SedeDAO {
         try{
             String SQLQuery =
                     "SELECT Coordinate, Via, Citta, Posti_Disponibili, ID_Ristorante, Deleted " +
-                    "FROM chefskiss.servito_in " +
-                    "NATURAL JOIN chefskiss.sede " +
+                    "FROM servito_in " +
+                    "NATURAL JOIN sede " +
                     "WHERE ID_Piatto = ? " +
                     "AND sede.Deleted = 'N'";
 
@@ -310,7 +310,7 @@ public class SedeDAO_MySQL implements SedeDAO {
         try{
             String SQLQuery =
                     "SELECT s.*, r.ID_Ristorante, r.Nome_Ristorante, AVG(v.Voto) AS Media " +
-                            "FROM chefskiss.ristorante AS r NATURAL JOIN chefskiss.sede AS s LEFT JOIN chefskiss.valuta AS v ON s.Coordinate = v.Coordinate " +
+                            "FROM ristorante AS r NATURAL JOIN sede AS s LEFT JOIN valuta AS v ON s.Coordinate = v.Coordinate " +
                             "WHERE s.Citta LIKE ? " + // DA MODIFICARE METTENDOCI DENTRO ANCHE LA MEDIA DELLE SEDI!
                             "AND s.Deleted = 'N' " +
                             "GROUP BY s.Coordinate";
@@ -344,7 +344,7 @@ public class SedeDAO_MySQL implements SedeDAO {
 
         try {
             String SQLQuary = "SELECT s.*, AVG(v.Voto) as Media " +
-                    "FROM chefskiss.sede s " +
+                    "FROM sede s " +
                     "LEFT JOIN valuta v ON s.Coordinate = v.Coordinate " +
                     "WHERE s.Deleted = 'N' " +
                     "GROUP BY s.Coordinate ";

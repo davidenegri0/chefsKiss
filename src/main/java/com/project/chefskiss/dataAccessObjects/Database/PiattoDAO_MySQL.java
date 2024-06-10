@@ -23,7 +23,7 @@ public class PiattoDAO_MySQL implements PiattoDAO {
 
         try {
             String SQLQuery =
-                    "INSERT INTO chefskiss.piatto(Nome_Piatto, Data_Upload, Preparazione, CF, Foto_Piatto) " +
+                    "INSERT INTO piatto(Nome_Piatto, Data_Upload, Preparazione, CF, Foto_Piatto) " +
                     "VALUES (?, ?, ?, ?, ?) ";
 
             query = conn.prepareStatement(SQLQuery);
@@ -39,7 +39,7 @@ public class PiattoDAO_MySQL implements PiattoDAO {
 
             query.close();
 
-            SQLQuery = "SELECT * FROM chefskiss.piatto WHERE Nome_Piatto = ?";
+            SQLQuery = "SELECT * FROM piatto WHERE Nome_Piatto = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, Nome_Piatto);
@@ -64,7 +64,7 @@ public class PiattoDAO_MySQL implements PiattoDAO {
 
         try {
             String SQLQuery =
-                    "UPDATE chefskiss.piatto " +
+                    "UPDATE piatto " +
                     "SET Nome_Piatto = ?, " +
                     "Preparazione = ?, " +
                     "CF = ?, " +
@@ -93,15 +93,15 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         Integer ID_Piatto = piatto.getId();
 
         try{
-            String SQLQuery = "UPDATE chefskiss.piatto SET Deleted = 'Y' WHERE ID_Piatto = ?";
-            String SQLQuery2 = "DELETE FROM chefskiss.servito_in WHERE ID_Piatto = ?";
+            String SQLQuery = "UPDATE piatto SET Deleted = 'Y' WHERE ID_Piatto = ?";
+            String SQLQuery2 = "DELETE FROM servito_in WHERE ID_Piatto = ?";
 
             query = conn.prepareStatement(SQLQuery);
             query.setInt(1, ID_Piatto);
 
             query.executeUpdate();
 
-            String Verifica = "SELECT Deleted FROM chefskiss.piatto WHERE ID_Piatto = ?";
+            String Verifica = "SELECT Deleted FROM piatto WHERE ID_Piatto = ?";
             query = conn.prepareStatement(Verifica);
             query.setInt(1, ID_Piatto);
             ResultSet result2 = query.executeQuery();
@@ -130,7 +130,7 @@ public class PiattoDAO_MySQL implements PiattoDAO {
 
         try{
             String SQLQuery =
-                    "INSERT INTO chefskiss.servito_in (ID_Piatto, Coordinate) " +
+                    "INSERT INTO servito_in (ID_Piatto, Coordinate) " +
                     "VALUES (?,?)";
 
             query = conn.prepareStatement(SQLQuery);
@@ -153,8 +153,8 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         try {
             String SQLQuery =
                     "SELECT p.*, AVG(r.Voto) as Media " +
-                    "FROM chefskiss.piatto p " +
-                    "LEFT JOIN chefskiss.recensisce r on p.ID_Piatto = r.ID_Piatto " +
+                    "FROM piatto p " +
+                    "LEFT JOIN recensisce r on p.ID_Piatto = r.ID_Piatto " +
                     "WHERE p.Nome_Piatto LIKE ? " +
                     "AND p.Deleted = 'N'" +
                     "GROUP BY p.ID_Piatto";
@@ -191,14 +191,14 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         try {
             String SQLSubQuery =
                     "SELECT DISTINCT c.ID_Piatto " +
-                    "FROM chefskiss.contiene AS c " +
+                    "FROM contiene AS c " +
                     "JOIN ingrediente i on i.Nome_Ingrediente = c.Nome_Ingrediente " +
                     "WHERE i.Gruppo_Allergenico IN ("+ListaAllergeni+")";
 
             String SQLQuery =
                     "SELECT p.*, AVG(r.Voto) as Media " +
-                    "FROM chefskiss.piatto p " +
-                    "LEFT JOIN chefskiss.recensisce r on p.ID_Piatto = r.ID_Piatto " +
+                    "FROM piatto p " +
+                    "LEFT JOIN recensisce r on p.ID_Piatto = r.ID_Piatto " +
                     "WHERE p.Nome_Piatto LIKE ? " +
                     "AND p.Deleted = 'N' " +
                     "AND p.ID_Piatto NOT IN ("+SQLSubQuery+") " +
@@ -235,7 +235,7 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         try {
             String SQLQuery =
                     "SELECT p.*, AVG(r.Voto) as Media " +
-                    "FROM chefskiss.piatto p " +
+                    "FROM piatto p " +
                     "LEFT JOIN recensisce r on p.ID_Piatto = r.ID_Piatto " +
                     "JOIN contiene c on p.ID_Piatto = c.ID_Piatto " +
                     "WHERE c.Nome_Ingrediente LIKE ? " +
@@ -274,13 +274,13 @@ public class PiattoDAO_MySQL implements PiattoDAO {
         try {
             String SQLSubQuery =
                     "SELECT DISTINCT c.ID_Piatto " +
-                    "FROM chefskiss.contiene AS c " +
+                    "FROM contiene AS c " +
                     "JOIN ingrediente i on i.Nome_Ingrediente = c.Nome_Ingrediente " +
                     "WHERE i.Gruppo_Allergenico IN ("+ListaAllergeni+")";
 
             String SQLQuery =
                     "SELECT p.*, AVG(r.Voto) as Media " +
-                    "FROM chefskiss.piatto p " +
+                    "FROM piatto p " +
                     "LEFT JOIN recensisce r on p.ID_Piatto = r.ID_Piatto " +
                     "JOIN contiene c on p.ID_Piatto = c.ID_Piatto " +
                     "WHERE c.Nome_Ingrediente LIKE ? " +
@@ -324,7 +324,7 @@ public class PiattoDAO_MySQL implements PiattoDAO {
                     "WHERE si.Coordinate = ? " +
                     "AND p.Deleted = 'N'" +
                     "GROUP BY p.ID_Piatto";
-            String SQLQuery2 = "SELECT * FROM chefskiss.servito_in WHERE Coordinate = ?";
+            String SQLQuery2 = "SELECT * FROM servito_in WHERE Coordinate = ?";
             query = conn.prepareStatement(SQLQuery);
             query.setString(1, coordSede);
 
