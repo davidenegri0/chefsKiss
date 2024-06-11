@@ -31,7 +31,7 @@ jobs:
       runs-on: self-hosted
       needs: build
       steps:
-        - uses: actions/checkout@v4
+        #- uses: actions/checkout@v4
         - name: Docker Compose Action
           # You may pin to the exact commit or the version.
           # uses: hoverkraft-tech/compose-action@802a148945af6399a338c7906c267331b39a71af
