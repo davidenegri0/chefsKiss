@@ -1,0 +1,15 @@
+#NON VA UNA BEGA
+services:
+  chefskiss_database:
+    image: davidenegri01/chefskiss_db:latest
+    ports:
+      - "3306:3306"
+  chefskiss_webapp:
+    image: davidenegri01/chefskiss_webapp:latest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://chefskiss_database:3306/database?autoReconnect=true&useSSL=false
+      DB_HOSTNAME: chefskiss_database
+    depends_on:
+      - chefskiss_database
+    ports:
+      - "8080:8080"
