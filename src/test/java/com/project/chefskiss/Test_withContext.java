@@ -1,6 +1,7 @@
 package com.project.chefskiss;
 
 import jakarta.servlet.ServletContext;
+import net.bytebuddy.utility.dispatcher.JavaDispatcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import org.testcontainers.*;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -24,8 +31,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @SpringBootTest
-@Disabled
+@Testcontainers
 public class Test_withContext {
+
+    @Container
+    public GenericContainer mysql = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_database:latest"))
+            .withExposedPorts(6379);
 
     @Autowired
     private WebApplicationContext webApplicationContext;
