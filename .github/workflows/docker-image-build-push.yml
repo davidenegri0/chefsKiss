@@ -31,7 +31,8 @@ jobs:
       runs-on: self-hosted
       needs: build
       steps:
-        #- uses: actions/checkout@v4
+        - name: Checkout code
+          uses: actions/checkout@v4
         - name: Docker Compose Action
           run: | 
             if [ $( docker ps -a -f name=chefskiss-chefskiss_webapp-1 | wc -l ) -eq 2 ]; then
