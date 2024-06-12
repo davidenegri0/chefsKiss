@@ -2,9 +2,7 @@ package com.project.chefskiss;
 
 import jakarta.servlet.ServletContext;
 import net.bytebuddy.utility.dispatcher.JavaDispatcher;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,13 +33,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class Test_withContext {
 
     @Container
-    public GenericContainer mysql = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_database:latest"))
-            .withExposedPorts(6379);
+    public static GenericContainer mysql = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_db:latest"))
+            .withExposedPorts(3306);
 
     @Autowired
     private WebApplicationContext webApplicationContext;
 
     private MockMvc mockMvc;
+
+    @BeforeAll
+    static void beforeAll() {
+        mysql.start();
+    }
+
+    @AfterAll
+    static void afterAll() {
+        mysql.stop();
+    }
+
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
