@@ -55,4 +55,6 @@ jobs:
             # compose-flags: # optional, default is 
             # Current working directory
             # cwd: # optional, default is ${{ github.workspace }}
+
+          working-directory: ${{ github.workspace }}
                   
