@@ -2,7 +2,7 @@ name: Maven CI Tests with Testcontainers
 
 on:
   workflow_dispatch:
-    branches: [ "develop_testcontainers_experimental" ]
+    # branches: [ "develop_testcontainers_experimental" ]
   
 
 jobs:
@@ -21,4 +21,10 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B clean package --file pom.xml
+    - name: Upload war artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: chefskiss_war
+        path: |
+          /home/runner/work/chefsKiss/chefsKiss/target/chefsKiss-0.0.1-SNAPSHOT.war
                   
