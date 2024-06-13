@@ -1,5 +1,6 @@
 package com.project.chefskiss;
 
+import com.project.chefskiss.configurations.Config;
 import jakarta.servlet.ServletContext;
 import net.bytebuddy.utility.dispatcher.JavaDispatcher;
 import org.junit.jupiter.api.*;
@@ -70,8 +71,15 @@ public class Test_withContext {
 
     @Test
     public void givenHomePageURI_whenMockMVC_thenReturnsIndexJSPViewName() throws Exception {
+
+        System.out.println("Connecting to port" + mysql.getMappedPort(3306).toString());
+
+        Config.DATABASE_PORT = mysql.getMappedPort(3306).toString();
+
         this.mockMvc.perform(get("/homepage")).andDo(print())
                 .andExpect(view().name("homepagePage"))
                 .andExpect(model().attributeExists("listaPiatti"));
+
+        Config.DATABASE_URL = "jdbc:mysql://localhost:3306/chefskiss?user=root&password=segretissima&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=" + Config.SERVER_TIMEZONE;
     }
 }

@@ -20,6 +20,9 @@ public class MySQLJDBC_DAOFactory extends DAOFactory {
             if (Config.DATABASE_HOSTNAME != null) {
                 url = url.replace("localhost", Config.DATABASE_HOSTNAME);
             }
+            if (Config.DATABASE_PORT != null) {
+                url = url.replace("3306", Config.DATABASE_PORT);
+            }
             System.out.println("Connecting to " + url);
             this.conn = DriverManager.getConnection(url);
             this.conn.setAutoCommit(false);
