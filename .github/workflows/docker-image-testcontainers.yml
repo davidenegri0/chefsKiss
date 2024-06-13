@@ -28,6 +28,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: chefskiss_war
+        retention-days: 5
         path: |
           /home/runner/work/chefsKiss/chefsKiss/target/chefsKiss-0.0.1-SNAPSHOT.war
       
