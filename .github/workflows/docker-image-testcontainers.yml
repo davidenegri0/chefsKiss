@@ -2,7 +2,10 @@ name: CI/CD Pipeline con Maven, Docker & Testcontainers
 
 on:
   workflow_dispatch:
-    # branches: [ "develop_testcontainers_experimental" ]
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
   
 jobs:
 
