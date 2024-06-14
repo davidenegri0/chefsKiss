@@ -117,7 +117,7 @@
         <div class="input-box">
             <input id="ps" name="pssw" type="password" placeholder="Password" required>
         </div>
-        <input type="submit" value="Login">
+        <input id="loginButton" type="submit" value="Login">
 
         <div class="register-link">
             <p>Non hai un account?

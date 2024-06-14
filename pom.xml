@@ -84,6 +84,21 @@
             <version>1.5</version>
             <!-- <scope>provided</scope> -->
         </dependency>
+
+        <!-- Selenium dependencies -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>4.2.2</version>
+        </dependency>
+
+        <!-- WebDriver dependencies, ad esempio ChromeDriver -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-chrome-driver</artifactId>
+            <!--<version>4.21.0</version>-->
+        </dependency>
+
     </dependencies>
 
     <build>
