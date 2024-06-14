@@ -26,6 +26,9 @@ jobs:
     - name: Build con Maven
       run: mvn -B clean package --file pom.xml
 
+    - name: Generate Surefire reports
+      run: mvn surefire-report:report-only
+
     - name: Upload war file
       uses: actions/upload-artifact@v4
       with:
