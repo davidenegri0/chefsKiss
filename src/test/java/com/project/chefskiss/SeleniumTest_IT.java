@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Disabled
-public class SeleniumTest {
+public class SeleniumTest_IT {
 
     private WebDriver driver;
 

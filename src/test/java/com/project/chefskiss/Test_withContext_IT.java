@@ -2,7 +2,6 @@ package com.project.chefskiss;
 
 import com.project.chefskiss.configurations.Config;
 import jakarta.servlet.ServletContext;
-import net.bytebuddy.utility.dispatcher.JavaDispatcher;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import org.testcontainers.*;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
@@ -33,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Testcontainers
 //@Disabled               // Disabilito il test perchè credo che testcontainers esponga il container con una porta random
-public class Test_withContext {
+public class Test_withContext_IT {
 
     @Container
     public static GenericContainer mysql = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_db:latest"))
@@ -61,6 +59,8 @@ public class Test_withContext {
     }
 
     @Test
+    @DisplayName("Testa se il contesto dell'applicazione è stato caricato correttamente")
+    @Tag("integration")
     public void givenWac_whenServletContext_thenItProvidesGreetController() {
         ServletContext servletContext = webApplicationContext.getServletContext();
 
@@ -70,6 +70,8 @@ public class Test_withContext {
     }
 
     @Test
+    @DisplayName("Testa se la homepage viene caricata correttamente")
+    @Tag("integration")
     public void givenHomePageURI_whenMockMVC_thenReturnsIndexJSPViewName() throws Exception {
 
         System.out.println("Connecting to port" + mysql.getMappedPort(3306).toString());

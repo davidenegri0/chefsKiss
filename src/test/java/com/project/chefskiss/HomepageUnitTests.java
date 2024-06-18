@@ -51,6 +51,8 @@ public class HomepageUnitTests {
         dao_factory_mock.close();
     }
     @ParameterizedTest
+    @DisplayName("Caricamento homepage con 4 piatti (con e senza cookie)")
+    @Tag("unit")
     @EmptySource
     @ValueSource(strings = {"CF12345678901234&Mario&Rossi&mario@example.com&1985-05-15&1234567890&2023-08-19&true&false&true&false&true&false&mario_rossi"})
     void homepageLoads_less_piatti(String usr_data) throws Exception {
@@ -93,6 +95,8 @@ public class HomepageUnitTests {
     }
 
     @ParameterizedTest
+    @DisplayName("Caricamento homepage parte 2")
+    @Tag("unit")
     @EmptySource
     void homepageLoads_more_piatti(String usr_data) throws Exception {
         System.out.println("Inizio test");
