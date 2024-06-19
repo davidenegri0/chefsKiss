@@ -41,7 +41,7 @@ public class SeleniumTests_IT {
     @Container
     private static BrowserWebDriverContainer<?> chrome = new BrowserWebDriverContainer<>()
             .withCapabilities(new ChromeOptions())
-            .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("test_video"), VncRecordingContainer.VncRecordingFormat.MP4)
+            //.withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("test_video"))
             .dependsOn(webapp);
 
     @BeforeAll
