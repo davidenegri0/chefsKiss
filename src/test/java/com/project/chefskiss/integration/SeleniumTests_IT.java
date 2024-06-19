@@ -75,7 +75,8 @@ public class SeleniumTests_IT {
     public void testHomepageJsp() {
         // Avvia il server Spring Boot prima di questo test
         //driver.get("http://localhost:8080/homepage");
-        org.testcontainers.Testcontainers.exposeHostPorts(8080);
+        //org.testcontainers.Testcontainers.exposeHostPorts(8080);
+        driver = new RemoteWebDriver(chrome.getSeleniumAddress(), new ChromeOptions());
         driver.get("http://" + webapp.getHost() + ":" + webapp.getFirstMappedPort() + "/homepage");
 
         // Verifica il titolo della pagina
