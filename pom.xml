@@ -98,7 +98,10 @@
             <groupId>org.testcontainers</groupId>
             <artifactId>selenium</artifactId>
             <version>1.19.8</version>
+            <scope>test</scope>
         </dependency>
+
+
 
         <!-- WebDriver dependencies, ad esempio ChromeDriver -->
         <dependency>

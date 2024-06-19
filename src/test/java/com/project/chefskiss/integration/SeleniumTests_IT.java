@@ -6,8 +6,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.BrowserWebDriverContainer;
+import org.testcontainers.containers.VncRecordingContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -24,24 +26,24 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Testcontainers
 public class SeleniumTests_IT {
 
-    private WebDriver driver;
+    private RemoteWebDriver driver;
 
     @Container
-    public static GenericContainer mysql = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_db:latest"))
+    private static GenericContainer mysql = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_db:latest"))
             .withExposedPorts(3306)
             .waitingFor(Wait.forHealthcheck());
 
     @Container
-    public static GenericContainer webapp = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_webapp:testing"))
+    private static GenericContainer webapp = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_webapp:testing"))
             .withExposedPorts(8080)
             .dependsOn(mysql)
             .withEnv("DB_HOST", mysql.getHost())
             .withEnv("DB_PORT", String.valueOf(mysql.getFirstMappedPort()));
 
     @Container
-    private static BrowserWebDriverContainer chrome = (BrowserWebDriverContainer) new BrowserWebDriverContainer()
+    private static BrowserWebDriverContainer<?> chrome = new BrowserWebDriverContainer<>()
             .withCapabilities(new ChromeOptions())
-            .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("build"))
+            .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("test_video"), VncRecordingContainer.VncRecordingFormat.MP4)
             .dependsOn(webapp);
 
     @BeforeAll
@@ -65,7 +67,7 @@ public class SeleniumTests_IT {
         //ChromeOptions options = new ChromeOptions();
         //options.addArguments("--remote-allow-origins=*");
         //driver = new ChromeDriver(options);
-        driver = chrome.getWebDriver();
+        driver = new RemoteWebDriver(chrome.getSeleniumAddress(), new ChromeOptions());
     }
 
     @Test
@@ -73,6 +75,7 @@ public class SeleniumTests_IT {
     public void testHomepageJsp() {
         // Avvia il server Spring Boot prima di questo test
         //driver.get("http://localhost:8080/homepage");
+        org.testcontainers.Testcontainers.exposeHostPorts(8080);
         driver.get("http://" + webapp.getHost() + ":" + webapp.getFirstMappedPort() + "/homepage");
 
         // Verifica il titolo della pagina
