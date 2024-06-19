@@ -36,8 +36,7 @@ public class SeleniumTests_IT {
     @Container
     private static GenericContainer webapp = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_webapp:testing"))
             .withExposedPorts(8080)
-            .dependsOn(mysql)
-            .waitingFor(Wait.forLogMessage("*ACCEPTING TRAFFIC*", 1));
+            .dependsOn(mysql);
 
     @Container
     private static BrowserWebDriverContainer<?> chrome = new BrowserWebDriverContainer<>()
@@ -51,17 +50,17 @@ public class SeleniumTests_IT {
         webapp.addEnv("DB_HOST", mysql.getHost());
         webapp.addEnv("DB_PORT", mysql.getMappedPort(3306).toString());
         webapp.start();
-        //chrome.start();
+        chrome.start();
     }
 
     @AfterAll
     static void afterAll() {
         mysql.stop();
         webapp.stop();
-        //chrome.stop();
+        chrome.stop();
     }
 
-/*    @BeforeEach
+    @BeforeEach
     public void setUp() {
         // Configura il percorso del ChromeDriver
         //System.setProperty("webdriver.chrome.driver", "src/test/chromedriver-win64/chromedriver.exe");
@@ -69,7 +68,7 @@ public class SeleniumTests_IT {
         //options.addArguments("--remote-allow-origins=*");
         //driver = new ChromeDriver(options);
         driver = new RemoteWebDriver(chrome.getSeleniumAddress(), new ChromeOptions());
-    }*/
+    }
 
     @Test
     @Tag("integration")
@@ -77,8 +76,8 @@ public class SeleniumTests_IT {
         // Avvia il server Spring Boot prima di questo test
         //driver.get("http://localhost:8080/homepage");
         //org.testcontainers.Testcontainers.exposeHostPorts(8080);
-        chrome.start();
-        driver = new RemoteWebDriver(chrome.getSeleniumAddress(), new ChromeOptions());
+        //chrome.start();
+        //driver = new RemoteWebDriver(chrome.getSeleniumAddress(), new ChromeOptions());
         driver.get("http://" + webapp.getHost() + ":" + webapp.getFirstMappedPort() + "/homepage");
 
         // Verifica il titolo della pagina
