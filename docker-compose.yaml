@@ -9,7 +9,7 @@ services:
       timeout: 20s
       retries: 10
   chefskiss_webapp:
-    image: davidenegri01/chefskiss_webapp:experimental
+    image: davidenegri01/chefskiss_webapp:latest
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://chefskiss_database:3306/database?autoReconnect=true&useSSL=false
       DB_HOSTNAME: chefskiss_database

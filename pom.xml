@@ -92,6 +92,14 @@
             <version>4.2.2</version>
         </dependency>
 
+        <!-- Dipendenza Selemium per Testcontainers -->
+
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>selenium</artifactId>
+            <version>1.19.8</version>
+        </dependency>
+
         <!-- WebDriver dependencies, ad esempio ChromeDriver -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>

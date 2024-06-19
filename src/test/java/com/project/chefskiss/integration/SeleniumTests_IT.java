@@ -1,39 +1,79 @@
 package com.project.chefskiss.integration;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.BrowserWebDriverContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
+import java.io.File;
 import java.util.List;
 
 import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Disabled
+//@Disabled
+@Testcontainers
 public class SeleniumTests_IT {
 
     private WebDriver driver;
 
+    @Container
+    public static GenericContainer mysql = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_db:latest"))
+            .withExposedPorts(3306)
+            .waitingFor(Wait.forHealthcheck());
+
+    @Container
+    public static GenericContainer webapp = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_webapp:testing"))
+            .withExposedPorts(8080)
+            .dependsOn(mysql)
+            .withEnv("DB_HOST", mysql.getHost())
+            .withEnv("DB_PORT", String.valueOf(mysql.getFirstMappedPort()));
+
+    @Container
+    private static BrowserWebDriverContainer chrome = (BrowserWebDriverContainer) new BrowserWebDriverContainer()
+            .withCapabilities(new ChromeOptions())
+            .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("build"))
+            .dependsOn(webapp);
+
+    @BeforeAll
+    static void beforeAll() {
+        mysql.start();
+        webapp.start();
+        chrome.start();
+    }
+
+    @AfterAll
+    static void afterAll() {
+        mysql.stop();
+        webapp.stop();
+        chrome.stop();
+    }
+
     @BeforeEach
     public void setUp() {
         // Configura il percorso del ChromeDriver
-        System.setProperty("webdriver.chrome.driver", "src/test/chromedriver-win64/chromedriver.exe");
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--remote-allow-origins=*");
-        driver = new ChromeDriver(options);
+        //System.setProperty("webdriver.chrome.driver", "src/test/chromedriver-win64/chromedriver.exe");
+        //ChromeOptions options = new ChromeOptions();
+        //options.addArguments("--remote-allow-origins=*");
+        //driver = new ChromeDriver(options);
+        driver = chrome.getWebDriver();
     }
 
     @Test
+    @Tag("integration")
     public void testHomepageJsp() {
         // Avvia il server Spring Boot prima di questo test
-        driver.get("http://localhost:8080/homepage");
+        //driver.get("http://localhost:8080/homepage");
+        driver.get("http://" + webapp.getHost() + ":" + webapp.getFirstMappedPort() + "/homepage");
 
         // Verifica il titolo della pagina
         String pageTitle = driver.getTitle();
@@ -41,8 +81,10 @@ public class SeleniumTests_IT {
     }
 
     @Test
+    @Tag("integration")
     public void testHomepage_Piatti_list () throws InterruptedException {
-        driver.get("http://localhost:8080/homepage");
+        //driver.get("http://localhost:8080/homepage");
+        driver.get("http://" + webapp.getHost() + ":" + webapp.getFirstMappedPort() + "/homepage");
 
         sleep(2000);
 
@@ -52,8 +94,11 @@ public class SeleniumTests_IT {
     }
 
     @Test
+    @Tag("integration")
     public void testLogin() throws InterruptedException {
-        driver.get("http://localhost:8080/login");
+        //driver.get("http://localhost:8080/login");
+        driver.get("http://" + webapp.getHost() + ":" + webapp.getFirstMappedPort() + "/login");
+
         sleep(2000);
 
         // Inserisci le credenziali dell'utente
