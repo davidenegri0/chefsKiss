@@ -149,6 +149,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
                 <configuration>
+                    <includes>
+                        <include>**/com/project/chefskiss/unit/**</include>
+                    </includes>
                     <groups>unit</groups>
                 </configuration>
             </plugin>
@@ -166,6 +169,9 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <includes>
+                        <include>**/com/project/chefskiss/integration/**</include>
+                    </includes>
                     <groups>integration</groups>
                 </configuration>
             </plugin>

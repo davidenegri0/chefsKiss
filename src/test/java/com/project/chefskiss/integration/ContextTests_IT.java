@@ -1,4 +1,4 @@
-package com.project.chefskiss;
+package com.project.chefskiss.integration;
 
 import com.project.chefskiss.configurations.Config;
 import jakarta.servlet.ServletContext;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Testcontainers
 //@Disabled               // Disabilito il test perchè credo che testcontainers esponga il container con una porta random
-public class Test_withContext_IT {
+public class ContextTests_IT {
 
     @Container
     public static GenericContainer mysql = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_db:latest"))

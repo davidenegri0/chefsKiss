@@ -1,19 +1,15 @@
-package com.project.chefskiss;
+package com.project.chefskiss.unit;
 
 import com.project.chefskiss.controllers.homepageController;
 import com.project.chefskiss.dataAccessObjects.DAOFactory;
-import com.project.chefskiss.dataAccessObjects.Database.PiattoDAO_MySQL;
 import com.project.chefskiss.dataAccessObjects.PiattoDAO;
 import com.project.chefskiss.modelObjects.Piatto;
 import com.project.chefskiss.modelObjects.User;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +20,7 @@ import static org.mockito.Mockito.*;
 
 @WebMvcTest(homepageController.class)
 //@ExtendWith(MockitoExtension.class) --> NON FUNZIA
-public class HomepageUnitTests {
+public class HomepageTests_UT {
     //private ModelAndView page = new ModelAndView("homepage");
     @Mock
     private PiattoDAO sessionPiattiDAO_mock;

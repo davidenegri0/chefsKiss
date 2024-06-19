@@ -1,4 +1,4 @@
-package com.project.chefskiss;
+package com.project.chefskiss.integration;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Disabled
-public class SeleniumTest_IT {
+public class SeleniumTests_IT {
 
     private WebDriver driver;
 

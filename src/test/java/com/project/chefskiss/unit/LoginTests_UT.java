@@ -1,4 +1,4 @@
-package com.project.chefskiss;
+package com.project.chefskiss.unit;
 
 import com.project.chefskiss.Exceptions.UserAlreadyKnownException;
 import com.project.chefskiss.controllers.loginController;
@@ -7,9 +7,7 @@ import com.project.chefskiss.dataAccessObjects.UserDAO;
 import com.project.chefskiss.modelObjects.Sede;
 import com.project.chefskiss.modelObjects.User;
 import jakarta.servlet.http.HttpServletResponse;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 import org.mockito.*;
@@ -19,13 +17,12 @@ import java.sql.Date;
 import java.util.stream.Stream;
 
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
 
 
 @WebMvcTest(loginController.class)
-public class LoginUnitTest {
+public class LoginTests_UT {
 
     @Mock
     private User utente_mock;
@@ -70,6 +67,8 @@ public class LoginUnitTest {
 
     @ParameterizedTest
     @MethodSource("caricaArgomenti")
+    @DisplayName("Login request")
+    @Tag("unit")
     void showLogin_test(String email, String password, String usr_data, String expected_page, Boolean user_known) throws Exception{
         user_mock.when(() -> User.decodeUserData(anyString())).thenReturn(utente_mock);
         when(utente_mock.getNome()).thenReturn("nome");
@@ -127,6 +126,8 @@ public class LoginUnitTest {
 
 
     @Test
+    @DisplayName("Logout request")
+    @Tag("unit")
     void onLogoutReq_test(){
         dao_factory_mock.when(() -> DAOFactory.getDAOFactory(anyString(), any())).thenReturn(DAO_mock);
         when(DAO_mock.getUserDAO(any())).thenReturn(UserDAO_mock);
