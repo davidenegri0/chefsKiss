@@ -37,8 +37,7 @@ public class SeleniumTests_IT {
     private static GenericContainer webapp = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_webapp:testing"))
             .withExposedPorts(8080)
             .dependsOn(mysql)
-            .withEnv("DB_HOST", mysql.getHost())
-            .withEnv("DB_PORT", String.valueOf(mysql.getFirstMappedPort()));
+            .waitingFor(Wait.forLogMessage("*ACCEPTING TRAFFIC*", 1));
 
     @Container
     private static BrowserWebDriverContainer<?> chrome = new BrowserWebDriverContainer<>()
@@ -49,6 +48,8 @@ public class SeleniumTests_IT {
     @BeforeAll
     static void beforeAll() {
         mysql.start();
+        webapp.addEnv("DB_HOST", mysql.getHost());
+        webapp.addEnv("DB_PORT", mysql.getMappedPort(3306).toString());
         webapp.start();
         //chrome.start();
     }
