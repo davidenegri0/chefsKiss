@@ -86,7 +86,7 @@ public class SeleniumTests_IT {
         //chrome.start();
         //driver = new RemoteWebDriver(chrome.getSeleniumAddress(), new ChromeOptions());
         System.out.println(webapp.getNetworkAliases());
-        driver.get("http://" + webapp.getNetworkAliases().get(1) + ":" + webapp.getFirstMappedPort() + "/homepage");
+        driver.get("http://" + webapp.getHost() + ":" + webapp.getFirstMappedPort() + "/homepage");
 
         // Verifica il titolo della pagina
         String pageTitle = driver.getTitle();
