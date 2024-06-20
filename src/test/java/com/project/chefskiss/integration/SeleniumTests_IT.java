@@ -85,7 +85,7 @@ public class SeleniumTests_IT {
         //org.testcontainers.Testcontainers.exposeHostPorts(8080);
         //chrome.start();
         //driver = new RemoteWebDriver(chrome.getSeleniumAddress(), new ChromeOptions());
-        driver.get("http://" + webapp.getNetworkAliases().get(0) + ":" + webapp.getFirstMappedPort() + "/homepage");
+        driver.get("http://" + webapp.getNetworkAliases().iterator().next() + ":" + webapp.getFirstMappedPort() + "/homepage");
 
         // Verifica il titolo della pagina
         String pageTitle = driver.getTitle();
@@ -98,7 +98,7 @@ public class SeleniumTests_IT {
     @Disabled
     public void testHomepage_Piatti_list () throws InterruptedException {
         //driver.get("http://localhost:8080/homepage");
-        driver.get("http://" + webapp.getNetworkAliases().get(0) + ":" + webapp.getFirstMappedPort() + "/homepage");
+        driver.get("http://" + webapp.getNetworkAliases().iterator().next() + ":" + webapp.getFirstMappedPort() + "/homepage");
 
         sleep(2000);
 
@@ -112,7 +112,7 @@ public class SeleniumTests_IT {
     @Disabled
     public void testLogin() throws InterruptedException {
         //driver.get("http://localhost:8080/login");
-        driver.get("http://" + webapp.getNetworkAliases().get(0) + ":" + webapp.getFirstMappedPort() + "/login");
+        driver.get("http://" + webapp.getNetworkAliases().iterator().next() + ":" + webapp.getFirstMappedPort() + "/login");
 
         sleep(2000);
 
