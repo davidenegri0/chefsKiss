@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @SpringBootTest
 @Testcontainers
-//@Disabled               // Disabilito il test perchè credo che testcontainers esponga il container con una porta random
+@Disabled               // Disabilito il test perchè credo che testcontainers esponga il container con una porta random
 public class ContextTests_IT {
 
     @Container
