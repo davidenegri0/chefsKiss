@@ -75,6 +75,7 @@ public class SeleniumTests_IT {
         //options.addArguments("--remote-allow-origins=*");
         //driver = new ChromeDriver(options);
         driver = new RemoteWebDriver(chrome.getSeleniumAddress(), new ChromeOptions());
+        System.out.println(webapp.getContainerInfo());
     }
 
     @Test
