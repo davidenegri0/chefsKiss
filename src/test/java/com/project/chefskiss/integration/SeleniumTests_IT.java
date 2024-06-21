@@ -29,35 +29,36 @@ public class SeleniumTests_IT {
 
     private WebDriver driver;
 
+    private static Network network = Network.newNetwork();
+
     @Container
     private static GenericContainer mysql = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_db:latest"))
             .withExposedPorts(3306)
-/*            .withNetwork(Network.SHARED)
-            .withNetworkAliases("database")*/
+            .withNetwork(network)
+            .withNetworkAliases("database")
             .waitingFor(Wait.forHealthcheck());
 
     @Container
     private static GenericContainer webapp = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_webapp:testing"))
             .withExposedPorts(8080)
-/*            .withNetwork(mysql.getNetwork())
-            .withNetworkAliases("webapp")*/
+            .withNetwork(mysql.getNetwork())
+            .withNetworkAliases("webapp")
             .dependsOn(mysql);
 
     @Container
     private static BrowserWebDriverContainer<?> chrome = new BrowserWebDriverContainer<>(DockerImageName.parse("selenium/standalone-chrome:4.8.3"))
             .withCapabilities(new ChromeOptions())
-/*            .withNetwork(webapp.getNetwork())
-            .withNetworkAliases("chrome")*/
+            .withNetwork(webapp.getNetwork())
+            .withNetworkAliases("chrome")
             //.withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("test_video"))
             .dependsOn(webapp);
 
     @BeforeAll
     static void beforeAll() {
         mysql.start();
-        webapp.addEnv("DB_HOST", (String)mysql.getNetworkAliases().get(0));
+        webapp.addEnv("DB_HOST", (String)mysql.getNetworkAliases().get(1));
         webapp.addEnv("DB_PORT", mysql.getMappedPort(3306).toString());
         webapp.start();
-        org.testcontainers.Testcontainers.exposeHostPorts(webapp.getFirstMappedPort());
         chrome.start();
     }
 
@@ -79,7 +80,6 @@ public class SeleniumTests_IT {
         //options.addArguments("--remote-allow-origins=*");
         //driver = new ChromeDriver(options);
         driver = new RemoteWebDriver(chrome.getSeleniumAddress(), new ChromeOptions());
-        System.out.println(webapp.getContainerInfo());
     }
 
     @Test
@@ -90,8 +90,7 @@ public class SeleniumTests_IT {
         //org.testcontainers.Testcontainers.exposeHostPorts(8080);
         //chrome.start();
         //driver = new RemoteWebDriver(chrome.getSeleniumAddress(), new ChromeOptions());
-        System.out.println(webapp.getNetworkAliases());
-        driver.get("http://" + "host.testcontainers.internal" + ":" + webapp.getFirstMappedPort() + "/homepage");
+        driver.get("http://" + webapp.getNetworkAliases().get(1) + ":" + webapp.getFirstMappedPort() + "/homepage");
 
         // Verifica il titolo della pagina
         String pageTitle = driver.getTitle();
