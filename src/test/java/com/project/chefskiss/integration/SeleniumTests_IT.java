@@ -109,7 +109,6 @@ public class SeleniumTests_IT {
 
     @Test
     @Tag("integration")
-    @Disabled
     public void testHomepage_Piatti_list () throws InterruptedException {
         //driver.get("http://localhost:8080/homepage");
         driver.get("http://" + webapp.getNetworkAliases().iterator().next() + ":" + webapp.getFirstMappedPort() + "/homepage");
@@ -123,7 +122,6 @@ public class SeleniumTests_IT {
 
     @Test
     @Tag("integration")
-    @Disabled
     public void testLogin() throws InterruptedException {
         //driver.get("http://localhost:8080/login");
         driver.get("http://" + webapp.getNetworkAliases().iterator().next() + ":" + webapp.getFirstMappedPort() + "/login");
