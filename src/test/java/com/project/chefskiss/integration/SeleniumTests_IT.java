@@ -43,6 +43,7 @@ public class SeleniumTests_IT {
             .withExposedPorts(8080)
             .withNetwork(mysql.getNetwork())
             .withNetworkAliases("webapp")
+            .waitingFor(Wait.forHttp("/").forPort(8080))
             .dependsOn(mysql);
 
     @Container
@@ -99,6 +100,7 @@ public class SeleniumTests_IT {
         }
 
         System.out.println(driver.getPageSource());
+        System.out.println(webapp.getLogs());
         // Verifica il titolo della pagina
         String pageTitle = driver.getTitle();
         assertEquals("Homepage", pageTitle);
