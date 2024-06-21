@@ -60,6 +60,7 @@ public class SeleniumTests_IT {
         webapp.addEnv("DB_PORT", mysql.getMappedPort(3306).toString());
         webapp.start();
         chrome.start();
+
     }
 
     @AfterAll
@@ -90,7 +91,7 @@ public class SeleniumTests_IT {
         //org.testcontainers.Testcontainers.exposeHostPorts(8080);
         //chrome.start();
         //driver = new RemoteWebDriver(chrome.getSeleniumAddress(), new ChromeOptions());
-        driver.get("http://" + webapp.getNetworkAliases().get(1) + ":" + webapp.getFirstMappedPort() + "/homepage");
+        driver.get("http://" + webapp.getNetworkAliases().get(1) + ":" + "8080" + "/homepage");
 
         // Verifica il titolo della pagina
         String pageTitle = driver.getTitle();
