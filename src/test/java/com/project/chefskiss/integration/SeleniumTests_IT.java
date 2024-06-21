@@ -57,7 +57,7 @@ public class SeleniumTests_IT {
     static void beforeAll() {
         mysql.start();
         webapp.addEnv("DB_HOST", (String)mysql.getNetworkAliases().get(1));
-        webapp.addEnv("DB_PORT", mysql.getMappedPort(3306).toString());
+        webapp.addEnv("DB_PORT", Integer.toString(3306));
         webapp.start();
         chrome.start();
 
