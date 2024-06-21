@@ -91,8 +91,14 @@ public class SeleniumTests_IT {
         //org.testcontainers.Testcontainers.exposeHostPorts(8080);
         //chrome.start();
         //driver = new RemoteWebDriver(chrome.getSeleniumAddress(), new ChromeOptions());
-        driver.get("http://" + webapp.getNetworkAliases().get(1) + ":" + "8080" + "/homepage");
+        try {
+            driver.get("http://" + webapp.getNetworkAliases().get(1) + ":" + "8080" + "/homepage");
+            sleep(2000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        System.out.println(driver.getPageSource());
         // Verifica il titolo della pagina
         String pageTitle = driver.getTitle();
         assertEquals("Homepage", pageTitle);
