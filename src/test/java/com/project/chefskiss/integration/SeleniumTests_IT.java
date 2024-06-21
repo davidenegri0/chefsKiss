@@ -105,7 +105,6 @@ public class SeleniumTests_IT {
         // Verifica il titolo della pagina
         String pageTitle = driver.getTitle();
         assertEquals("Homepage", pageTitle);
-        chrome.stop();
     }
 
     @Test
