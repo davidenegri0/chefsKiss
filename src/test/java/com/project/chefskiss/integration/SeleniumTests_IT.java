@@ -41,6 +41,7 @@ public class SeleniumTests_IT {
     @Container
     private static GenericContainer webapp = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_webapp:testing"))
             .withExposedPorts(8080)
+            .withEnv("DB_HOSTNAME", "database")
             .withNetwork(mysql.getNetwork())
             .withNetworkAliases("webapp")
             .waitingFor(Wait.forHttp("/").forPort(8080))
@@ -57,7 +58,7 @@ public class SeleniumTests_IT {
     @BeforeAll
     static void beforeAll() {
         mysql.start();
-        webapp.addEnv("DB_HOSTNAME", (String)mysql.getNetworkAliases().get(1));
+        //webapp.addEnv("DB_HOSTNAME", (String)mysql.getNetworkAliases().get(1));
         webapp.addEnv("DB_PORT", Integer.toString(3306));
         webapp.start();
         chrome.start();
