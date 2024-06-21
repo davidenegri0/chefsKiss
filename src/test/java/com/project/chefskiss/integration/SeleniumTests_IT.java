@@ -27,27 +27,27 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Testcontainers
 public class SeleniumTests_IT {
 
-    private RemoteWebDriver driver;
+    private WebDriver driver;
 
     @Container
     private static GenericContainer mysql = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_db:latest"))
             .withExposedPorts(3306)
-            .withNetwork(Network.SHARED)
-            .withNetworkAliases("database")
+/*            .withNetwork(Network.SHARED)
+            .withNetworkAliases("database")*/
             .waitingFor(Wait.forHealthcheck());
 
     @Container
     private static GenericContainer webapp = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_webapp:testing"))
             .withExposedPorts(8080)
-            .withNetwork(mysql.getNetwork())
-            .withNetworkAliases("webapp")
+/*            .withNetwork(mysql.getNetwork())
+            .withNetworkAliases("webapp")*/
             .dependsOn(mysql);
 
     @Container
-    private static BrowserWebDriverContainer<?> chrome = new BrowserWebDriverContainer<>()
+    private static BrowserWebDriverContainer<?> chrome = new BrowserWebDriverContainer<>(DockerImageName.parse("selenium/standalone-chrome:4.8.3"))
             .withCapabilities(new ChromeOptions())
-            .withNetwork(webapp.getNetwork())
-            .withNetworkAliases("chrome")
+/*            .withNetwork(webapp.getNetwork())
+            .withNetworkAliases("chrome")*/
             //.withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("test_video"))
             .dependsOn(webapp);
 
@@ -57,11 +57,15 @@ public class SeleniumTests_IT {
         webapp.addEnv("DB_HOST", (String)mysql.getNetworkAliases().get(0));
         webapp.addEnv("DB_PORT", mysql.getMappedPort(3306).toString());
         webapp.start();
+        org.testcontainers.Testcontainers.exposeHostPorts(webapp.getFirstMappedPort());
         chrome.start();
     }
 
     @AfterAll
     static void afterAll() {
+        mysql.close();
+        webapp.close();
+        chrome.close();
         mysql.stop();
         webapp.stop();
         chrome.stop();
@@ -87,7 +91,7 @@ public class SeleniumTests_IT {
         //chrome.start();
         //driver = new RemoteWebDriver(chrome.getSeleniumAddress(), new ChromeOptions());
         System.out.println(webapp.getNetworkAliases());
-        driver.get("http://" + webapp.getHost() + ":" + webapp.getFirstMappedPort() + "/homepage");
+        driver.get("http://" + "host.testcontainers.internal" + ":" + webapp.getFirstMappedPort() + "/homepage");
 
         // Verifica il titolo della pagina
         String pageTitle = driver.getTitle();
