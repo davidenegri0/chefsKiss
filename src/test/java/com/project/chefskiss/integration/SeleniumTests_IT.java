@@ -52,7 +52,7 @@ public class SeleniumTests_IT {
             .withCapabilities(new ChromeOptions())
             .withNetwork(webapp.getNetwork())
             .withNetworkAliases("chrome")
-            .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("/home/runner/work/chefsKiss/chefsKiss/target/site"))
+            //.withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("/home/runner/work/chefsKiss/chefsKiss/target/site"))
             .dependsOn(webapp);
 
     @BeforeAll
