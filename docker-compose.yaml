@@ -8,6 +8,8 @@ services:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
+    volumes:
+      - ../../../../chefsKiss_db:/var/lib/mysql
   chefskiss_webapp:
     image: davidenegri01/chefskiss_webapp:latest
     environment:
