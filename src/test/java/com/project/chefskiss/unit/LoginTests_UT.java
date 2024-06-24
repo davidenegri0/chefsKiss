@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @WebMvcTest(loginController.class)
+@DisplayName("Login Controller Unit Tests")
 public class LoginTests_UT {
 
     @Mock
@@ -67,7 +68,6 @@ public class LoginTests_UT {
 
     @ParameterizedTest
     @MethodSource("caricaArgomenti")
-    @DisplayName("Login request")
     @Tag("unit")
     void showLogin_test(String email, String password, String usr_data, String expected_page, Boolean user_known) throws Exception{
         user_mock.when(() -> User.decodeUserData(anyString())).thenReturn(utente_mock);
@@ -126,7 +126,6 @@ public class LoginTests_UT {
 
 
     @Test
-    @DisplayName("Logout request")
     @Tag("unit")
     void onLogoutReq_test(){
         dao_factory_mock.when(() -> DAOFactory.getDAOFactory(anyString(), any())).thenReturn(DAO_mock);

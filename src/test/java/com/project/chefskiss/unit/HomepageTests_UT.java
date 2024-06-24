@@ -19,6 +19,7 @@ import org.junit.jupiter.api.*;
 import static org.mockito.Mockito.*;
 
 @WebMvcTest(homepageController.class)
+@DisplayName("Homepage Controller Unit Tests")
 //@ExtendWith(MockitoExtension.class) --> NON FUNZIA
 public class HomepageTests_UT {
     //private ModelAndView page = new ModelAndView("homepage");
@@ -47,7 +48,6 @@ public class HomepageTests_UT {
         dao_factory_mock.close();
     }
     @ParameterizedTest
-    @DisplayName("Caricamento homepage con 4 piatti (con e senza cookie)")
     @Tag("unit")
     @EmptySource
     @ValueSource(strings = {"CF12345678901234&Mario&Rossi&mario@example.com&1985-05-15&1234567890&2023-08-19&true&false&true&false&true&false&mario_rossi"})
@@ -91,7 +91,6 @@ public class HomepageTests_UT {
     }
 
     @ParameterizedTest
-    @DisplayName("Caricamento homepage parte 2")
     @Tag("unit")
     @EmptySource
     void homepageLoads_more_piatti(String usr_data) throws Exception {

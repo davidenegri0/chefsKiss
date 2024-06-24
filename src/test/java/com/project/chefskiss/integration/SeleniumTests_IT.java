@@ -32,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 //@Disabled
 @Testcontainers
+@DisplayName("End to End Selenium Tests")
 public class SeleniumTests_IT {
 
     private WebDriver driver;

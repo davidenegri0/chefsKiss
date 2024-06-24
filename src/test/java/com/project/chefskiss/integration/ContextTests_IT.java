@@ -30,9 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @SpringBootTest
 @Testcontainers
-@Disabled               // Disabilito il test perchè credo che testcontainers esponga il container con una porta random
+@DisplayName("Integration Tests")
 public class ContextTests_IT {
-
     @Container
     public static GenericContainer mysql = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_db:latest"))
             .withExposedPorts(3306)
