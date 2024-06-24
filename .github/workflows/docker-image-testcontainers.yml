@@ -84,8 +84,7 @@ jobs:
       - name: Docker Compose Action
         run: | 
           if [ $( docker ps -f name=chefskiss-chefskiss | wc -l ) -eq 3 ]; then
-            docker compose down chefskiss_webapp
-            docker compose stop chefskiss_database
+            docker compose down
           fi
           docker compose build chefskiss_webapp
           docker compose up -d
