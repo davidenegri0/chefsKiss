@@ -3,20 +3,27 @@ package com.project.chefskiss.integration;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.BrowserWebDriverContainer;
+
+//import org.testcontainers.containers.BrowserWebDriverContainer;
+
+import software.xdev.testcontainers.selenium.containers.browser.BrowserWebDriverContainer;
+import software.xdev.testcontainers.selenium.containers.browser.CapabilitiesBrowserWebDriverContainer;
+import org.testcontainers.lifecycle.TestDescription;
+import java.util.Optional;
+
 import org.testcontainers.containers.Network;
-import org.testcontainers.containers.VncRecordingContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.images.builder.ImageFromDockerfile;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 
 import static java.lang.Thread.sleep;
@@ -39,7 +46,11 @@ public class SeleniumTests_IT {
             .waitingFor(Wait.forHealthcheck());
 
     @Container
-    private static GenericContainer webapp = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_webapp:testing"))
+    private static GenericContainer webapp = new GenericContainer(
+                new ImageFromDockerfile()
+                    .withFileFromFile("Dockerfile", new File("Dockerfile"))
+                    .withFileFromFile("chefsKiss-0.0.1-SNAPSHOT.war", new File("target/chefsKiss-0.0.1-SNAPSHOT.war"))
+            )
             .withExposedPorts(8080)
             .withEnv("DB_HOSTNAME", "database")
             .withNetwork(mysql.getNetwork())
@@ -47,12 +58,20 @@ public class SeleniumTests_IT {
             .waitingFor(Wait.forHttp("/").forPort(8080))
             .dependsOn(mysql);
 
-    @Container
+/*    @Container
     private static BrowserWebDriverContainer<?> chrome = new BrowserWebDriverContainer<>(DockerImageName.parse("selenium/standalone-chrome:4.8.3"))
             .withCapabilities(new ChromeOptions())
             .withNetwork(webapp.getNetwork())
             .withNetworkAliases("chrome")
-            .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("/home/runner/work/chefsKiss/chefsKiss/target/site"), VncRecordingContainer.VncRecordingFormat.MP4)
+            //.withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("/home/runner/work/chefsKiss/chefsKiss/target/site"), VncRecordingContainer.VncRecordingFormat.MP4)
+            .dependsOn(webapp);*/
+
+    @Container
+    private static BrowserWebDriverContainer<?> chrome = new CapabilitiesBrowserWebDriverContainer<>(new ChromeOptions())
+            .withNetwork(webapp.getNetwork())
+            .withNetworkAliases("chrome")
+            .withRecordingMode(BrowserWebDriverContainer.RecordingMode.RECORD_ALL)
+            .withRecordingDirectory(Path.of("target/site"))
             .dependsOn(webapp);
 
     @BeforeAll
@@ -67,6 +86,20 @@ public class SeleniumTests_IT {
 
     @AfterAll
     static void afterAll() {
+        chrome.afterTest(new TestDescription()
+        {
+            @Override
+            public String getTestId()
+            {
+                return "demo-" + (new ChromeOptions()).getBrowserName();
+            }
+
+            @Override
+            public String getFilesystemFriendlyName()
+            {
+                return "demo-" + (new ChromeOptions()).getBrowserName();
+            }
+        }, Optional.empty());
         mysql.close();
         webapp.close();
         chrome.close();
@@ -76,13 +109,15 @@ public class SeleniumTests_IT {
     }
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
         // Configura il percorso del ChromeDriver
         //System.setProperty("webdriver.chrome.driver", "src/test/chromedriver-win64/chromedriver.exe");
         //ChromeOptions options = new ChromeOptions();
         //options.addArguments("--remote-allow-origins=*");
         //driver = new ChromeDriver(options);
-        driver = new RemoteWebDriver(chrome.getSeleniumAddress(), new ChromeOptions());
+        //driver = new RemoteWebDriver(chrome.getSeleniumAddress(), new ChromeOptions());
+        driver = new RemoteWebDriver(chrome.getSeleniumAddressURI().toURL(), new ChromeOptions());
+        driver.manage().window().maximize();
     }
 
     @Test

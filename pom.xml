@@ -103,7 +103,13 @@
             -->
         </dependency>
 
+        <!-- SPERIMENTALE -->
 
+        <dependency>
+            <groupId>software.xdev</groupId>
+            <artifactId>testcontainers-selenium</artifactId>
+            <version>1.0.1</version>
+        </dependency>
 
         <!-- WebDriver dependencies, ad esempio ChromeDriver -->
         <dependency>
