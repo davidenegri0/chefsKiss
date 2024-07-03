@@ -169,7 +169,7 @@
                 <version>2.22.2</version>
                 <configuration>
                     <includes>
-                        <include>**/com/project/chefskiss/unit/**</include>
+                        <include>**/com/project/chefskiss/**</include>
                     </includes>
                     <groups>unit</groups>
                 </configuration>
@@ -189,7 +189,7 @@
                 </executions>
                 <configuration>
                     <includes>
-                        <include>**/com/project/chefskiss/integration/**</include>
+                        <include>**/com/project/chefskiss/**</include>
                     </includes>
                     <groups>integration</groups>
                 </configuration>

@@ -27,7 +27,6 @@ public class HomepageTests_UT {
     private PiattoDAO sessionPiattiDAO_mock;
     @Mock
     private DAOFactory DatabaseDAO_mock;
-
     @InjectMocks
     private homepageController controller;
 
@@ -47,11 +46,11 @@ public class HomepageTests_UT {
         //user_mock.close();
         dao_factory_mock.close();
     }
-    @ParameterizedTest
+    @ParameterizedTest(name = "Caricamento Homepage, con e senza cookie {index}")
     @Tag("unit")
     @EmptySource
     @ValueSource(strings = {"CF12345678901234&Mario&Rossi&mario@example.com&1985-05-15&1234567890&2023-08-19&true&false&true&false&true&false&mario_rossi"})
-    void homepageLoads_less_piatti(String usr_data) throws Exception {
+    void homepageLoads(String usr_data) throws Exception {
         System.out.println("Inizio test");
 
         // Mock data
@@ -90,7 +89,7 @@ public class HomepageTests_UT {
         System.out.println("Fine test");
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "Caricamento homepage senza cookie con più piatti")
     @Tag("unit")
     @EmptySource
     void homepageLoads_more_piatti(String usr_data) throws Exception {

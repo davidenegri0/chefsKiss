@@ -87,8 +87,8 @@ public class addRecensioneController {
         }
         if (typeCode == 2 && !isPrenotazioneUp){ // valutazione già inserita --> impossibile aggiunta
             System.out.println(
-                    "Recensione dell'utente "+utente.getCF()+
-                            " per il ristorante "+id+" già presente"
+                    "Prenotazioni passate dell'utente "+utente.getCF()+
+                            " per il ristorante "+id+" non presenti"
             );
             Integer errorCode = 4;
             page = Utility.redirect(page, "/sede?id="+id+"&error="+errorCode);
