@@ -3,9 +3,9 @@ name: CI/CD Pipeline con Maven, Docker & Testcontainers
 on:
   workflow_dispatch:
   push:
-    branches: [ "develop_selenium" ]
+    branches: [ "develop" ]
   pull_request:
-    branches: [ "develop_selenium" ]
+    branches: [ "develop" ]
   
 jobs:
 
