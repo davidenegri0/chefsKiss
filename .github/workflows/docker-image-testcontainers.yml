@@ -80,12 +80,17 @@ jobs:
       
       - name: Checkout code
         uses: actions/checkout@v4
+
+#       if [ $( docker ps -f name=chefskiss-chefskiss | wc -l ) -eq 3 ]; then
+#         docker compose down
+#       fi
       
       - name: Docker Compose Action
         run: | 
-          if [ $( docker ps -f name=chefskiss-chefskiss | wc -l ) -eq 3 ]; then
-            docker compose down
-          fi
+          $containerCount = (docker ps -f name=chefskiss-chefskiss | Measure-Object -Line).Lines
+          if ($containerCount -eq 3) {
+              docker compose down
+          }
           docker compose build chefskiss_webapp
           docker compose up -d
       
