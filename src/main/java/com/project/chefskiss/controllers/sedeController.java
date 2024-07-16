@@ -18,20 +18,22 @@ import java.util.List;
 
 @Controller
 public class sedeController {
-    @RequestMapping (value = "/sede", params = "id")
+    @RequestMapping (value = "/sede", params = {"id"})
     public ModelAndView onSedeViewRequest(
-            HttpServletResponse response,
+            //HttpServletResponse response,
             @RequestParam(name = "id") String id,
-            @CookieValue(value = "loggedUser", defaultValue = "") String UserData
+            @CookieValue(value = "loggedUser", defaultValue = "") String userData
     ){
         ModelAndView page = new ModelAndView("sedePage");
         User utente;
 
-        if(!UserData.isEmpty()){
-            utente = User.decodeUserData(UserData);
+        //Lettura dei cookie dell'utente
+        if(!userData.isEmpty()){
+            utente = User.decodeUserData(userData);
             page.addObject("user", utente);
         }
         else System.out.println("No cookies :C");
+
 
         DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
         DatabaseDAO.beginTransaction();
@@ -55,7 +57,7 @@ public class sedeController {
         ValutazioneDAO valutazioneDAO = DatabaseDAO.getValutazioneDAO(null);
         List<Valutazione> valutazioni = new ArrayList<>();
         valutazioni = valutazioneDAO.findBySede(sede);
-        List<User> recensori = new ArrayList<>();
+
         for ( int i = 0; i < valutazioni.size(); i++){
             valutazioni.get(i).setUtenteV(userDAO.findByCF1(valutazioni.get(i).getUtenteV().getCF()));
         }

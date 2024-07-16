@@ -22,7 +22,6 @@ import java.util.List;
 public class restaurantController {
     @RequestMapping(value = "/restaurant", params = "id")
     public ModelAndView onRestaurantViewRequest (
-            HttpServletResponse response,
             @RequestParam(name = "id", defaultValue = "", required = true) Integer id_ristorante,
             @CookieValue(value = "loggedUser", defaultValue = "") String UserData
     ){

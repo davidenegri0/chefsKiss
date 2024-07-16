@@ -98,8 +98,6 @@ public class resturantsListController {
         }
         else System.out.println("No cookies :C");
 
-        
-
         if (type==1){
             //Ricerca dei ristoranti sul database
             //Accesso al database
@@ -108,11 +106,15 @@ public class resturantsListController {
 
             RistoranteDAO sessionRistoDAO = DatabaseDAO.getRistoDAO(null);
             ristoranti = sessionRistoDAO.findByName(search);
+            SedeDAO sessionSedeDAO = DatabaseDAO.getSedeDAO(null);
+            sedi = sessionSedeDAO.getAll();
+
             page.addObject("ristoranti", ristoranti);
+            page.addObject("sedi", sedi);
 
             DatabaseDAO.closeTransaction();
         } else if (type==2){
-            //Ricerca dei ristoranti sul database
+            //Ricerca delle sedi sul database
             //Accesso al database
             DAOFactory DatabaseDAO = DAOFactory.getDAOFactory(Config.DATABASE_IMPL, null);
             DatabaseDAO.beginTransaction();

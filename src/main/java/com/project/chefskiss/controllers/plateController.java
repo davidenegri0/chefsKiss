@@ -20,7 +20,6 @@ import java.util.List;
 public class plateController {
     @RequestMapping(value = "/plate", params = "id")
     public ModelAndView onPlateViewRequest(
-            HttpServletResponse response,
             @RequestParam(name = "id", defaultValue = "", required = true) Integer id_piatto,
             @CookieValue(value = "loggedUser", defaultValue = "") String UserData
     ){
@@ -121,22 +120,22 @@ public class plateController {
         return page;
     }
 
-    @GetMapping(path = "/plate/image/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
-    @ResponseBody
-    public byte[] showPlateImage(
-            @PathVariable("id") int imgID
-    ){
-        String path = Config.IMG_PATH+"plates\\plate"+imgID+".jpg";
-        //System.out.println(path);
-        byte[] image = null;
-
-        try {
-            FileInputStream in = new FileInputStream(path);
-            image = in.readAllBytes();
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-
-        return image;
-    }
+//    @GetMapping(path = "/plate/image/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
+//    @ResponseBody
+//    public byte[] showPlateImage(
+//            @PathVariable("id") int imgID
+//    ){
+//        String path = Config.IMG_PATH+"plates\\plate"+imgID+".jpg";
+//        //System.out.println(path);
+//        byte[] image = null;
+//
+//        try {
+//            FileInputStream in = new FileInputStream(path);
+//            image = in.readAllBytes();
+//        } catch (IOException e){
+//            e.printStackTrace();
+//        }
+//
+//        return image;
+//    }
 }
