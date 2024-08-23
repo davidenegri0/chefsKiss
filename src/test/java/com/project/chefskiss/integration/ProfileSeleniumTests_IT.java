@@ -30,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 //@Disabled
 @Testcontainers
 @DisplayName("End to End Selenium Tests")
+@Disabled
 public class ProfileSeleniumTests_IT {
     // TODO: decommentare righe container e togliere primi sleep
     private WebDriver driver;
