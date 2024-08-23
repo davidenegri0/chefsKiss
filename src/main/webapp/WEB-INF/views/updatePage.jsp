@@ -12,8 +12,9 @@
 <%
     User utente = (User) request.getAttribute("utente");
     //String imgPath = (String) request.getAttribute("imgPath");
-    String img = "";
-    if (utente.getProfilePicture() != null && utente.getProfilePicture().length() > 0) {
+    String img = "img/food_background_v2.jpg";
+    //if (utente.getProfilePicture() != null && utente.getProfilePicture().length() > 0) {
+    if (utente.getProfilePicture() != null) {
         img = Base64.getEncoder().encodeToString(utente.getProfilePicture().getBytes(1, (int) utente.getProfilePicture().length()));
     }//String img = Base64.getEncoder().encodeToString(utente.getProfilePicture().getBytes(1, (int)utente.getProfilePicture().length()));
     Integer errorCode = (Integer) request.getAttribute("errorCode");

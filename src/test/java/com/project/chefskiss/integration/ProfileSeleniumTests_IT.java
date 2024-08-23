@@ -1,6 +1,5 @@
 package com.project.chefskiss.integration;
 
-import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -194,9 +193,8 @@ public class ProfileSeleniumTests_IT {
 
         sleep(1000);
 
-//        WebElement profileElement = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/profile']")));
-//        profileElement.click();
-        driver.findElement(By.cssSelector("a[href='/profile']")).click();
+        WebElement profileElement = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/profile']")));
+        profileElement.click();
 
         sleep(1000);
 
