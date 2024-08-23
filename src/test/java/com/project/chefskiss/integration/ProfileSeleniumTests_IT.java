@@ -1,5 +1,6 @@
 package com.project.chefskiss.integration;
 
+import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -30,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 //@Disabled
 @Testcontainers
 @DisplayName("End to End Selenium Tests")
-@Disabled
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ProfileSeleniumTests_IT {
     // TODO: decommentare righe container e togliere primi sleep
     private WebDriver driver;
