@@ -194,8 +194,9 @@ public class ProfileSeleniumTests_IT {
 
         sleep(1000);
 
-        WebElement profileElement = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/profile']")));
-        profileElement.click();
+//        WebElement profileElement = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/profile']")));
+//        profileElement.click();
+        driver.findElement(By.cssSelector("a[href='/profile']")).click();
 
         sleep(1000);
 
