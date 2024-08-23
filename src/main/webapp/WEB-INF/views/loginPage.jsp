@@ -121,7 +121,7 @@
 
         <div class="register-link">
             <p>Non hai un account?
-                <a href="/registration">Registrati!</a>
+                <a id="registration" href="/registration">Registrati!</a>
             </p>
         </div>
     </form>

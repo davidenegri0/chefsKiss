@@ -141,8 +141,8 @@
     -->
 
     <div class="d-flex justify-content-around">
-        <a href="/updateProfile"><button class="btn btn-primary">Modifica i dati del tuo account</button></a>
-        <button class="btn btn-danger" onclick="confermaCancellazione()">Cancella i dati del tuo account</button>
+        <a href="/updateProfile"><button id="modifica" class="btn btn-primary">Modifica i dati del tuo account</button></a>
+        <button id="cancella" class="btn btn-danger" onclick="confermaCancellazione()">Cancella i dati del tuo account</button>
     </div>
     <br>
     <%@ include file="repetedElements/backLink.jsp"%>

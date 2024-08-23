@@ -8,18 +8,18 @@
         </li>
         <%if(utente==null){%>
         <li class="nav-item">
-            <a class="nav-link" href="/login"><i class='bx bx-log-in bx-sm'></i></a>
+            <a id="login" class="nav-link" href="/login"><i class='bx bx-log-in bx-sm'></i></a>
         </li>
         <%}else{%>
         <li class="nav-item">
-            <a class="nav-link" href="/logout"><i class='bx bx-log-out bx-sm'></i></a>
+            <a id="logout" class="nav-link" href="/logout"><i class='bx bx-log-out bx-sm'></i></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/profile"><i class='bx bxs-user bx-sm'></i></a>
+            <a id="profile" class="nav-link" href="/profile"><i class='bx bxs-user bx-sm'></i></a>
         </li>
         <%}%>
         <li class="nav-item">
-            <a class="nav-link" href="/homepage"><i class='bx bxs-home bx-sm'></i></a>
+            <a id="homepage" class="nav-link" href="/homepage"><i class='bx bxs-home bx-sm'></i></a>
         </li>
     </ul>
 </nav>

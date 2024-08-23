@@ -12,7 +12,10 @@
 <%
     User utente = (User) request.getAttribute("utente");
     //String imgPath = (String) request.getAttribute("imgPath");
-    String img = Base64.getEncoder().encodeToString(utente.getProfilePicture().getBytes(1, (int)utente.getProfilePicture().length()));
+    String img = "";
+    if (utente.getProfilePicture() != null && utente.getProfilePicture().length() > 0) {
+        img = Base64.getEncoder().encodeToString(utente.getProfilePicture().getBytes(1, (int) utente.getProfilePicture().length()));
+    }//String img = Base64.getEncoder().encodeToString(utente.getProfilePicture().getBytes(1, (int)utente.getProfilePicture().length()));
     Integer errorCode = (Integer) request.getAttribute("errorCode");
     //System.out.println("Da jsp: imgPath = "+imgPath);
     //System.out.println(utente.getNome());
