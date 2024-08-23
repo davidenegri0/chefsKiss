@@ -157,6 +157,8 @@ public class ProfileSeleniumTests_IT {
         // Verifica che l'utente sia registrato correttamente
         String bodyText = driver.findElement(By.tagName("body")).getText();
         assertTrue(bodyText.contains("Bentornato/a Francesco Rossi!"));
+
+        System.out.println("Test 1 passato");
     }
 
     @Test
@@ -178,6 +180,7 @@ public class ProfileSeleniumTests_IT {
         String bodyText = driver.findElement(By.tagName("body")).getText();
         assertTrue(bodyText.contains("Francesco Rossi's Profile"));
 
+        System.out.println("Test 2 passato");
     }
 
     @Test
@@ -212,6 +215,8 @@ public class ProfileSeleniumTests_IT {
 
         String bodyText = driver.findElement(By.tagName("body")).getText();
         assertTrue(bodyText.contains("3337654721"));
+
+        System.out.println("Test 3 passato");
     }
 
     @Test
@@ -237,6 +242,8 @@ public class ProfileSeleniumTests_IT {
         // Verifica che l'utente sia loggato correttamente
         String bodyText = driver.findElement(By.tagName("body")).getText();
         assert(bodyText.contains("Bentornato/a Francesco Rossi!"));
+
+        System.out.println("Test 4 passato");
     }
 
     @Test
@@ -271,6 +278,8 @@ public class ProfileSeleniumTests_IT {
 
         String bodyText = driver.findElement(By.tagName("body")).getText();
         assertTrue(bodyText.contains("Benvenuti in Chef's Kiss!!"));
+
+        System.out.println("Test 5 passato");
     }
 
     public void login() throws InterruptedException {
