@@ -1,10 +1,7 @@
 package com.project.chefskiss.integration;
 
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -189,8 +186,9 @@ public class ProfileSeleniumTests_IT {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
         sleep(5000);
-        login();
-        //driver.get("http://localhost:8080/homepage");
+        //login();
+        driver.get("http://" + webapp.getNetworkAliases().get(1) + ":" + "8080" + "/homepage");
+        driver.manage().addCookie(new Cookie("loggedUser", "RSSFRN00A01H501A&Francesco&Rossi&francesco.rossi@example.com&2000-01-01&3331234567&2024-08-23&false&false&false&false&false&false&null"));
 
         sleep(1000);
 
