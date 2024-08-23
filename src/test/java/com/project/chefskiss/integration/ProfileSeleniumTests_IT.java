@@ -172,7 +172,7 @@ public class ProfileSeleniumTests_IT {
 
         sleep(1000);
 
-        driver.findElement(By.id("profile")).click();
+        driver.findElement(By.cssSelector("a[href='/profile']")).click();
 
         sleep(1000);
 
@@ -194,12 +194,12 @@ public class ProfileSeleniumTests_IT {
 
         sleep(1000);
 
-        WebElement profileElement = wait.until(ExpectedConditions.elementToBeClickable(By.id("profile")));
+        WebElement profileElement = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/profile']")));
         profileElement.click();
 
         sleep(1000);
 
-        WebElement modificaEl= wait.until(ExpectedConditions.elementToBeClickable(By.id("modifica")));
+        WebElement modificaEl= wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/updateProfile']")));
         modificaEl.click();
         //sleep(1000);
         //driver.findElement(By.id("modifica")).click();
@@ -237,7 +237,7 @@ public class ProfileSeleniumTests_IT {
 
         // Verifica che l'utente sia loggato correttamente
         String bodyText = driver.findElement(By.tagName("body")).getText();
-        assert(bodyText.contains("Bentornato/a francesco rossi!"));
+        assert(bodyText.contains("Bentornato/a Francesco Rossi!"));
     }
 
     @Test
@@ -252,7 +252,7 @@ public class ProfileSeleniumTests_IT {
 
         sleep(1000);
 
-        WebElement profileElement = wait.until(ExpectedConditions.elementToBeClickable(By.id("profile")));
+        WebElement profileElement = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/profile']")));
         profileElement.click();
 
         sleep(1000);
