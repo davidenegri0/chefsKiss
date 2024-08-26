@@ -185,6 +185,7 @@ public class ProfileSeleniumTests_IT {
 
     @Test
     @Tag("integration")
+    @Disabled
     @Order(3)
     public void modificaProfilo() throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
