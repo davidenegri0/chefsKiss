@@ -124,7 +124,7 @@ public class profileController {
         }
 
         //Aggiornamento immagine di profilo
-        if (!file.isEmpty())
+        if (file != null || !file.isEmpty())
         {
             if (file.getSize()< 64000) {
                 try {

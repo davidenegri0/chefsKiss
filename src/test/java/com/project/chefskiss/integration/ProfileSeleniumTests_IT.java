@@ -69,8 +69,8 @@ public class ProfileSeleniumTests_IT {
     private static BrowserWebDriverContainer<?> chrome = new CapabilitiesBrowserWebDriverContainer<>(new ChromeOptions())
             .withNetwork(webapp.getNetwork())
             .withNetworkAliases("chrome")
-            .withRecordingMode(BrowserWebDriverContainer.RecordingMode.RECORD_ALL)
-            .withRecordingDirectory(Path.of("target/site"))
+/*            .withRecordingMode(BrowserWebDriverContainer.RecordingMode.RECORD_ALL)
+            .withRecordingDirectory(Path.of("target/site"))*/
             .dependsOn(webapp);
 
     @BeforeAll
@@ -85,7 +85,7 @@ public class ProfileSeleniumTests_IT {
 
     @AfterAll
     static void afterAll() {
-        chrome.afterTest(new TestDescription()
+/*        chrome.afterTest(new TestDescription()
         {
             @Override
             public String getTestId()
@@ -98,7 +98,8 @@ public class ProfileSeleniumTests_IT {
             {
                 return "demo-" + (new ChromeOptions()).getBrowserName();
             }
-        }, Optional.empty());
+        }, Optional.empty());*/
+
         mysql.close();
         webapp.close();
         chrome.close();
@@ -185,15 +186,17 @@ public class ProfileSeleniumTests_IT {
 
     @Test
     @Tag("integration")
-    @Disabled
     @Order(3)
     public void modificaProfilo() throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
         sleep(5000);
-        //login();
+        login();
+
+/*
         driver.get("http://" + webapp.getNetworkAliases().get(1) + ":" + "8080" + "/homepage");
         driver.manage().addCookie(new Cookie("loggedUser", "RSSFRN00A01H501A&Francesco&Rossi&francesco.rossi@example.com&2000-01-01&3331234567&2024-08-23&false&false&false&false&false&false&null"));
+*/
 
         sleep(1000);
 
@@ -210,11 +213,20 @@ public class ProfileSeleniumTests_IT {
         sleep(1000);
 
         // modifica dati utente
+
+       /* System.out.println(driver.findElement(By.tagName("body")).getText());*/
+
         driver.findElement(By.id("tel")).clear();
         driver.findElement(By.id("tel")).sendKeys("3337654721");
 
+        WebElement submitForm = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']")));
+        submitForm.click();
 
         String bodyText = driver.findElement(By.tagName("body")).getText();
+
+/*        System.out.println(bodyText);
+        System.out.println(webapp.getLogs());*/
+
         assertTrue(bodyText.contains("3337654721"));
 
         System.out.println("Test 3 passato");
