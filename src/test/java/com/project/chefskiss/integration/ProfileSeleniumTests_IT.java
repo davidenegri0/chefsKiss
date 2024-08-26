@@ -214,7 +214,7 @@ public class ProfileSeleniumTests_IT {
 
         // modifica dati utente
 
-       /* System.out.println(driver.findElement(By.tagName("body")).getText());*/
+        System.out.println(driver.findElement(By.tagName("body")).getText());
 
         driver.findElement(By.id("tel")).clear();
         driver.findElement(By.id("tel")).sendKeys("3337654721");
@@ -224,8 +224,8 @@ public class ProfileSeleniumTests_IT {
 
         String bodyText = driver.findElement(By.tagName("body")).getText();
 
-/*        System.out.println(bodyText);
-        System.out.println(webapp.getLogs());*/
+        System.out.println(bodyText);
+        System.out.println(webapp.getLogs());
 
         assertTrue(bodyText.contains("3337654721"));
 

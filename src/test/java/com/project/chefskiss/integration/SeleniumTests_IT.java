@@ -71,8 +71,8 @@ public class SeleniumTests_IT {
     private static BrowserWebDriverContainer<?> chrome = new CapabilitiesBrowserWebDriverContainer<>(new ChromeOptions())
             .withNetwork(webapp.getNetwork())
             .withNetworkAliases("chrome")
-            .withRecordingMode(BrowserWebDriverContainer.RecordingMode.RECORD_ALL)
-            .withRecordingDirectory(Path.of("target/site"))
+/*            .withRecordingMode(BrowserWebDriverContainer.RecordingMode.RECORD_ALL)
+            .withRecordingDirectory(Path.of("target/site"))*/
             .dependsOn(webapp);
 
     @BeforeAll
