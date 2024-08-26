@@ -130,7 +130,10 @@ public class addPlateController {
         try {
             //Caricamento del nuovo piatto sul database
             PiattoDAO sessionPiattoDAO = DatabaseDAO.getPiattoDAO(null);
-            piatto = sessionPiattoDAO.create(nomePiatto, preparazione, utente, new SerialBlob(file.getBytes()));
+            if (file==null || file.isEmpty())
+                piatto = sessionPiattoDAO.create(nomePiatto, preparazione, utente, null);
+            else
+                piatto = sessionPiattoDAO.create(nomePiatto, preparazione, utente, new SerialBlob(file.getBytes()));
 
             System.out.println(piatto.getNome());
             //Caricamento nuova lista ingredienti sul database

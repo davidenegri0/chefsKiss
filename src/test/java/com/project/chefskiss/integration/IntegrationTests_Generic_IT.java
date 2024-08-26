@@ -1,7 +1,6 @@
 package com.project.chefskiss.integration;
 
 import com.project.chefskiss.configurations.Config;
-import jakarta.servlet.ServletContext;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -9,7 +8,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,6 +23,7 @@ import org.testcontainers.utility.DockerImageName;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -33,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Testcontainers
 @DisplayName("Integration Tests")
-public class IntegrationTests_1_IT {
+public class IntegrationTests_Generic_IT {
     @Container
     public static GenericContainer mysql = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_db:latest"))
             .withExposedPorts(3306)
@@ -61,17 +60,6 @@ public class IntegrationTests_1_IT {
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
     }
-
-/*    @Test
-    @DisplayName("Testa se il contesto dell'applicazione è stato caricato correttamente")
-    @Tag("integration")
-    public void givenWac_whenServletContext_thenItProvidesGreetController() {
-        ServletContext servletContext = webApplicationContext.getServletContext();
-
-        assertNotNull(servletContext);
-        assertTrue(servletContext instanceof MockServletContext);
-        assertNotNull(webApplicationContext.getBean("homepageController"));
-    }*/
 
     @Test
     @DisplayName("Testa se la homepage viene caricata correttamente")
@@ -104,78 +92,26 @@ public class IntegrationTests_1_IT {
                 .andDo(print())
                 .andExpect(view().name("index"))
                 .andExpect(model().attributeExists("user"))
-                .andExpect(model().attribute("user", "Mario Rossi"));
+                .andExpect(model().attribute("user", "Mario Rossi"))
+                .andExpect(cookie().exists("loggedUser"));
     }
 
     @Test
-    @DisplayName("Testa se la lista dei piatti viene caricata correttamente")
+    @DisplayName("Testa se è possibile registrarsi come utente")
     @Tag("integration")
-public void integrationPiattiListTest() throws Exception {
+    public void integrationRegistrationPageTest() throws Exception {
 
-        this.mockMvc.perform(
-                get("/recipesView"))
+        this.mockMvc.perform(post("/registration")
+                        .param("nome", "Nome")
+                        .param("cognome", "Cognome")
+                        .param("cf", "CF123ABCZYX")
+                        .param("email", "example99@email.com")
+                        .param("telefono", "9988776655")
+                        .param("nascita", "2003-01-01")
+                        .param("pssw", "password")
+                )
                 .andDo(print())
-                .andExpect(view().name("recipesListPage"))
-                .andExpect(model().attributeExists("listaPiatti"));
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {0, 1, 2})
-    @DisplayName("Testa se la lista dei piatti viene ordinata come richiesto")
-    @Tag("integration")
-    public void integrationPiattiListTest_ordered(int order) throws Exception {
-
-        this.mockMvc.perform(
-                        get("/recipesView")
-                                .param("ord", String.valueOf(order)))
-                .andDo(print())
-                .andExpect(view().name("recipesListPage"))
-                .andExpect(model().attributeExists("listaPiatti"));
-    }
-
-    @ParameterizedTest
-    @CsvSource({"Pizza, 1", "Pomodoro, 2"})
-    @DisplayName("Testa se le ricerche nella lista dei piatti funzionano correttamente")
-    @Tag("integration")
-    public void integrationPiattiListTest_search(String nome, int type) throws Exception {
-
-        this.mockMvc.perform(
-                        get("/recipesView")
-                                .param("search", nome)
-                                .param("searchType", String.valueOf(type)))
-                .andDo(print())
-                .andExpect(view().name("recipesListPage"))
-                .andExpect(model().attributeExists("listaPiatti"))
-                .andExpect(model().attribute("searched", true));
-    }
-
-    @Test
-    @DisplayName("Testa se la lista dei ristoranti viene caricata correttamente")
-    @Tag("integration")
-    public void integrationResturantListTest() throws Exception {
-
-        this.mockMvc.perform(
-                        get("/resturantsList"))
-                .andDo(print())
-                .andExpect(view().name("resturantsListPage"))
-                .andExpect(model().attributeExists("ristoranti"))
-                .andExpect(model().attributeExists("sedi"));
-    }
-
-    @ParameterizedTest
-    @CsvSource({"Trattoria, 1", "Bologna, 2"})
-    @DisplayName("Testa se le ricerche nella lista dei ristoranti funzionano correttamente")
-    @Tag("integration")
-    public void integrationResturantListTest_search(String nome, int type) throws Exception {
-
-        this.mockMvc.perform(
-                        get("/resturantsList")
-                                .param("search", nome)
-                                .param("searchType", String.valueOf(type)))
-                .andDo(print())
-                .andExpect(view().name("resturantsListPage"))
-                .andExpect(model().attributeExists("ristoranti"))
-                .andExpect(model().attributeExists("sedi"))
-                .andExpect(model().attribute("searched", true));
+                .andExpect(view().name("index"))
+                .andExpect(cookie().exists("loggedUser"));
     }
 }
