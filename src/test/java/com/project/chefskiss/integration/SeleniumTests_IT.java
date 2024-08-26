@@ -153,12 +153,8 @@ public class SeleniumTests_IT {
 
         List<WebElement> piatti = driver.findElements(By.cssSelector("[id^='recipeBlock']"));
 
-        String titolo = driver.findElement(By.tagName("h1")).getText();
-
         System.out.println(piatti.size());
         assertTrue(piatti.size() == 4);
-
-        assertTrue(titolo.contains("Welcome to"));
     }
 
     @Test

@@ -41,7 +41,7 @@
     <div class="container-fluid p-3 text-white" style="background-image: linear-gradient(to bottom right, orange, yellow)">
         <h1 class="text-center fancy_font" style="text-shadow: black 1px 0 10px">
             <img style="height: 128px; width: auto" src="/img/chef'skiss_logo.png">
-            Welcome to Chef's Kiss!!
+            Benvenuti in Chef's Kiss!!
         </h1>
     </div>
 
