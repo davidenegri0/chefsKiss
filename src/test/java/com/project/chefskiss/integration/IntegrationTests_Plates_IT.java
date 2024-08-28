@@ -104,6 +104,23 @@ public class IntegrationTests_Plates_IT {
                 .andExpect(model().attribute("searched", true));
     }
 
+    @ParameterizedTest
+    @CsvSource({"Pizza, 1, Mozzarella", "Pomodoro, 2, Pasta"})
+    @DisplayName("Testa se le ricerche nella lista dei piatti funzionano correttamente anche con allergeni")
+    @Tag("integration")
+    public void integrationPiattiListTest_search_conAllergeni(String nome, int type, String Allergene) throws Exception {
+
+        this.mockMvc.perform(
+                        get("/recipesView")
+                                .param("search", nome)
+                                .param("searchType", String.valueOf(type))
+                                .param("allergeni", Allergene))
+                .andDo(print())
+                .andExpect(view().name("recipesListPage"))
+                .andExpect(model().attributeExists("listaPiatti"))
+                .andExpect(model().attribute("searched", true));
+    }
+
     @Test
     @DisplayName("Testa se una pagina di un piatto viene caricata correttamente")
     @Tag("integration")
@@ -144,6 +161,59 @@ public class IntegrationTests_Plates_IT {
                         model().attributeExists("user"),
                         model().attribute("url", "/recipesView")
                 );
+    }
+
+    @Test
+    @DisplayName("Testa se è possibile modificare un piatto")
+    @Tag("integration")
+    public void integration_EditPiatto_Test() throws Exception {
+
+        this.mockMvc.perform(
+                        post("/editPlate")
+                                .cookie(marioCookie)
+                                .param("id", "6")
+                                .param("nomePiatto", "Pasta al pomodoro migliore")
+                                .param("preparazione", "Fatta meglio di prima")
+                                .param("ingredienti", "Pasta, Pomodoro, Olio d'oliva")
+                                .param("quantita", "320,400,100")
+                )
+                .andDo(print())
+                .andExpect(view().name("redirect_to"))
+                .andExpectAll(
+                        model().attributeExists("user"),
+                        model().attribute("url", "/plate?id=6")
+                );
+    }
+
+    @Test
+    @DisplayName("Testa se è possibile cancellare un piatto")
+    @Tag("integration")
+    public void integration_DeletePiatto_Test() throws Exception {
+
+        this.mockMvc.perform(
+                        get("/deletePlate")
+                                .cookie(marioCookie)
+                                .param("id", "6")
+                )
+                .andDo(print())
+                .andExpect(view().name("redirect_to"))
+                .andExpectAll(
+                        model().attributeExists("user"),
+                        model().attribute("url", "/recipesView")
+                );
+    }
+
+    @Test
+    @DisplayName("Testa se è possibile vedere la lista dei propri piatti")
+    @Tag("integration")
+    public void integrationMyPiattiListTest() throws Exception {
+
+        this.mockMvc.perform(
+                        get("/myRecipes")
+                                .cookie(marioCookie))
+                .andDo(print())
+                .andExpect(view().name("myRecipesPage"))
+                .andExpect(model().attributeExists("listaPiatti"));
     }
 
     @Test

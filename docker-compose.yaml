@@ -1,4 +1,3 @@
-#NON VA UNA BEGA
 services:
   chefskiss_database:
     image: davidenegri01/chefskiss_db:latest

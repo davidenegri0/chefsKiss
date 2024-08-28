@@ -141,7 +141,7 @@ public class editPlateController {
         piatto.setNome(nomePiatto);
         piatto.setPreparazione(preparazione);
         try {
-            if (!file.isEmpty() && file.getSize()<64000) piatto.setImmaginePiatto(new SerialBlob(file.getBytes()));
+            if (file != null && !file.isEmpty() && file.getSize()<64000) piatto.setImmaginePiatto(new SerialBlob(file.getBytes()));
             else piatto.setImmaginePiatto(null);
         } catch (IOException | SQLException e){
             e.printStackTrace();
