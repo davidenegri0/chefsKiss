@@ -4,13 +4,19 @@ import com.project.chefskiss.configurations.Config;
 import com.project.chefskiss.modelObjects.Prenotazione;
 import com.project.chefskiss.modelObjects.User;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.MultipartConfigElement;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,10 +24,12 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import org.springframework.web.multipart.MultipartFile;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
 import org.testcontainers.utility.DockerImageName;
 
 import java.util.ArrayList;
@@ -30,6 +38,15 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -37,6 +54,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @SpringBootTest
 @Testcontainers
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Integration Tests")
 public class IntegrationTests_Generic_IT {
     @Container
@@ -48,6 +66,19 @@ public class IntegrationTests_Generic_IT {
     private WebApplicationContext webApplicationContext;
 
     private MockMvc mockMvc;
+
+    static byte[] customBytes = new byte[256];
+    static {
+        for (int i = 0; i < customBytes.length; i++) {
+            customBytes[i] = (byte) (i % 128); // Inizializza con valori specifici
+        }
+    }
+    static MockMultipartFile empty_image = new MockMultipartFile("file", new byte[0]);
+    static MockMultipartFile full_image = new MockMultipartFile("file", customBytes);
+
+    static Cookie userCookie = new Cookie("loggedUser","CF123ABCZYX&Nome&Cognome&example99@email.com&2003-01-01&9988776655&2024-08-28&false&false&false&false&false&false&null");
+
+    static Cookie elenaCooke = new Cookie("loggedUser", "CF67890123456789&Elena&Martini&elena@example.com&1982-12-18&3456789012&2023-08-19&true&false&true&true&false&false&elena_martini");
 
     static Cookie marioCookie = new Cookie("loggedUser","CF12345678901234&Mario&Rossi&mario@example.com&1985-05-15&1234567890&2023-08-19&true&false&true&false&true&false&mario_rossi");
 
@@ -107,6 +138,7 @@ public class IntegrationTests_Generic_IT {
     @Test
     @DisplayName("Testa se è possibile registrarsi come utente")
     @Tag("integration")
+    @Order(1)
     public void integrationRegistrationPageTest() throws Exception {
 
         this.mockMvc.perform(post("/registration")
@@ -121,6 +153,95 @@ public class IntegrationTests_Generic_IT {
                 .andDo(print())
                 .andExpect(view().name("index"))
                 .andExpect(cookie().exists("loggedUser"));
+    }
+
+    @Test
+    @DisplayName("Testa se la pagina di modifica dei dati viene caricata correttamente")
+    @Tag("integration")
+    @Order(2)
+    public void integrationEditProfilePageTest() throws Exception {
+
+        this.mockMvc.perform(get("/updateProfile")
+                        .cookie(userCookie)
+                )
+                .andDo(print())
+                .andExpect(view().name("updatePage"))
+                .andExpect(model().attributeExists("utente"));
+    }
+
+    private static Stream<Arguments> caricaArgomenti() {
+        return Stream.of(
+                Arguments.of(full_image),
+                Arguments.of(empty_image)
+        );
+    }
+    @ParameterizedTest
+    @MethodSource("caricaArgomenti")
+    @DisplayName("Testa se è possibile modificare i dati dell'utente")
+    @Tag("integration")
+    @Order(3)
+    public void integrationEditProfileTest(MockMultipartFile image) throws Exception {
+
+        this.mockMvc.perform(multipart("/updateProfile")
+                        .file(image)
+                        .cookie(elenaCooke)
+                        .param("email", "example99@email.com")
+                        .param("telefono", "9988776655")
+                        .param("username", "username")
+                )
+                .andDo(print())
+                .andExpect(view().name("profilePage"))
+                .andExpect(model().attributeExists("utente"))
+                .andExpect(model().attributeExists("imgPath"))
+                .andExpect(model().attribute("imgPath", "profile/profileImg.jpg"))
+                .andExpect(cookie().exists("loggedUser"));
+    }
+
+    @Test
+    @DisplayName("Testa se la pagina di modifica della password viene visualizzata correttamente")
+    @Tag("integration")
+    @Order(4)
+    public void integrationEditPasswordPageTest() throws Exception {
+
+        this.mockMvc.perform(get("/changePassword")
+                        .cookie(userCookie)
+                )
+                .andDo(print())
+                .andExpect(view().name("updatePasswordPage"))
+                .andExpect(model().attributeExists("errorCode"))
+                .andExpect(model().attribute("errorCode", 0));
+    }
+
+    @Test
+    @DisplayName("Testa se la password viene aggiornata correttamente")
+    @Tag("integration")
+    @Order(5)
+    public void integrationEditPasswordTest() throws Exception {
+
+        this.mockMvc.perform(post("/changePassword")
+                        .cookie(userCookie)
+                        .param("oldPassword", "password")
+                        .param("newPassword", "newpassword")
+                )
+                .andDo(print())
+                .andExpect(view().name("redirect_to"))
+                .andExpect(model().attributeExists("user"));
+    }
+
+
+    @Test
+    @DisplayName("Testa se la cancellazione dell'utente avviene correttamente")
+    @Tag("integration")
+    @Order(6)
+    public void integrationDeleteProfileTest() throws Exception {
+
+        this.mockMvc.perform(get("/deleteProfile")
+                        .cookie(userCookie)
+                )
+                .andDo(print())
+                .andExpect(view().name("redirect_to"))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(cookie().maxAge("loggedUser", 0));
     }
 
     @Test
