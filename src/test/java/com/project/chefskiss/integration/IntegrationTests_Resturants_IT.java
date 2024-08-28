@@ -113,10 +113,10 @@ public class IntegrationTests_Resturants_IT {
     @DisplayName("Testa se la pagina di una sede viene caricata correttamente")
     @Tag("integration")
     public void integrationSedePageTest() throws Exception {
-        //http://localhost:8080/sede?id=42.4508323;12.1728395
+        //http://localhost:8080/sede?id=45.548048;9.3881801
         this.mockMvc.perform(
                         get("/sede")
-                                .param("id", "42.4508323;12.1728395"))
+                                .param("id", "45.548048;9.3881801"))
                 .andDo(print())
                 .andExpect(view().name("sedePage"))
                 .andExpectAll(
