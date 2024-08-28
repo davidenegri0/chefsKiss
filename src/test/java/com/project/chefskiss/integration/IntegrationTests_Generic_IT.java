@@ -1,6 +1,9 @@
 package com.project.chefskiss.integration;
 
 import com.project.chefskiss.configurations.Config;
+import com.project.chefskiss.modelObjects.Prenotazione;
+import com.project.chefskiss.modelObjects.User;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -20,8 +24,10 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -42,6 +48,8 @@ public class IntegrationTests_Generic_IT {
     private WebApplicationContext webApplicationContext;
 
     private MockMvc mockMvc;
+
+    static Cookie marioCookie = new Cookie("loggedUser","CF12345678901234&Mario&Rossi&mario@example.com&1985-05-15&1234567890&2023-08-19&true&false&true&false&true&false&mario_rossi");
 
     @BeforeAll
     static void beforeAll() {
@@ -113,5 +121,44 @@ public class IntegrationTests_Generic_IT {
                 .andDo(print())
                 .andExpect(view().name("index"))
                 .andExpect(cookie().exists("loggedUser"));
+    }
+
+    @Test
+    @DisplayName("Testa se è possibile visualizzare le prenotazioni")
+    @Tag("integration")
+    public void integrationPrenotazioniPageTest() throws Exception {
+
+        ResultActions res = this.mockMvc.perform(get("/prenotazioniList")
+                        .cookie(marioCookie)
+                )
+                .andDo(print())
+                .andExpect(view().name("prenotazioniListPage"))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(model().attributeExists("prenotazioni"));
+
+        User utente = (User) res.andReturn().getModelAndView().getModel().get("user");
+        List<Prenotazione> prenotazioni = (List<Prenotazione>) res.andReturn().getModelAndView().getModel().get("prenotazioni");
+        assertTrue(utente.getNome().equals("Mario"));
+        assertTrue(utente.getCognome().equals("Rossi"));
+        assertTrue(prenotazioni.size() > 0);
+    }
+
+    @ParameterizedTest
+    @DisplayName("Testa se è possibile aggiungere recensioni/valutazioni/prenotazioni")
+    @CsvSource({
+            "1, 8, 3",
+            "2, 43.3180529;11.3319483, 1"
+    })
+    @Tag("integration")
+    public void integrationAddRecensioneTest(int type, String ID, int voto) throws Exception {
+
+        this.mockMvc.perform(get("/addRecensione")
+                        .cookie(marioCookie)
+                        .param("type", String.valueOf(type))
+                        .param("id", ID)
+                        .param("voto", String.valueOf(voto))
+                )
+                .andDo(print())
+                .andExpect(view().name("addRecensionePage"));
     }
 }
