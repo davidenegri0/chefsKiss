@@ -23,14 +23,14 @@ import org.testcontainers.utility.DockerImageName;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @SpringBootTest
 @Testcontainers
 @DisplayName("Integration Tests for Resturants")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class IntegrationTests_Resturants_IT {
     @Container
     public static GenericContainer mysql = new GenericContainer(DockerImageName.parse("davidenegri01/chefskiss_db:latest"))
@@ -43,6 +43,8 @@ public class IntegrationTests_Resturants_IT {
     private MockMvc mockMvc;
 
     static Cookie marioCookie = new Cookie("loggedUser","CF12345678901234&Mario&Rossi&mario@example.com&1985-05-15&1234567890&2023-08-19&true&false&true&false&true&false&mario_rossi");
+    static Cookie userCookie = new Cookie("loggedUser","prova&prova&prova&prova.com&1221-12-12&1234&2024-08-29&false&false&false&false&true&false&null");
+    static Cookie simonaCookie = new Cookie("loggedUser","CF01234567890123&Simona&Leoni&simona@example.com&1991-08-28&6543210983&2023-08-19&true&true&true&false&true&false&simona_leoni");
 
     @BeforeAll
     static void beforeAll() {
@@ -146,13 +148,43 @@ public class IntegrationTests_Resturants_IT {
     }
 
     @Test
-    @DisplayName("Testa se è possibile aggiungere una recensione ad una sede")
+    @DisplayName("Testa se è possibile cancellare una sede")
+    @Tag("integration")
+    public void integrationDeleteSedeTest() throws Exception {
+        this.mockMvc.perform(
+                get("/deleteSede")
+                        .cookie(marioCookie)
+                        .param("coord", "40.7567908;14.4431885")
+                        .param("idR", "2")
+        )
+                .andDo(print())
+                .andExpect(view().name("redirect_to"))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(model().attribute("url", "/restaurant?id=2"));
+    }
+
+    @Test
+    @DisplayName("Testa se viene visualizzata correttamente la pagina di aggiunta di una sede al ristorante")
+    @Tag("integration")
+    public void integrationgetIdRistoranteTest() throws Exception {
+        this.mockMvc.perform(
+                        get("/addSede")
+                                .cookie(marioCookie)
+                )
+                .andDo(print())
+                .andExpect(view().name("addSedePage"))
+                .andExpect(model().attributeExists("Risto"))
+                .andExpect(model().attributeExists("user"));
+    }
+
+    @Test
+    @DisplayName("Testa se è possibile aggiungere una valutazione ad una sede")
     @Tag("integration")
     public void integrationAddRecensioneTest() throws Exception {
         //http://localhost:8080/addRecensione?type=2&id=45.0606258;7.6840466
         this.mockMvc.perform(
                 post("/addRecensione")
-                        .cookie(marioCookie)
+                        .cookie(simonaCookie)
                         .param("type", "2")
                         .param("ID", "45.0606258;7.6840466")
                         .param("voto", "5")
@@ -161,6 +193,25 @@ public class IntegrationTests_Resturants_IT {
                 .andDo(print())
                 .andExpect(view().name("redirect_to"))
                 .andExpect(model().attribute("url", "/sede?id=45.0606258;7.6840466"));
+    }
+
+    @Test
+    @DisplayName("Testa se è possibile aggiornare una valutazione ad una sede")
+    @Tag("integration")
+    public void integrationUpdateValutazioneTest() throws Exception {
+
+        this.mockMvc.perform(
+                post("/modifyRecensione")
+                        .cookie(simonaCookie)
+                        .param("type", "4")
+                        .param("ID", "45.0606258;7.6840466")
+                        .param("voto", "4")
+                        .param("commento", "Ottimo ristorante!")
+                )
+                .andDo(print())
+                .andExpect(view().name("redirect_to"))
+                .andExpect(model().attribute("url", "/sede?id=45.0606258;7.6840466"))
+                .andExpect(model().attributeExists("user"));
     }
 
     @Test
@@ -174,11 +225,82 @@ public class IntegrationTests_Resturants_IT {
                         .param("coordinate", "45.0606258;7.6840466")
                         .param("data", "2023-10-19")
                         .param("orario", "12:00")
-                        .param("n_posti", "2")
+                        .param("n_posti", "4")
                         .param("CF", "CF12345678901234")
         )
                 .andDo(print())
                 .andExpect(view().name("redirect_to"))
+                .andExpect(model().attributeExists("user"))
                 .andExpect(model().attribute("url", "/sede?id=45.0606258;7.6840466"));
+    }
+
+    @Test
+    @DisplayName("Testa se è possibile cancellare una valutazione")
+    @Tag("integration")
+    public void integrationDeleteValutazioneTest() throws Exception {
+
+        this.mockMvc.perform(
+                get("/deleteRecensione")
+                        .cookie(simonaCookie)
+                        .param("type", "4")
+                        .param("id", "45.0606258;7.6840466")
+        )
+                .andDo(print())
+                .andExpect(view().name("redirect_to"))
+                .andExpect(model().attribute("url", "/sede?id=45.0606258;7.6840466"))
+                .andExpect(model().attributeExists("user"));
+    }
+
+    public void integrationRegistrationPageTest() throws Exception {
+
+        this.mockMvc.perform(post("/registration")
+                        .param("nome", "prova")
+                        .param("cognome", "prova")
+                        .param("cf", "prova")
+                        .param("email", "prova.com")
+                        .param("telefono", "1234")
+                        .param("nascita", "1221-12-12")
+                        .param("pssw", "prova")
+                        .param("ristoratore", "true")
+                )
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("Testa se è possibile aggiungere un ristorante")
+    @Tag("integration")
+    @Order(1)
+    public void integrationAddRistoranteTest() throws Exception {
+        integrationRegistrationPageTest();
+        this.mockMvc.perform(
+                post("/addRistorante&Sede")
+                        .cookie(userCookie)
+                        .param("nome_risto", "Ristorante di Prova")
+                        .param("via", "Via Francesco Zanardi")
+                        .param("n_civ", "56")
+                        .param("citta", "Bologna")
+                        .param("nposti", "100")
+                        .param("coord", "44.5140741,11.3248745")
+        )
+                .andDo(print())
+                .andExpect(view().name("redirect_to"));
+    }
+
+    @Test
+    @DisplayName("Testa se è possibile visualizzare gli chef liberi")
+    @Tag("integration")
+    @Order(2)
+    public void integrationChefListTest() throws Exception {
+        this.mockMvc.perform(
+                get("/addChef")
+                        .cookie(userCookie)
+                        .param("ID", "44.5140741,11.3248745")
+        )
+                .andDo(print())
+                .andExpect(view().name("addChefPage"))
+                .andExpect(model().attributeExists("CoordSede"))
+                .andExpect(model().attribute("CoordSede", "44.5140741,11.3248745"))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(model().attributeExists("chefs"));
     }
 }

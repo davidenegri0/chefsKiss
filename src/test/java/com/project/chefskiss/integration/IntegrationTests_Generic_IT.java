@@ -77,10 +77,9 @@ public class IntegrationTests_Generic_IT {
     static MockMultipartFile full_image = new MockMultipartFile("file", customBytes);
 
     static Cookie userCookie = new Cookie("loggedUser","CF123ABCZYX&Nome&Cognome&example99@email.com&2003-01-01&9988776655&2024-08-28&false&false&false&false&false&false&null");
-
     static Cookie elenaCooke = new Cookie("loggedUser", "CF67890123456789&Elena&Martini&elena@example.com&1982-12-18&3456789012&2023-08-19&true&false&true&true&false&false&elena_martini");
-
     static Cookie marioCookie = new Cookie("loggedUser","CF12345678901234&Mario&Rossi&mario@example.com&1985-05-15&1234567890&2023-08-19&true&false&true&false&true&false&mario_rossi");
+    static Cookie simonaCookie = new Cookie("loggedUser","CF01234567890123&Simona&Leoni&simona@example.com&1991-08-28&6543210983&2023-08-19&true&true&true&false&true&false&simona_leoni");
 
     @BeforeAll
     static void beforeAll() {
@@ -184,7 +183,7 @@ public class IntegrationTests_Generic_IT {
 
         this.mockMvc.perform(multipart("/updateProfile")
                         .file(image)
-                        .cookie(elenaCooke)
+                        .cookie(simonaCookie)
                         .param("email", "example99@email.com")
                         .param("telefono", "9988776655")
                         .param("username", "username")
