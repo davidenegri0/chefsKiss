@@ -44,6 +44,7 @@ public class IntegrationTests_Plates_IT {
     private MockMvc mockMvc;
 
     static Cookie marioCookie = new Cookie("loggedUser","CF12345678901234&Mario&Rossi&mario@example.com&1985-05-15&1234567890&2023-08-19&true&false&true&false&true&false&mario_rossi");
+    static Cookie simonaCookie = new Cookie("loggedUser","CF01234567890123&Simona&Leoni&simona@example.com&1991-08-28&6543210983&2023-08-19&true&true&true&false&true&false&simona_leoni");
 
     @BeforeAll
     static void beforeAll() {
@@ -204,6 +205,28 @@ public class IntegrationTests_Plates_IT {
     }
 
     @Test
+    @DisplayName("Testa se è possibile aggiungere un piatto ad una sede")
+    @Tag("integration")
+    public void integration_PostPiattoInSede_Test() throws Exception {
+
+        this.mockMvc.perform(
+                        post("/addPlate")
+                                .cookie(marioCookie)
+                                .param("nomePiatto", "Piatto di prova")
+                                .param("preparazione", "Descrizione di prova")
+                                .param("ingredienti", "Farina,Olio d'oliva,Sale")
+                                .param("quantita", "1,2,3")
+                                .param("sede", "45.0606258;7.6840466")
+                )
+                .andDo(print())
+                .andExpect(view().name("redirect_to"))
+                .andExpectAll(
+                        model().attributeExists("user"),
+                        model().attribute("url", "/recipesView")
+                );
+    }
+
+    @Test
     @DisplayName("Testa se è possibile vedere la lista dei propri piatti")
     @Tag("integration")
     public void integrationMyPiattiListTest() throws Exception {
@@ -228,6 +251,45 @@ public class IntegrationTests_Plates_IT {
                                 .param("ID", "2")
                                 .param("voto", "4")
                                 .param("commento", "Recensione di prova")
+                )
+                .andDo(print())
+                .andExpect(view().name("redirect_to"))
+                .andExpectAll(
+                        model().attributeExists("user"),
+                        model().attribute("url", "/plate?id=2")
+                );
+    }
+
+    @Test
+    @DisplayName("Testa se è possibile modificare una recensione")
+    @Tag("integration")
+    public void integration_EditRecensionePiatto_Test() throws Exception {
+
+        this.mockMvc.perform(
+                        post("/modifyRecensione")
+                                .cookie(marioCookie)
+                                .param("type", "3")
+                                .param("ID", "2")
+                                .param("voto", "5")
+                                .param("commento", "Recensione modificata")
+                )
+                .andDo(print())
+                .andExpect(view().name("redirect_to"))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(model().attribute("url", "/plate?id=2")
+                );
+    }
+
+    @Test
+    @DisplayName("Testa se è possibile cancellare una recensione")
+    @Tag("integration")
+    public void integration_DeleteRecensionePiatto_Test() throws Exception {
+
+        this.mockMvc.perform(
+                        get("/deleteRecensione")
+                                .cookie(simonaCookie)
+                                .param("id", "2")
+                                .param("type", "3")
                 )
                 .andDo(print())
                 .andExpect(view().name("redirect_to"))

@@ -170,8 +170,9 @@ public class IntegrationTests_Generic_IT {
 
     private static Stream<Arguments> caricaArgomenti() {
         return Stream.of(
-                Arguments.of(full_image),
-                Arguments.of(empty_image)
+                Arguments.of(full_image, simonaCookie),
+                Arguments.of(empty_image, simonaCookie),
+                Arguments.of(full_image, elenaCooke)
         );
     }
     @ParameterizedTest
@@ -179,11 +180,11 @@ public class IntegrationTests_Generic_IT {
     @DisplayName("Testa se è possibile modificare i dati dell'utente")
     @Tag("integration")
     @Order(3)
-    public void integrationEditProfileTest(MockMultipartFile image) throws Exception {
+    public void integrationEditProfileTest(MockMultipartFile image, Cookie cookie) throws Exception {
 
         this.mockMvc.perform(multipart("/updateProfile")
                         .file(image)
-                        .cookie(simonaCookie)
+                        .cookie(cookie)
                         .param("email", "example99@email.com")
                         .param("telefono", "9988776655")
                         .param("username", "username")

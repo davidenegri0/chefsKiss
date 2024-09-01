@@ -148,6 +148,25 @@ public class IntegrationTests_Resturants_IT {
     }
 
     @Test
+    @DisplayName("Testa se è possibile aggiornare una sede")
+    @Tag("integration")
+    public void integrationUpdateSedeTest() throws Exception {
+        this.mockMvc.perform(
+                post("/editSede")
+                        .cookie(marioCookie)
+                        .param("via", "Corso Umberto I")
+                        .param("citta", "Napoli")
+                        .param("nposti", "40")
+                        .param("idR", "2")
+                        .param("coord", "40.7567908;14.4431885")
+        )
+                .andDo(print())
+                .andExpect(view().name("redirect_to"))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(model().attribute("url", "/restaurant?id=2"));
+    }
+
+    @Test
     @DisplayName("Testa se è possibile cancellare una sede")
     @Tag("integration")
     public void integrationDeleteSedeTest() throws Exception {
@@ -181,7 +200,7 @@ public class IntegrationTests_Resturants_IT {
     @DisplayName("Testa se è possibile aggiungere una valutazione ad una sede")
     @Tag("integration")
     public void integrationAddRecensioneTest() throws Exception {
-        //http://localhost:8080/addRecensione?type=2&id=45.0606258;7.6840466
+
         this.mockMvc.perform(
                 post("/addRecensione")
                         .cookie(simonaCookie)
@@ -215,6 +234,23 @@ public class IntegrationTests_Resturants_IT {
     }
 
     @Test
+    @DisplayName("Testa se è possibile cancellare una valutazione")
+    @Tag("integration")
+    public void integrationDeleteValutazioneTest() throws Exception {
+
+        this.mockMvc.perform(
+                        get("/deleteRecensione")
+                                .cookie(simonaCookie)
+                                .param("type", "4")
+                                .param("id", "45.0606258;7.6840466")
+                )
+                .andDo(print())
+                .andExpect(view().name("redirect_to"))
+                .andExpect(model().attribute("url", "/sede?id=45.0606258;7.6840466"))
+                .andExpect(model().attributeExists("user"));
+    }
+
+    @Test
     @DisplayName("Testa se è possibile aggiungere una prenotazione ad una sede")
     @Tag("integration")
     public void integrationAddPrenotazioneTest() throws Exception {
@@ -235,20 +271,39 @@ public class IntegrationTests_Resturants_IT {
     }
 
     @Test
-    @DisplayName("Testa se è possibile cancellare una valutazione")
+    @DisplayName("Testa se è possibile aggiornare una prenotazione")
     @Tag("integration")
-    public void integrationDeleteValutazioneTest() throws Exception {
-
+    public void integrationUpdatePrenotazioneTest() throws Exception {
+        //http://localhost:8080/modifyPrenotazione?ID=1&data=2023-08-19&orario=12:00&n_posti=2
         this.mockMvc.perform(
-                get("/deleteRecensione")
-                        .cookie(simonaCookie)
-                        .param("type", "4")
-                        .param("id", "45.0606258;7.6840466")
+                post("/editPrenotazione")
+                        .cookie(marioCookie)
+                        .param("id", "1")
+                        .param("coordinate", "45.0606258;7.6840466")
+                        .param("data", "2024-09-01")
+                        .param("orario", "12:00")
+                        .param("n_posti", "2")
         )
                 .andDo(print())
                 .andExpect(view().name("redirect_to"))
-                .andExpect(model().attribute("url", "/sede?id=45.0606258;7.6840466"))
-                .andExpect(model().attributeExists("user"));
+                .andExpect(model().attributeExists("user"))
+                .andExpect(model().attribute("url", "/prenotazioniList?id=1"));
+    }
+
+    @Test
+    @DisplayName("Testa se è possibile cancellare una prenotazione")
+    @Tag("integration")
+    public void integrationDeletePrenotazioneTest() throws Exception {
+
+        this.mockMvc.perform(
+                get("/deletePrenotazione")
+                        .cookie(marioCookie)
+                        .param("id", "1")
+        )
+                .andDo(print())
+                .andExpect(view().name("redirect_to"))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(model().attribute("url", "/prenotazioniList?id=CF12345678901234"));
     }
 
     public void integrationRegistrationPageTest() throws Exception {
