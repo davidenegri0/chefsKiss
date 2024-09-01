@@ -155,6 +155,7 @@ public class IntegrationTests_Plates_IT {
                                 .param("preparazione", "Descrizione di prova")
                                 .param("ingredienti", "Farina,Olio d'oliva,Sale")
                                 .param("quantita", "1,2,3")
+                                .param("sede", "45.0606258;7.6840466")
                 )
                 .andDo(print())
                 .andExpect(view().name("redirect_to"))
@@ -204,27 +205,27 @@ public class IntegrationTests_Plates_IT {
                 );
     }
 
-    @Test
-    @DisplayName("Testa se è possibile aggiungere un piatto ad una sede")
-    @Tag("integration")
-    public void integration_PostPiattoInSede_Test() throws Exception {
-
-        this.mockMvc.perform(
-                        post("/addPlate")
-                                .cookie(marioCookie)
-                                .param("nomePiatto", "Piatto di prova")
-                                .param("preparazione", "Descrizione di prova")
-                                .param("ingredienti", "Farina,Olio d'oliva,Sale")
-                                .param("quantita", "1,2,3")
-                                .param("sede", "45.0606258;7.6840466")
-                )
-                .andDo(print())
-                .andExpect(view().name("redirect_to"))
-                .andExpectAll(
-                        model().attributeExists("user"),
-                        model().attribute("url", "/recipesView")
-                );
-    }
+//    @Test
+//    @DisplayName("Testa se è possibile aggiungere un piatto ad una sede")
+//    @Tag("integration")
+//    public void integration_PostPiattoInSede_Test() throws Exception {
+//
+//        this.mockMvc.perform(
+//                        post("/addPlate")
+//                                .cookie(marioCookie)
+//                                .param("nomePiatto", "Piatto di prova")
+//                                .param("preparazione", "Descrizione di prova")
+//                                .param("ingredienti", "Farina,Olio d'oliva,Sale")
+//                                .param("quantita", "1,2,3")
+//                                .param("sede", "45.0606258;7.6840466")
+//                )
+//                .andDo(print())
+//                .andExpect(view().name("redirect_to"))
+//                .andExpectAll(
+//                        model().attributeExists("user"),
+//                        model().attribute("url", "/recipesView")
+//                );
+//    }
 
     @Test
     @DisplayName("Testa se è possibile vedere la lista dei propri piatti")
