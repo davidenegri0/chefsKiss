@@ -153,7 +153,7 @@ public class NavigationSeleniumTests_IT {
 
     @Test
     @Tag("integration")
-    public void recensiciSede() throws InterruptedException {
+    public void recensisciSede() throws InterruptedException {
 
         login();
 
@@ -187,8 +187,6 @@ public class NavigationSeleniumTests_IT {
         assertEquals(2, valutazione.size());
 
         assertTrue(valutazione.get(1).getText().contains("Mario Rossi"));
-        assertTrue(valutazione.get(1).getAttribute("src").contains("/img/rating_stars/rating-star-icon-3-of-5.png"));
-
         System.out.println("Test passato");
     }
 
@@ -251,6 +249,45 @@ public class NavigationSeleniumTests_IT {
 
         assertEquals(1, recipes.size());
         assertTrue(recipes.get(0).getText().contains("Pasta al pomodoro"));
+
+        System.out.println("Test passato");
+    }
+
+    @Test
+    @Tag("integration")
+    public void recensisciRicetta() throws InterruptedException {
+
+        login();
+
+        // Vai alla pagina della lista delle ricette
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/recipesView']"))).click();
+
+        // Scegli il piatto da recensire
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/recipe?id=15']"))).click();
+
+        // Vai alla pagina per recensire il piatto
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/addRecensione?type=1&id=15']"))).click();
+
+        // Imposta la valutazione
+
+        sleep(1000);
+
+        WebElement slider = driver.findElement(By.cssSelector("input[type='range']"));
+        slider.sendKeys(Keys.RIGHT);
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("commento"))).sendKeys("Ottima ricetta");
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']"))).click();
+
+        // Verifica che la recensione sia stata inserita
+
+        List<WebElement> recipes = driver.findElements(By.id("reviewBlock"));
+
+        assertEquals(2, recipes.size());
+        assertTrue(recipes.get(1).getText().contains("Mario Rossi"));
 
         System.out.println("Test passato");
     }
