@@ -265,7 +265,7 @@ public class NavigationSeleniumTests_IT {
 
         // Scegli il piatto da recensire
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/recipe?id=15']"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/plate?id=15']"))).click();
 
         // Vai alla pagina per recensire il piatto
 
