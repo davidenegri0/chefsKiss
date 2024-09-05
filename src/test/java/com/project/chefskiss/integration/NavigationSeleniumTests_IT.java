@@ -240,7 +240,7 @@ public class NavigationSeleniumTests_IT {
 
 //        WebElement cancellaEl = wait.until(ExpectedConditions.elementToBeClickable(By.id("cancella")));
 //        cancellaEl.click();
-        WebElement cancella = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/plate?id=15']")));
+        WebElement cancella = wait.until(ExpectedConditions.elementToBeClickable(By.id("cancella")));
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", cancella);
 
         wait.until(ExpectedConditions.alertIsPresent());
@@ -440,7 +440,7 @@ public class NavigationSeleniumTests_IT {
         WebElement piatto = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/plate?id=15']")));
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", piatto);
 
-        WebElement cancella = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/plate?id=15']")));
+        WebElement cancella = wait.until(ExpectedConditions.elementToBeClickable(By.id("cancella")));
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", cancella);
 //        cancella.click();
 
