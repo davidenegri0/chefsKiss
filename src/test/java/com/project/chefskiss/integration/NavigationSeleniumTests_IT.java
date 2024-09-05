@@ -3,6 +3,7 @@ package com.project.chefskiss.integration;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -140,6 +141,7 @@ public class NavigationSeleniumTests_IT {
 
     @Test
     @Tag("integration")
+    @Order(4)
     public void recensisciSede() throws InterruptedException {
 
         login();
@@ -174,6 +176,83 @@ public class NavigationSeleniumTests_IT {
         assertEquals(2, valutazione.size());
 
         assertTrue(valutazione.get(1).getText().contains("Mario Rossi"));
+        System.out.println("Test passato");
+    }
+
+    @Test
+    @Tag("integration")
+    @Order(5)
+    public void modificaRecensioneSede() throws InterruptedException {
+
+        login();
+
+        // Vai alla pagina della lista dei ristoranti
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/resturantsList']"))).click();
+
+        // Vai alla pagina di un ristorante
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/restaurant?id=5']"))).click();
+
+        // Vai alla pagina della singola sede
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/sede?id=45.0606258;7.6840466']"))).click();
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/modifyRecensione?type=4&id=45.0606258;7.6840466']"))).click();
+
+        sleep(1000);
+
+        WebElement slider = driver.findElement(By.cssSelector("input[type='range']"));
+        slider.sendKeys(Keys.END);
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']"))).click();
+
+        sleep(1000);
+
+        // Verifica che la ricetta sia stata trovata
+
+        List<WebElement> valutazione = driver.findElements(By.id("valutazioneBlock"));
+
+        assertEquals(2, valutazione.size());
+
+        assertTrue(valutazione.get(1).getText().contains("Mario Rossi"));
+        System.out.println("Test passato");
+    }
+
+    @Test
+    @Tag("integration")
+    @Order(6)
+    public void cancellaRecensioneSede() throws InterruptedException {
+
+        login();
+
+        // Vai alla pagina della lista dei ristoranti
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/resturantsList']"))).click();
+
+        // Vai alla pagina di un ristorante
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/restaurant?id=5']"))).click();
+
+        // Vai alla pagina della singola sede
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/sede?id=45.0606258;7.6840466']"))).click();
+
+        WebElement cancellaEl = wait.until(ExpectedConditions.elementToBeClickable(By.id("cancella")));
+        cancellaEl.click();
+
+        wait.until(ExpectedConditions.alertIsPresent());
+
+        Alert alert = driver.switchTo().alert();
+
+        alert.accept();
+
+        // Verifica che la ricetta sia stata trovata
+
+        List<WebElement> valutazione = driver.findElements(By.id("valutazioneBlock"));
+
+        assertEquals(1, valutazione.size());
+
         System.out.println("Test passato");
     }
 
@@ -242,7 +321,7 @@ public class NavigationSeleniumTests_IT {
 
     @Test
     @Tag("integration")
-    @Disabled
+    @Order(1)
     public void recensisciRicetta() throws InterruptedException {
 
         login();
@@ -253,9 +332,19 @@ public class NavigationSeleniumTests_IT {
 
         // Scegli il piatto da recensire
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/plate?id=15']"))).click();
+        WebElement piatto = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/plate?id=15']")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", piatto);
+        //wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/plate?id=15']"))).click();
 
         /*
+        Actions actions = new Actions(driver);
+        actions.moveToElement(elem).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/plate?id=15']"))).click();
+
+        JavascriptExecutor jse = (JavascriptExecutor)driver;
+        jse.executeScript("scroll(0, 250)"); // if the element is on bottom.
+        elem.click();
+
         WebElement elem = driver.findElement(By.cssSelector("a[href='/plate?id=15']"));
         JavascriptExecutor jse2 = (JavascriptExecutor) driver;
         jse2.executeScript("arguments[0].scrollIntoView()", elem);
@@ -263,8 +352,9 @@ public class NavigationSeleniumTests_IT {
         */
 
         // Vai alla pagina per recensire il piatto
-
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/addRecensione?type=1&id=15']"))).click();
+        WebElement add = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/addRecensione?type=1&id=15']")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", add);
+        //wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/addRecensione?type=1&id=15']"))).click();
 
         // Imposta la valutazione
 
@@ -275,7 +365,9 @@ public class NavigationSeleniumTests_IT {
 
         wait.until(ExpectedConditions.elementToBeClickable(By.id("commento"))).sendKeys("Ottima ricetta");
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']"))).click();
+        WebElement submitButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", submitButton);
+        //wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']"))).click();
 
         // Verifica che la recensione sia stata inserita
 
@@ -283,6 +375,83 @@ public class NavigationSeleniumTests_IT {
 
         assertEquals(2, recipes.size());
         assertTrue(recipes.get(1).getText().contains("Mario Rossi"));
+
+        System.out.println("Test passato");
+    }
+
+    @Test
+    @Tag("integration")
+    @Order(2)
+    public void modificaRecensione() throws InterruptedException {
+
+        login();
+
+        // Vai alla pagina della lista delle ricette
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/recipesView']"))).click();
+
+        // Scegli il piatto da recensire
+
+        WebElement piatto = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/plate?id=15']")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", piatto);
+
+        // Vai alla pagina per recensire il piatto
+        WebElement add = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/modifyRecensione?type=3&id=15']")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", add);
+
+        // Imposta la valutazione
+
+        sleep(1000);
+
+        WebElement slider = driver.findElement(By.cssSelector("input[type='range']"));
+        slider.sendKeys(Keys.END);
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("commento"))).sendKeys("Buona ricetta");
+
+        WebElement submitButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", submitButton);
+
+        // Verifica che la recensione sia stata modificata
+
+        List<WebElement> recipes = driver.findElements(By.id("reviewBlock"));
+
+        assertEquals(2, recipes.size());
+        assertTrue(recipes.get(1).getText().contains("Mario Rossi"));
+        assertTrue(recipes.get(1).getText().contains("Buona ricetta"));
+
+        System.out.println("Test passato");
+    }
+
+    @Test
+    @Tag("integration")
+    @Order(3)
+    public void cancellaRecensione() throws InterruptedException {
+
+        login();
+
+        // Vai alla pagina della lista delle ricette
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/recipesView']"))).click();
+
+        // Scegli il piatto da recensire
+
+        WebElement piatto = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/plate?id=15']")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", piatto);
+
+        WebElement cancellaEl = wait.until(ExpectedConditions.elementToBeClickable(By.id("cancella")));
+        cancellaEl.click();
+
+        wait.until(ExpectedConditions.alertIsPresent());
+
+        Alert alert = driver.switchTo().alert();
+
+        alert.accept();
+
+        // Verifica che la recensione sia stata cancellata
+
+        List<WebElement> recipes = driver.findElements(By.id("reviewBlock"));
+
+        assertEquals(1, recipes.size());
 
         System.out.println("Test passato");
     }

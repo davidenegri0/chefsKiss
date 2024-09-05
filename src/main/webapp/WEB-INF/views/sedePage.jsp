@@ -148,7 +148,7 @@
                     <a href="/addRecensione?type=2&id=<%=sede.getCoordinate()%>"><button class="btn btn-sm btn-success">Aggiungi valutazione</button></a>
                     <a href="/modifyRecensione?type=4&id=<%=sede.getCoordinate()%>"><button class="btn btn-sm btn-primary">Modifica valutazione</button></a>
 
-                    <button class="btn btn-sm btn-danger" onclick="confermaCancellazione()">Cancella valutazione</button>
+                    <button id="cancella" class="btn btn-sm btn-danger" onclick="confermaCancellazione()">Cancella valutazione</button>
                 </div>
                 <br>
             <%
