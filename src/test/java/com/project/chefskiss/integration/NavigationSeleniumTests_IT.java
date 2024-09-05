@@ -136,7 +136,7 @@ public class NavigationSeleniumTests_IT {
         assertTrue(recipes.size() > 0);
         assertNotNull(valutazione);
 
-        System.out.println("Test passato");
+        System.out.println("Test visualizzaSede passato");
     }
 
     @Test
@@ -176,7 +176,7 @@ public class NavigationSeleniumTests_IT {
         assertEquals(2, valutazione.size());
 
         assertTrue(valutazione.get(1).getText().contains("Mario Rossi"));
-        System.out.println("Test passato");
+        System.out.println("Test recensisciSede passato");
     }
 
     @Test
@@ -216,7 +216,7 @@ public class NavigationSeleniumTests_IT {
         assertEquals(2, valutazione.size());
 
         assertTrue(valutazione.get(1).getText().contains("Mario Rossi"));
-        System.out.println("Test passato");
+        System.out.println("Test modificaRecensioneSede passato");
     }
 
     @Test
@@ -238,8 +238,10 @@ public class NavigationSeleniumTests_IT {
 
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/sede?id=45.0606258;7.6840466']"))).click();
 
-        WebElement cancellaEl = wait.until(ExpectedConditions.elementToBeClickable(By.id("cancella")));
-        cancellaEl.click();
+//        WebElement cancellaEl = wait.until(ExpectedConditions.elementToBeClickable(By.id("cancella")));
+//        cancellaEl.click();
+        WebElement cancella = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/plate?id=15']")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", cancella);
 
         wait.until(ExpectedConditions.alertIsPresent());
 
@@ -253,7 +255,7 @@ public class NavigationSeleniumTests_IT {
 
         assertEquals(1, valutazione.size());
 
-        System.out.println("Test passato");
+        System.out.println("Test cancellaRecensioneSede passato");
     }
 
     @Test
@@ -288,7 +290,7 @@ public class NavigationSeleniumTests_IT {
         assertTrue(recipes.get(0).getText().contains("Bologna"));
         assertTrue(recipes.get(1).getText().contains("Bologna"));
 
-        System.out.println("Test passato");
+        System.out.println("Test ricercaRistorante passato");
     }
 
     @Test
@@ -316,7 +318,7 @@ public class NavigationSeleniumTests_IT {
         assertEquals(1, recipes.size());
         assertTrue(recipes.get(0).getText().contains("Pasta al pomodoro"));
 
-        System.out.println("Test passato");
+        System.out.println("Test ricercaRicette passato");
     }
 
     @Test
@@ -376,7 +378,7 @@ public class NavigationSeleniumTests_IT {
         assertEquals(2, recipes.size());
         assertTrue(recipes.get(1).getText().contains("Mario Rossi"));
 
-        System.out.println("Test passato");
+        System.out.println("Test recensisciRicetta passato");
     }
 
     @Test
@@ -419,7 +421,7 @@ public class NavigationSeleniumTests_IT {
         assertTrue(recipes.get(1).getText().contains("Mario Rossi"));
         assertTrue(recipes.get(1).getText().contains("Buona ricetta"));
 
-        System.out.println("Test passato");
+        System.out.println("Test modificaRecensione passato");
     }
 
     @Test
@@ -438,8 +440,9 @@ public class NavigationSeleniumTests_IT {
         WebElement piatto = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/plate?id=15']")));
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", piatto);
 
-        WebElement cancellaEl = wait.until(ExpectedConditions.elementToBeClickable(By.id("cancella")));
-        cancellaEl.click();
+        WebElement cancella = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/plate?id=15']")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", cancella);
+//        cancella.click();
 
         wait.until(ExpectedConditions.alertIsPresent());
 
@@ -453,7 +456,7 @@ public class NavigationSeleniumTests_IT {
 
         assertEquals(1, recipes.size());
 
-        System.out.println("Test passato");
+        System.out.println("Test cancellaRecensione passato");
     }
     /*
     @Test
