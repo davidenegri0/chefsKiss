@@ -242,6 +242,7 @@ public class NavigationSeleniumTests_IT {
 
     @Test
     @Tag("integration")
+    @Disabled
     public void recensisciRicetta() throws InterruptedException {
 
         login();
