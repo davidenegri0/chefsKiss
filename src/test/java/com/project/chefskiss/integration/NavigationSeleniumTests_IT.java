@@ -13,6 +13,7 @@ import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.images.builder.ImageFromDockerfile;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.lifecycle.TestDescription;
 import org.testcontainers.utility.DockerImageName;
 import org.testcontainers.utility.MountableFile;
 import software.xdev.testcontainers.selenium.containers.browser.BrowserWebDriverContainer;
@@ -22,6 +23,7 @@ import java.io.*;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
 
 import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.*;
@@ -70,8 +72,8 @@ public class NavigationSeleniumTests_IT {
             .withNetwork(webapp.getNetwork())
             .withCopyFileToContainer(MountableFile.forHostPath("src/main/resources/static/img/chef'skiss_logo.png"), "/test.jpg")
             .withNetworkAliases("chrome")
-/*            .withRecordingMode(BrowserWebDriverContainer.RecordingMode.RECORD_ALL)
-            .withRecordingDirectory(Path.of("target/site"))*/
+            .withRecordingMode(BrowserWebDriverContainer.RecordingMode.RECORD_ALL)
+            .withRecordingDirectory(Path.of("target/site"))
             .dependsOn(webapp);
 
     @BeforeAll
@@ -86,21 +88,6 @@ public class NavigationSeleniumTests_IT {
 
     @AfterAll
     static void afterAll() {
-/*        chrome.afterTest(new TestDescription()
-        {
-            @Override
-            public String getTestId()
-            {
-                return "demo-" + (new ChromeOptions()).getBrowserName();
-            }
-
-            @Override
-            public String getFilesystemFriendlyName()
-            {
-                return "demo-" + (new ChromeOptions()).getBrowserName();
-            }
-        }, Optional.empty());*/
-
         mysql.close();
         webapp.close();
         chrome.close();
@@ -267,6 +254,13 @@ public class NavigationSeleniumTests_IT {
 
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/plate?id=15']"))).click();
 
+        /*
+        WebElement elem = driver.findElement(By.cssSelector("a[href='/plate?id=15']"));
+        JavascriptExecutor jse2 = (JavascriptExecutor) driver;
+        jse2.executeScript("arguments[0].scrollIntoView()", elem);
+        elem.click();
+        */
+
         // Vai alla pagina per recensire il piatto
 
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/addRecensione?type=1&id=15']"))).click();
@@ -291,8 +285,7 @@ public class NavigationSeleniumTests_IT {
 
         System.out.println("Test passato");
     }
-
-/*
+    /*
     @Test
     @Tag("integration")
     @Order(1)
@@ -357,6 +350,21 @@ public class NavigationSeleniumTests_IT {
     public void tearDown() {
         if (driver != null) {
             driver.quit();
+
+            chrome.afterTest(new TestDescription()
+            {
+                @Override
+                public String getTestId()
+                {
+                    return "demo-" + (new ChromeOptions()).getBrowserName();
+                }
+
+                @Override
+                public String getFilesystemFriendlyName()
+                {
+                    return "demo-" + (new ChromeOptions()).getBrowserName();
+                }
+            }, Optional.empty());
         }
     }
 }
