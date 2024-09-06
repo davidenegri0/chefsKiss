@@ -502,6 +502,57 @@ public class NavigationSeleniumTests_IT {
     }
 */
 
+    @Test
+    @Tag("integration")
+    @Disabled
+    public void prenotaInSede() throws InterruptedException {
+
+        login();
+
+        // Vai alla pagina della lista dei ristoranti
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/resturantsList']"))).click();
+
+        // Vai alla pagina di un ristorante
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/restaurant?id=3']"))).click();
+
+        // Vai alla pagina della singola sede
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/sede?id=44.4940084;11.3431645']"))).click();
+
+        // Aggiungi una prenotazione
+        //http://localhost:8080/addPrenotazione?coordinate=44.4940084;11.3431645
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/addPrenotazione?coordinate=44.4940084;11.3431645']"))).click();
+
+        // Inscerisci i dati della prenotazione e conferma
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("data"))).sendKeys("15/10/2025");
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("orario"))).sendKeys("20:00");
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("posti"))).sendKeys("4");
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("conferma"))).click();
+
+        // Verifica che la prenotazione sia stata inserita
+
+        sleep(1000);
+
+        System.out.println(driver.getPageSource());
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/prenotazioniList']"))).click();
+
+        sleep(1000);
+
+        String page = driver.getPageSource();
+        assertAll(
+                () -> assertTrue(page.contains("Data: 2025-10-15")),
+                () -> assertTrue(page.contains("Orario: 20:00:00")),
+                () -> assertTrue(page.contains("Posti: 4"))
+        );
+
+        System.out.println("Test visualizzaSede passato");
+    }
 
     public void login() throws InterruptedException {
 //        driver.get("http://localhost:8080/login");
