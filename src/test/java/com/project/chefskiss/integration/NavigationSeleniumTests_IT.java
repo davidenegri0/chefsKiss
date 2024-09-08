@@ -533,10 +533,10 @@ public class NavigationSeleniumTests_IT {
         wait.until(ExpectedConditions.elementToBeClickable(By.id("posti"))).sendKeys("4");
 
         //WebElement conferma = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']")));
-        //WebElement conferma = driver.findElement(By.cssSelector("button[type='submit']"));
-//        WebElement conferma = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']")));
-//        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", conferma);
-        driver.findElement(By.id("conferma")).click();
+        WebElement conferma = driver.findElement(By.cssSelector("input[type='submit']"));
+        //WebElement conferma = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", conferma);
+//        driver.findElement(By.id("conferma")).click();
 
 
         // Verifica che la prenotazione sia stata inserita

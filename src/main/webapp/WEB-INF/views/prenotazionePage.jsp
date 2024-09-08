@@ -89,7 +89,7 @@
 
                     <div class="mb-3">
                         <!--<button id="conferma" type="submit" class="btn btn-success">Ok</button>-->
-                        <input type="submit" id="conferma" class="btn btn-success" value="Ok">
+                        <input id="conferma" type="submit" class="btn btn-success" value="Ok">
                         <button type="button" class="btn btn-danger" onclick="window.history.back()">Annulla</button>
                     </div>
                 </form>
