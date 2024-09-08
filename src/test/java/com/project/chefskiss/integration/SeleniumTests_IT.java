@@ -87,7 +87,7 @@ public class SeleniumTests_IT {
 
     @AfterAll
     static void afterAll() {
-        chrome.afterTest(new TestDescription()
+        /*chrome.afterTest(new TestDescription()
         {
             @Override
             public String getTestId()
@@ -100,7 +100,7 @@ public class SeleniumTests_IT {
             {
                 return "demo-" + (new ChromeOptions()).getBrowserName();
             }
-        }, Optional.empty());
+        }, Optional.empty());*/
         mysql.close();
         webapp.close();
         chrome.close();
