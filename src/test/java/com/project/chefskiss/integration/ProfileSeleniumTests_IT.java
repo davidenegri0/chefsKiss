@@ -69,8 +69,8 @@ public class ProfileSeleniumTests_IT {
     private static BrowserWebDriverContainer<?> chrome = new CapabilitiesBrowserWebDriverContainer<>(new ChromeOptions())
             .withNetwork(webapp.getNetwork())
             .withNetworkAliases("chrome")
-            .withRecordingMode(BrowserWebDriverContainer.RecordingMode.RECORD_ALL)
-            .withRecordingDirectory(Path.of("target/site"))
+/*            .withRecordingMode(BrowserWebDriverContainer.RecordingMode.RECORD_ALL)
+            .withRecordingDirectory(Path.of("target/site"))*/
             .dependsOn(webapp);
 
     @BeforeAll
@@ -85,7 +85,7 @@ public class ProfileSeleniumTests_IT {
 
     @AfterAll
     static void afterAll() {
-        chrome.afterTest(new TestDescription()
+/*        chrome.afterTest(new TestDescription()
         {
             @Override
             public String getTestId()
@@ -98,7 +98,7 @@ public class ProfileSeleniumTests_IT {
             {
                 return "demo-" + (new ChromeOptions()).getBrowserName();
             }
-        }, Optional.empty());
+        }, Optional.empty());*/
 
         mysql.close();
         webapp.close();

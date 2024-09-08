@@ -73,8 +73,8 @@ public class NavigationSeleniumTests_IT {
             .withNetwork(webapp.getNetwork())
             .withCopyFileToContainer(MountableFile.forHostPath("src/main/resources/static/img/chef'skiss_logo.png"), "/test.jpg")
             .withNetworkAliases("chrome")
-            .withRecordingMode(BrowserWebDriverContainer.RecordingMode.RECORD_ALL)
-            .withRecordingDirectory(Path.of("target/site"))
+            /*.withRecordingMode(BrowserWebDriverContainer.RecordingMode.RECORD_ALL)
+            .withRecordingDirectory(Path.of("target/site"))*/
             .dependsOn(webapp);
 
     @BeforeAll
@@ -597,7 +597,7 @@ public class NavigationSeleniumTests_IT {
         if (driver != null) {
             driver.quit();
 
-            chrome.afterTest(new TestDescription()
+/*            chrome.afterTest(new TestDescription()
             {
                 @Override
                 public String getTestId()
@@ -610,7 +610,7 @@ public class NavigationSeleniumTests_IT {
                 {
                     return "demo-" + (new ChromeOptions()).getBrowserName();
                 }
-            }, Optional.empty());
+            }, Optional.empty());*/
         }
     }
 }
