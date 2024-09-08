@@ -528,9 +528,22 @@ public class NavigationSeleniumTests_IT {
 
         // Inscerisci i dati della prenotazione e conferma
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("data"))).sendKeys("15/10/2025");
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("orario"))).sendKeys("20:00");
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("posti"))).sendKeys("4");
+//        wait.until(ExpectedConditions.elementToBeClickable(By.id("data"))).sendKeys("15/10/2025");
+//        wait.until(ExpectedConditions.elementToBeClickable(By.id("orario"))).sendKeys("20:00");
+//        wait.until(ExpectedConditions.elementToBeClickable(By.id("posti"))).sendKeys("4");
+//
+//        WebElement dataField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("data")));
+//        dataField.sendKeys("2025-09-09");
+//        WebElement orarioField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("orario")));
+//        orarioField.sendKeys("12:30");
+//        WebElement postiField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("posti")));
+//        postiField.clear();
+//        postiField.sendKeys("4");
+
+        driver.findElement(By.id("data")).sendKeys("2025-10-15");
+        driver.findElement(By.id("orario")).sendKeys("20:00");
+        driver.findElement(By.id("posti")).sendKeys("4");
+
         System.out.println(driver.getPageSource());
 
         //WebElement conferma = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']")));
