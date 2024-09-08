@@ -504,7 +504,7 @@ public class NavigationSeleniumTests_IT {
 
     @Test
     @Tag("integration")
-    @Disabled
+    //@Disabled
     public void prenotaInSede() throws InterruptedException {
 
         login();
