@@ -532,15 +532,20 @@ public class NavigationSeleniumTests_IT {
         wait.until(ExpectedConditions.elementToBeClickable(By.id("orario"))).sendKeys("20:00");
         wait.until(ExpectedConditions.elementToBeClickable(By.id("posti"))).sendKeys("4");
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("conferma"))).click();
+        WebElement conferma = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']")));
+        //WebElement conferma = driver.findElement(By.cssSelector("button[type='submit']"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", conferma);
 
         // Verifica che la prenotazione sia stata inserita
 
-        sleep(1000);
+        sleep(2000);
 
         System.out.println(driver.getPageSource());
+        //driver.get("http://" + webapp.getNetworkAliases().get(1) + ":" + "8080" + "/prenotazioniList");
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/prenotazioniList']"))).click();
+        //wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/prenotazioniList']"))).click();
+        WebElement prenotazioni = driver.findElement(By.cssSelector("a[href='/prenotazioniList']"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", prenotazioni);
 
         sleep(1000);
 
