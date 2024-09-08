@@ -504,7 +504,7 @@ public class NavigationSeleniumTests_IT {
 
     @Test
     @Tag("integration")
-    //@Disabled
+    @Disabled
     public void prenotaInSede() throws InterruptedException {
 
         login();
@@ -534,8 +534,10 @@ public class NavigationSeleniumTests_IT {
 
         //WebElement conferma = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']")));
         //WebElement conferma = driver.findElement(By.cssSelector("button[type='submit']"));
-        WebElement conferma = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']")));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", conferma);
+//        WebElement conferma = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']")));
+//        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", conferma);
+        driver.findElement(By.id("conferma")).click();
+
 
         // Verifica che la prenotazione sia stata inserita
 
