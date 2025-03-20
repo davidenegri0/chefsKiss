@@ -528,19 +528,41 @@ public class NavigationSeleniumTests_IT {
 
         // Inscerisci i dati della prenotazione e conferma
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("data"))).sendKeys("15/10/2025");
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("orario"))).sendKeys("20:00");
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("posti"))).sendKeys("4");
+//        wait.until(ExpectedConditions.elementToBeClickable(By.id("data"))).sendKeys("15/10/2025");
+//        wait.until(ExpectedConditions.elementToBeClickable(By.id("orario"))).sendKeys("20:00");
+//        wait.until(ExpectedConditions.elementToBeClickable(By.id("posti"))).sendKeys("4");
+//
+//        WebElement dataField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("data")));
+//        dataField.sendKeys("2025-09-09");
+//        WebElement orarioField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("orario")));
+//        orarioField.sendKeys("12:30");
+//        WebElement postiField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("posti")));
+//        postiField.clear();
+//        postiField.sendKeys("4");
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("conferma"))).click();
-
-        // Verifica che la prenotazione sia stata inserita
-
-        sleep(1000);
+        driver.findElement(By.id("data")).sendKeys("2025-10-15");
+        driver.findElement(By.id("orario")).sendKeys("20:00");
+        driver.findElement(By.id("posti")).sendKeys("4");
 
         System.out.println(driver.getPageSource());
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/prenotazioniList']"))).click();
+        //WebElement conferma = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']")));
+        //WebElement conferma = driver.findElement(By.cssSelector("input[type='submit']"));
+        //WebElement conferma = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']")));
+        //((JavascriptExecutor) driver).executeScript("arguments[0].click();", conferma);
+        driver.findElement(By.id("conferma")).click();
+
+
+        // Verifica che la prenotazione sia stata inserita
+
+        sleep(2000);
+
+        System.out.println(driver.getPageSource());
+        //driver.get("http://" + webapp.getNetworkAliases().get(1) + ":" + "8080" + "/prenotazioniList");
+
+        //wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/prenotazioniList']"))).click();
+        WebElement prenotazioni = driver.findElement(By.cssSelector("a[href='/prenotazioniList']"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", prenotazioni);
 
         sleep(1000);
 
